@@ -13,8 +13,10 @@ class ServiceScanner;
 namespace eq3thermostat {
 
 class IOService;
+class Controller;
+class Eq3Thermostat;
 
-}
+} // namespace eq3thermostat
 
 // might change later used to glue member classes together to connect to device
 // service and send / receive commands
@@ -27,7 +29,6 @@ public:
 
     void startScan();
     void connectToIOService(const QString &macAddress);
-    void sendCommand(const QByteArray &command);
 
     bool deviceScanComplete() const;
     bool serviceScanCompleted() const;
@@ -37,12 +38,13 @@ private slots:
     void onDeviceScanCompleted();
     void onServiceScanCompleted();
     void onIOServiceReady();
-    void onWriteCommandAnswered(const QByteArray &answer);
 
 private:
     std::unique_ptr<DeviceScanner> mDeviceScanner;
     std::unique_ptr<ServiceScanner> mServiceScanner;
     std::unique_ptr<eq3thermostat::IOService> mEq3ThermostatIOService;
+    std::unique_ptr<eq3thermostat::Eq3Thermostat> mEq3Thermostat;
+    std::unique_ptr<eq3thermostat::Controller> mEq3ThermostatController;
 
     bool mDeviceScanCompleted{false};
     bool mServiceScanCompleted{false};

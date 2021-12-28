@@ -1,8 +1,11 @@
 #include "DeviceManager.hpp"
 
 #include "DeviceScanner.hpp"
-#include "EQ3Thermostat/IOService.hpp"
 #include "ServiceScanner.hpp"
+#include "eq3Thermostat/Controller.hpp"
+#include "eq3Thermostat/Eq3Thermostat.hpp"
+#include "eq3Thermostat/IOService.hpp"
+#include "utility/Utility.hpp"
 
 #include <QDebug>
 
@@ -12,6 +15,8 @@ DeviceManager::DeviceManager(QObject *parent) : QObject{nullptr}
 {
 }
 
+// declaration has to be in cpp to make std::unique_ptr member forward
+// declaration work
 DeviceManager::~DeviceManager() = default;
 
 void DeviceManager::startScan()
@@ -44,15 +49,6 @@ void DeviceManager::connectToIOService(const QString &macAddress)
             &DeviceManager::onServiceScanCompleted);
 
     mServiceScanner->startScan();
-}
-
-void DeviceManager::sendCommand(const QByteArray &command)
-{
-    if (!mEq3ThermostatIOService) {
-        qDebug() << Q_FUNC_INFO << "mEq3ThermostatIOService is nullptr";
-        return;
-    }
-    mEq3ThermostatIOService->writeCommand(command);
 }
 
 bool DeviceManager::deviceScanComplete() const
@@ -114,18 +110,26 @@ void DeviceManager::onIOServiceReady()
     }
     mIOServiceReady = true;
 
+    mEq3Thermostat = std::make_unique<eq3thermostat::Eq3Thermostat>(this);
+    mEq3ThermostatController =
+        std::make_unique<eq3thermostat::Controller>(this);
+
+    connect(mEq3ThermostatController.get(),
+            &eq3thermostat::Controller::commandRequested,
+            mEq3ThermostatIOService.get(),
+            &eq3thermostat::IOService::onWriteCommand);
+
     connect(mEq3ThermostatIOService.get(),
-            &eq3thermostat::IOService::writeCommandAnswerd, this,
-            &DeviceManager::onWriteCommandAnswered);
+            &eq3thermostat::IOService::writeCommandAnswerd,
+            mEq3ThermostatController.get(),
+            &eq3thermostat::Controller::onAnswerReceived);
 
-    // TODO: Command currently hard coded. To be changed later...
-    auto command = QByteArray::fromHex("00000000000000000000000000000000");
-    sendCommand(command);
-}
+    connect(mEq3ThermostatController.get(),
+            &eq3thermostat::Controller::serialNumberReceived,
+            mEq3Thermostat.get(),
+            &eq3thermostat::Eq3Thermostat::onSetSerialNumber);
 
-void DeviceManager::onWriteCommandAnswered(const QByteArray &answer)
-{
-    qDebug() << Q_FUNC_INFO << "Answer: " << answer.toHex();
+    mEq3ThermostatController->requestSerialNumber();
 }
 
 } // namespace thermonator

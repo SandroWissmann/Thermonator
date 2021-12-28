@@ -23,11 +23,12 @@ public:
     // service
     bool ready() const;
 
+    static QBluetoothUuid iOServiceUuid();
+
+public slots:
     // writes a command to the thermostat. Note there is no check if command
     // is valid here
-    void writeCommand(const QByteArray &command);
-
-    static QBluetoothUuid iOServiceUuid();
+    void onWriteCommand(const QByteArray &command);
 
 signals:
     // indicate if service finished scan for characteristics so we can use the

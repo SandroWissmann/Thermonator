@@ -72,3 +72,6 @@ Thumbs.db
 *.vscode
 
 *CMakeLists.txt.user
+
+# VSCODE Build folder
+build

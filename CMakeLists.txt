@@ -18,6 +18,16 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
+        backend/eq3Thermostat/command/SerialNumber.hpp
+        backend/eq3Thermostat/command/SerialNumber.cpp
+        backend/eq3Thermostat/Controller.hpp
+        backend/eq3Thermostat/Controller.cpp
+        backend/eq3Thermostat/Eq3Thermostat.hpp
+        backend/eq3Thermostat/Eq3Thermostat.cpp
+        backend/eq3Thermostat/IOService.hpp
+        backend/eq3Thermostat/IOService.cpp
+        backend/utility/Utility.hpp
+        backend/utility/Utility.cpp
         backend/ConnectionHandler.hpp
         backend/ConnectionHandler.cpp
         backend/DeviceManager.hpp
@@ -26,8 +36,6 @@ set(PROJECT_SOURCES
         backend/DeviceScanner.cpp
         backend/ServiceScanner.hpp
         backend/ServiceScanner.cpp
-        backend/EQ3Thermostat/IOService.hpp
-        backend/EQ3Thermostat/IOService.cpp
         qml/qml.qrc
         ${TS_FILES}
 )

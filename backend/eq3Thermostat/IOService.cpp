@@ -1,10 +1,11 @@
 #include "IOService.hpp"
 
-#include <string_view>
-
-#include <QMetaEnum>
+#include "../utility/Utility.hpp"
 
 #include <QDebug>
+#include <QMetaEnum>
+
+#include <string_view>
 
 namespace thermonator::eq3thermostat {
 
@@ -41,7 +42,12 @@ bool IOService::ready() const
            QLowEnergyService::ServiceDiscovered;
 }
 
-void IOService::writeCommand(const QByteArray &command)
+QBluetoothUuid IOService::iOServiceUuid()
+{
+    return QBluetoothUuid{QString{"{3e135142-654f-9090-134a-a6ff5bb77046}"}};
+}
+
+void IOService::onWriteCommand(const QByteArray &command)
 {
     if (!ready()) {
         return;
@@ -51,12 +57,8 @@ void IOService::writeCommand(const QByteArray &command)
     auto characteristic = mLowEnergyServicePtr->characteristic(uuid);
     mLowEnergyServicePtr->writeCharacteristic(characteristic, command);
 
-    qDebug() << Q_FUNC_INFO << "write command: " << command.toHex();
-}
-
-QBluetoothUuid IOService::iOServiceUuid()
-{
-    return QBluetoothUuid{QString{"{3e135142-654f-9090-134a-a6ff5bb77046}"}};
+    qDebug() << Q_FUNC_INFO
+             << "write command: " << utility::toHexWithSpace(command.toHex());
 }
 
 QBluetoothUuid IOService::writeCharacteristicUuid()
@@ -101,14 +103,15 @@ void IOService::onCharacteristicWritten(
     const QLowEnergyCharacteristic &characteristic, const QByteArray &value)
 {
     if (characteristic.uuid() == writeCharacteristicUuid()) {
-        qDebug() << Q_FUNC_INFO
-                 << "Command written. Command: " << value.toHex();
+        qDebug() << Q_FUNC_INFO << "Command written. Command: "
+                 << utility::toHexWithSpace(value);
     }
     else {
         // Case should never happen
         qDebug() << Q_FUNC_INFO
                  << "Unknown characteristic written. Characteristic.uuid: "
-                 << characteristic.uuid() << " value: " << value.toHex();
+                 << characteristic.uuid()
+                 << " value: " << utility::toHexWithSpace(value);
     }
 }
 
@@ -117,14 +120,16 @@ void IOService::onCharacteristicRead(
 {
     // Should never be called because we should only read via notify
     qDebug() << Q_FUNC_INFO << "Characteristic read. Characteristic.uuid: "
-             << characteristic.uuid() << " value: " << value.toHex();
+             << characteristic.uuid()
+             << " value: " << utility::toHexWithSpace(value);
 }
 
 void IOService::onCharacteristicChanged(
     const QLowEnergyCharacteristic &characteristic, const QByteArray &value)
 {
     if (characteristic.uuid() == notifyCharacteristicUuid()) {
-        qDebug() << Q_FUNC_INFO << "Command written. value: " << value.toHex();
+        qDebug() << Q_FUNC_INFO << "Command written. value: "
+                 << utility::toHexWithSpace(value);
     }
 
     emit writeCommandAnswerd(value);
