@@ -10,6 +10,8 @@ namespace thermonator::utility {
 // e.g. 01 92 00 00 82 75 81 60 67 64 66 63 67 64 ae
 QString toHexWithSpace(const QByteArray &byteArray);
 
+char hexToAscii(char hex);
+
 } // namespace thermonator::utility
 
 #endif
