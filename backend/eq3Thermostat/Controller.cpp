@@ -5,6 +5,7 @@
 #include "command/ComfortAndEcoTemperature.hpp"
 #include "command/DateTime.hpp"
 #include "command/SerialNumber.hpp"
+#include "command/SwitchToComfortTemperature.hpp"
 #include "command/Temperature.hpp"
 
 #include <QDebug>
@@ -13,41 +14,13 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    mCommandSerialNumber = std::make_unique<command::SerialNumber>(this);
-
-    connect(mCommandSerialNumber.get(), &command::SerialNumber::commandEncoded,
-            this, &Controller::commandRequested);
-
-    mCommandDateTime = std::make_unique<command::DateTime>(this);
-
-    connect(mCommandDateTime.get(), &command::DateTime::commandEncoded, this,
-            &Controller::commandRequested);
-
-    mCommandTemperature = std::make_unique<command::Temperature>(this);
-
-    connect(mCommandTemperature.get(), &command::Temperature::commandEncoded,
-            this, &Controller::commandRequested);
-
-    mCommandComfortAndEcoTemperature =
-        std::make_unique<command::ComfortAndEcoTemperature>(this);
-
-    connect(mCommandComfortAndEcoTemperature.get(),
-            &command::ComfortAndEcoTemperature::commandEncoded, this,
-            &Controller::commandRequested);
-
-    mAnswerSerialNumberNotification =
-        std::make_unique<answer::SerialNumberNotification>(this);
-
-    connect(mAnswerSerialNumberNotification.get(),
-            &answer::SerialNumberNotification::answerDecoded, this,
-            &Controller::onSerialNumberAnswerDecoded);
-
-    mAnswerStatusNotification =
-        std::make_unique<answer::StatusNotification>(this);
-
-    connect(mAnswerStatusNotification.get(),
-            &answer::StatusNotification::answerDecoded, this,
-            &Controller::onStatusAnswerDecoded);
+    initCommandSerialNumber();
+    initCommandDateTime();
+    initCommandTemperature();
+    initCommandComfortAndEcoTemperature();
+    initCommandSwitchToComfortTemperature();
+    initAnswerSerialNumberNotification();
+    initAnswerStatusNotification();
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -104,6 +77,18 @@ void Controller::setComfortAndEcoTemperature(double comfortTemperature,
                                                     ecoTemperature);
 }
 
+void Controller::switchToComfortTemperature()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::SwitchToComfortTemperature;
+    mWaitForAnswer = true;
+    mCommandSwitchToComfortTemperature->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -118,6 +103,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::Temperature:
         [[fallthrough]];
     case CommandType::ComfortAndEcoTemperature:
+        [[fallthrough]];
+    case CommandType::SwitchToComfortTemperature:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -165,6 +152,70 @@ void Controller::onStatusAnswerDecoded(
     emit hardwareButtonsLockedReceived(hardwareButtonsLocked);
     emit unknownEnabledReceived(unknownEnabled);
     emit lowBatteryEnabledReceived(lowBatteryEnabled);
+}
+
+void Controller::initCommandSerialNumber()
+{
+    mCommandSerialNumber = std::make_unique<command::SerialNumber>(this);
+
+    connect(mCommandSerialNumber.get(), &command::SerialNumber::commandEncoded,
+            this, &Controller::commandRequested);
+}
+
+void Controller::initCommandDateTime()
+{
+    mCommandDateTime = std::make_unique<command::DateTime>(this);
+
+    connect(mCommandDateTime.get(), &command::DateTime::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandTemperature()
+{
+    mCommandTemperature = std::make_unique<command::Temperature>(this);
+
+    connect(mCommandTemperature.get(), &command::Temperature::commandEncoded,
+            this, &Controller::commandRequested);
+}
+
+void Controller::initCommandComfortAndEcoTemperature()
+{
+    mCommandComfortAndEcoTemperature =
+        std::make_unique<command::ComfortAndEcoTemperature>(this);
+
+    connect(mCommandComfortAndEcoTemperature.get(),
+            &command::ComfortAndEcoTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandSwitchToComfortTemperature()
+{
+    mCommandSwitchToComfortTemperature =
+        std::make_unique<command::SwitchToComfortTemperature>(this);
+
+    connect(mCommandSwitchToComfortTemperature.get(),
+            &command::SwitchToComfortTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initAnswerSerialNumberNotification()
+{
+    mAnswerSerialNumberNotification =
+        std::make_unique<answer::SerialNumberNotification>(this);
+
+    connect(mAnswerSerialNumberNotification.get(),
+            &answer::SerialNumberNotification::answerDecoded, this,
+            &Controller::onSerialNumberAnswerDecoded);
+}
+
+void Controller::initAnswerStatusNotification()
+{
+    mAnswerStatusNotification =
+        std::make_unique<answer::StatusNotification>(this);
+
+    connect(mAnswerStatusNotification.get(),
+            &answer::StatusNotification::answerDecoded, this,
+            &Controller::onStatusAnswerDecoded);
 }
 
 } // namespace thermonator::eq3thermostat

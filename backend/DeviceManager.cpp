@@ -241,7 +241,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->setTemperature(21.5);
 
-    mEq3ThermostatController->setComfortAndEcoTemperature(21.5, 17.5);
+    // mEq3ThermostatController->setComfortAndEcoTemperature(21.5, 17.5);
+
+    mEq3ThermostatController->switchToComfortTemperature();
 }
 
 } // namespace thermonator
