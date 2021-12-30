@@ -7,6 +7,7 @@
 #include "command/ComfortAndEcoTemperature.hpp"
 #include "command/DateTime.hpp"
 #include "command/HardwareButtonsLock.hpp"
+#include "command/HardwareButtonsUnlock.hpp"
 #include "command/SerialNumber.hpp"
 #include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
@@ -33,6 +34,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandBoostOn();
     initCommandBoostOff();
     initCommandHardwareButtonsLock();
+    initCommandHardwareButtonsUnlock();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -179,6 +181,18 @@ void Controller::hardwareButtonsLock()
     mCommandHardwareButtonsLock->encodeCommand();
 }
 
+void Controller::hardwareButtonsUnlock()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::HardwareButtonsUnlock;
+    mWaitForAnswer = true;
+    mCommandHardwareButtonsUnlock->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -207,6 +221,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::BoostOff:
         [[fallthrough]];
     case CommandType::HardwareButtonsLock:
+        [[fallthrough]];
+    case CommandType::HardwareButtonsUnlock:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -334,6 +350,16 @@ void Controller::initCommandHardwareButtonsLock()
 
     connect(mCommandHardwareButtonsLock.get(),
             &command::HardwareButtonsLock::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandHardwareButtonsUnlock()
+{
+    mCommandHardwareButtonsUnlock =
+        std::make_unique<command::HardwareButtonsUnlock>(this);
+
+    connect(mCommandHardwareButtonsUnlock.get(),
+            &command::HardwareButtonsUnlock::commandEncoded, this,
             &Controller::commandRequested);
 }
 

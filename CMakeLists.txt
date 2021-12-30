@@ -36,6 +36,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/HardwareButtonsControl.cpp
         backend/eq3Thermostat/command/HardwareButtonsLock.hpp
         backend/eq3Thermostat/command/HardwareButtonsLock.cpp
+        backend/eq3Thermostat/command/HardwareButtonsUnlock.hpp
+        backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp
         backend/eq3Thermostat/command/SerialNumber.hpp
         backend/eq3Thermostat/command/SerialNumber.cpp       
         backend/eq3Thermostat/command/SimpleCommandBase.hpp

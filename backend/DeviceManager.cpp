@@ -255,7 +255,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->boostOff();
 
-    mEq3ThermostatController->hardwareButtonsLock();
+    // mEq3ThermostatController->hardwareButtonsLock();
+
+    mEq3ThermostatController->hardwareButtonsUnlock();
 }
 
 } // namespace thermonator
