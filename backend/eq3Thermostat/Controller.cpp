@@ -8,6 +8,7 @@
 #include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
 #include "command/Temperature.hpp"
+#include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
 
 #include <QDebug>
@@ -25,6 +26,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandSwitchToComfortTemperature();
     initCommandSwitchToEcoTemperature();
     initCommandThermostatOn();
+    initCommandThermostatOff();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -123,6 +125,18 @@ void Controller::thermostatOn()
     mCommandThermostatOn->encodeCommand();
 }
 
+void Controller::thermostatOff()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::ThermostatOff;
+    mWaitForAnswer = true;
+    mCommandThermostatOff->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -143,6 +157,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::SwitchToEcoTemperature:
         [[fallthrough]];
     case CommandType::ThermostatOn:
+        [[fallthrough]];
+    case CommandType::ThermostatOff:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -252,6 +268,15 @@ void Controller::initCommandThermostatOn()
 
     connect(mCommandThermostatOn.get(), &command::ThermostatOn::commandEncoded,
             this, &Controller::commandRequested);
+}
+
+void Controller::initCommandThermostatOff()
+{
+    mCommandThermostatOff = std::make_unique<command::ThermostatOff>(this);
+
+    connect(mCommandThermostatOff.get(),
+            &command::ThermostatOff::commandEncoded, this,
+            &Controller::commandRequested);
 }
 
 void Controller::initAnswerSerialNumberNotification()

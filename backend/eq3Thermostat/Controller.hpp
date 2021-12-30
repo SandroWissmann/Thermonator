@@ -62,6 +62,10 @@ public:
     Q_INVOKABLE
     void thermostatOn();
 
+    // Turn off the thermostat.
+    Q_INVOKABLE
+    void thermostatOff();
+
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
@@ -112,6 +116,7 @@ private:
     void initCommandSwitchToComfortTemperature();
     void initCommandSwitchToEcoTemperature();
     void initCommandThermostatOn();
+    void initCommandThermostatOff();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
@@ -127,6 +132,7 @@ private:
         SwitchToComfortTemperature,
         SwitchToEcoTemperature,
         ThermostatOn,
+        ThermostatOff
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -142,6 +148,7 @@ private:
     std::unique_ptr<command::SwitchToEcoTemperature>
         mCommandSwitchToEcoTemperature;
     std::unique_ptr<command::ThermostatOn> mCommandThermostatOn;
+    std::unique_ptr<command::ThermostatOff> mCommandThermostatOff;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

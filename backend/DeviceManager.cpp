@@ -247,7 +247,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->switchToEcoTemperature();
 
-    mEq3ThermostatController->thermostateOn();
+    // mEq3ThermostatController->thermostatOn();
+
+    mEq3ThermostatController->thermostatOff();
 }
 
 } // namespace thermonator
