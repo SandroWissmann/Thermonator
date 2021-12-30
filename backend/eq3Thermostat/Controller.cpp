@@ -6,6 +6,7 @@
 #include "command/DateTime.hpp"
 #include "command/SerialNumber.hpp"
 #include "command/SwitchToComfortTemperature.hpp"
+#include "command/SwitchToEcoTemperature.hpp"
 #include "command/Temperature.hpp"
 
 #include <QDebug>
@@ -19,6 +20,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandTemperature();
     initCommandComfortAndEcoTemperature();
     initCommandSwitchToComfortTemperature();
+    initCommandSwitchToEcoTemperature();
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
 }
@@ -89,6 +91,18 @@ void Controller::switchToComfortTemperature()
     mCommandSwitchToComfortTemperature->encodeCommand();
 }
 
+void Controller::switchToEcoTemperature()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::SwitchToEcoTemperature;
+    mWaitForAnswer = true;
+    mCommandSwitchToEcoTemperature->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -105,11 +119,13 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::ComfortAndEcoTemperature:
         [[fallthrough]];
     case CommandType::SwitchToComfortTemperature:
+        [[fallthrough]];
+    case CommandType::SwitchToEcoTemperature:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
     case CommandType::Unknown:
-        qDebug() << Q_FUNC_INFO << "CommandType::Unknown";
+        qDebug() << Q_FUNC_INFO << "Unknown command cannot decode";
         break;
     }
 }
@@ -195,6 +211,16 @@ void Controller::initCommandSwitchToComfortTemperature()
 
     connect(mCommandSwitchToComfortTemperature.get(),
             &command::SwitchToComfortTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandSwitchToEcoTemperature()
+{
+    mCommandSwitchToEcoTemperature =
+        std::make_unique<command::SwitchToEcoTemperature>(this);
+
+    connect(mCommandSwitchToEcoTemperature.get(),
+            &command::SwitchToEcoTemperature::commandEncoded, this,
             &Controller::commandRequested);
 }
 

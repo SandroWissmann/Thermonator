@@ -13,6 +13,7 @@ class DateTime;
 class Temperature;
 class ComfortAndEcoTemperature;
 class SwitchToComfortTemperature;
+class SwitchToEcoTemperature;
 } // namespace command
 
 namespace answer {
@@ -47,6 +48,11 @@ public:
     // thermostate
     Q_INVOKABLE
     void switchToComfortTemperature();
+
+    // Current temperature is changed to the eco temperature saved in the
+    // thermostate
+    Q_INVOKABLE
+    void switchToEcoTemperature();
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -96,6 +102,8 @@ private:
     void initCommandTemperature();
     void initCommandComfortAndEcoTemperature();
     void initCommandSwitchToComfortTemperature();
+    void initCommandSwitchToEcoTemperature();
+
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
 
@@ -105,7 +113,8 @@ private:
         DateTime,
         Temperature,
         ComfortAndEcoTemperature,
-        SwitchToComfortTemperature
+        SwitchToComfortTemperature,
+        SwitchToEcoTemperature
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -118,6 +127,8 @@ private:
         mCommandComfortAndEcoTemperature;
     std::unique_ptr<command::SwitchToComfortTemperature>
         mCommandSwitchToComfortTemperature;
+    std::unique_ptr<command::SwitchToEcoTemperature>
+        mCommandSwitchToEcoTemperature;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

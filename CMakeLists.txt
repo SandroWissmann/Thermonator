@@ -32,6 +32,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/SimpleCommandBase.cpp
         backend/eq3Thermostat/command/SwitchToComfortTemperature.hpp
         backend/eq3Thermostat/command/SwitchToComfortTemperature.cpp
+        backend/eq3Thermostat/command/SwitchToEcoTemperature.hpp
+        backend/eq3Thermostat/command/SwitchToEcoTemperature.cpp
         backend/eq3Thermostat/command/Temperature.hpp
         backend/eq3Thermostat/command/Temperature.cpp
         backend/eq3Thermostat/Controller.hpp
