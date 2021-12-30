@@ -14,6 +14,8 @@ class Temperature;
 class ComfortAndEcoTemperature;
 class SwitchToComfortTemperature;
 class SwitchToEcoTemperature;
+class ThermostatOn;
+class ThermostatOff;
 } // namespace command
 
 namespace answer {
@@ -27,9 +29,11 @@ public:
     explicit Controller(QObject *parent = nullptr);
     ~Controller();
 
+    // Query serial number of thermostate
     Q_INVOKABLE
     void requestSerialNumber();
 
+    // Set current date and time from system in the thermostate
     Q_INVOKABLE
     void setCurrentDateTime();
 
@@ -53,6 +57,10 @@ public:
     // thermostate
     Q_INVOKABLE
     void switchToEcoTemperature();
+
+    // Turn on the thermostat. Sets also current target temperature to 29.5°C
+    Q_INVOKABLE
+    void thermostatOn();
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -103,9 +111,12 @@ private:
     void initCommandComfortAndEcoTemperature();
     void initCommandSwitchToComfortTemperature();
     void initCommandSwitchToEcoTemperature();
+    void initCommandThermostatOn();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
+
+    double clampTemperature(double temperature);
 
     enum class CommandType {
         Unknown,
@@ -114,7 +125,8 @@ private:
         Temperature,
         ComfortAndEcoTemperature,
         SwitchToComfortTemperature,
-        SwitchToEcoTemperature
+        SwitchToEcoTemperature,
+        ThermostatOn,
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -129,6 +141,7 @@ private:
         mCommandSwitchToComfortTemperature;
     std::unique_ptr<command::SwitchToEcoTemperature>
         mCommandSwitchToEcoTemperature;
+    std::unique_ptr<command::ThermostatOn> mCommandThermostatOn;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

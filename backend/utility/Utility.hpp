@@ -12,11 +12,6 @@ QString toHexWithSpace(const QByteArray &byteArray);
 
 char hexToAscii(char hex);
 
-// Input temperature gets clamped to the range 5.0 - 29.5.
-// Input is rounded to be in 0.5 Steps
-// Output encoded = input * 2
-int encodeTemperature(double temperature);
-
 } // namespace thermonator::utility
 
 #endif

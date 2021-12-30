@@ -21,10 +21,9 @@ void ComfortAndEcoTemperature::encodeCommand(double comfortTemperature,
     command.reserve(bytesCount);
     command.append(QByteArray::fromHex("11"));
 
-    auto comfortTemperatureEncoded =
-        utility::encodeTemperature(comfortTemperature);
+    auto comfortTemperatureEncoded = static_cast<int>(comfortTemperature * 2);
     command.append(comfortTemperatureEncoded);
-    auto ecoTemperatureEncoded = utility::encodeTemperature(ecoTemperature);
+    auto ecoTemperatureEncoded = static_cast<int>(ecoTemperature * 2);
     command.append(ecoTemperatureEncoded);
 
     command.append(QByteArray::fromHex("00000000000000"));

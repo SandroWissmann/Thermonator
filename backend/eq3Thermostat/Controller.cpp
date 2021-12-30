@@ -8,8 +8,11 @@
 #include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
 #include "command/Temperature.hpp"
+#include "command/ThermostatOn.hpp"
 
 #include <QDebug>
+
+#include <algorithm> // for std::clamp
 
 namespace thermonator::eq3thermostat {
 
@@ -21,6 +24,8 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandComfortAndEcoTemperature();
     initCommandSwitchToComfortTemperature();
     initCommandSwitchToEcoTemperature();
+    initCommandThermostatOn();
+
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
 }
@@ -56,6 +61,7 @@ void Controller::setCurrentDateTime()
 void Controller::setTemperature(double temperature)
 {
     qDebug() << Q_FUNC_INFO;
+    temperature = clampTemperature(temperature);
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
@@ -69,6 +75,8 @@ void Controller::setComfortAndEcoTemperature(double comfortTemperature,
                                              double ecoTemperature)
 {
     qDebug() << Q_FUNC_INFO;
+    comfortTemperature = clampTemperature(comfortTemperature);
+    ecoTemperature = clampTemperature(ecoTemperature);
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
@@ -103,6 +111,18 @@ void Controller::switchToEcoTemperature()
     mCommandSwitchToEcoTemperature->encodeCommand();
 }
 
+void Controller::thermostatOn()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::ThermostatOn;
+    mWaitForAnswer = true;
+    mCommandThermostatOn->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -121,6 +141,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::SwitchToComfortTemperature:
         [[fallthrough]];
     case CommandType::SwitchToEcoTemperature:
+        [[fallthrough]];
+    case CommandType::ThermostatOn:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -224,6 +246,14 @@ void Controller::initCommandSwitchToEcoTemperature()
             &Controller::commandRequested);
 }
 
+void Controller::initCommandThermostatOn()
+{
+    mCommandThermostatOn = std::make_unique<command::ThermostatOn>(this);
+
+    connect(mCommandThermostatOn.get(), &command::ThermostatOn::commandEncoded,
+            this, &Controller::commandRequested);
+}
+
 void Controller::initAnswerSerialNumberNotification()
 {
     mAnswerSerialNumberNotification =
@@ -242,6 +272,14 @@ void Controller::initAnswerStatusNotification()
     connect(mAnswerStatusNotification.get(),
             &answer::StatusNotification::answerDecoded, this,
             &Controller::onStatusAnswerDecoded);
+}
+
+double Controller::clampTemperature(double temperature)
+{
+    constexpr auto minTemperature = 5.0;
+    constexpr auto maxTemperature = 29.5;
+    temperature = std::clamp(temperature, minTemperature, maxTemperature);
+    return temperature;
 }
 
 } // namespace thermonator::eq3thermostat

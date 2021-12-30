@@ -19,7 +19,7 @@ void Temperature::encodeCommand(double temperature)
     command.reserve(bytesCount);
     command.append(QByteArray::fromHex("41"));
 
-    auto temperatureEncoded = utility::encodeTemperature(temperature);
+    auto temperatureEncoded = static_cast<int>(temperature * 2);
     command.append(temperatureEncoded);
 
     command.append(QByteArray::fromHex("0000000000000000"));
