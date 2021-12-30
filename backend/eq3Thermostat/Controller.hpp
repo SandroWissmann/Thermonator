@@ -11,6 +11,7 @@ namespace command {
 class SerialNumber;
 class DateTime;
 class Temperature;
+class ComfortAndEcoTemperature;
 } // namespace command
 
 namespace answer {
@@ -34,6 +35,12 @@ public:
     // If value is out of range clamping to the next value is performed
     Q_INVOKABLE
     void setTemperature(double temperature);
+
+    // Temperature has to be in range 5.0 to 29.5. Steps have to be in 0.5
+    // If value is out of range clamping to the next value is performed
+    Q_INVOKABLE
+    void setComfortAndEcoTemperature(double comfortTemperature,
+                                     double ecoTemperature);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -78,7 +85,13 @@ private slots:
         bool unknownEnabled, bool lowBatteryEnabled);
 
 private:
-    enum class CommandType { Unknown, SerialNumber, DateTime, Temperature };
+    enum class CommandType {
+        Unknown,
+        SerialNumber,
+        DateTime,
+        Temperature,
+        ComfortAndEcoTemperature
+    };
 
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
@@ -86,6 +99,8 @@ private:
     std::unique_ptr<command::SerialNumber> mCommandSerialNumber;
     std::unique_ptr<command::DateTime> mCommandDateTime;
     std::unique_ptr<command::Temperature> mCommandTemperature;
+    std::unique_ptr<command::ComfortAndEcoTemperature>
+        mCommandComfortAndEcoTemperature;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

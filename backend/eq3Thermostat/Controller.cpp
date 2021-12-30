@@ -2,6 +2,7 @@
 
 #include "answer/SerialNumberNotification.hpp"
 #include "answer/StatusNotification.hpp"
+#include "command/ComfortAndEcoTemperature.hpp"
 #include "command/DateTime.hpp"
 #include "command/SerialNumber.hpp"
 #include "command/Temperature.hpp"
@@ -27,6 +28,13 @@ Controller::Controller(QObject *parent) : QObject{parent}
     connect(mCommandTemperature.get(), &command::Temperature::commandEncoded,
             this, &Controller::commandRequested);
 
+    mCommandComfortAndEcoTemperature =
+        std::make_unique<command::ComfortAndEcoTemperature>(this);
+
+    connect(mCommandComfortAndEcoTemperature.get(),
+            &command::ComfortAndEcoTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+
     mAnswerSerialNumberNotification =
         std::make_unique<answer::SerialNumberNotification>(this);
 
@@ -50,6 +58,7 @@ void Controller::requestSerialNumber()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
     mLastCommandType = CommandType::SerialNumber;
@@ -61,6 +70,7 @@ void Controller::setCurrentDateTime()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
     mLastCommandType = CommandType::DateTime;
@@ -72,11 +82,26 @@ void Controller::setTemperature(double temperature)
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
     mLastCommandType = CommandType::Temperature;
     mWaitForAnswer = true;
     mCommandTemperature->encodeCommand(temperature);
+}
+
+void Controller::setComfortAndEcoTemperature(double comfortTemperature,
+                                             double ecoTemperature)
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::ComfortAndEcoTemperature;
+    mWaitForAnswer = true;
+    mCommandComfortAndEcoTemperature->encodeCommand(comfortTemperature,
+                                                    ecoTemperature);
 }
 
 void Controller::onAnswerReceived(const QByteArray &answer)
@@ -89,10 +114,10 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         mAnswerSerialNumberNotification->decodeAnswer(answer);
         break;
     case CommandType::DateTime:
-        qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
-        mAnswerStatusNotification->decodeAnswer(answer);
-        break;
+        [[fallthrough]];
     case CommandType::Temperature:
+        [[fallthrough]];
+    case CommandType::ComfortAndEcoTemperature:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;

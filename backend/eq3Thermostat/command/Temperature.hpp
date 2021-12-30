@@ -37,9 +37,6 @@ public:
 
 signals:
     void commandEncoded(const QByteArray &command);
-
-private:
-    int encodeTemperature(double temperature);
 };
 
 } // namespace thermonator::eq3thermostat::command

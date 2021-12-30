@@ -1,5 +1,7 @@
 #include "Utility.hpp"
 
+#include <algorithm>
+
 namespace thermonator::utility {
 
 QString toHexWithSpace(const QByteArray &byteArray)
@@ -21,6 +23,17 @@ QString toHexWithSpace(const QByteArray &byteArray)
 char hexToAscii(char hex)
 {
     return char(hex - 0x30);
+}
+
+int encodeTemperature(double temperature)
+{
+    constexpr auto minTemperature = 5.0;
+    constexpr auto maxTemperature = 29.5;
+
+    temperature = std::clamp(temperature, minTemperature, maxTemperature);
+
+    auto temperatureEncoded = static_cast<int>(temperature * 2);
+    return temperatureEncoded;
 }
 
 } // namespace thermonator::utility
