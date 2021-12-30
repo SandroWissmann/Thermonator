@@ -32,6 +32,10 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ComfortAndEcoTemperature.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
+        backend/eq3Thermostat/command/HardwareButtonsControl.hpp
+        backend/eq3Thermostat/command/HardwareButtonsControl.cpp
+        backend/eq3Thermostat/command/HardwareButtonsLock.hpp
+        backend/eq3Thermostat/command/HardwareButtonsLock.cpp
         backend/eq3Thermostat/command/SerialNumber.hpp
         backend/eq3Thermostat/command/SerialNumber.cpp       
         backend/eq3Thermostat/command/SimpleCommandBase.hpp

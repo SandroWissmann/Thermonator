@@ -18,6 +18,7 @@ class ThermostatOn;
 class ThermostatOff;
 class BoostOn;
 class BoostOff;
+class HardwareButtonsLock;
 } // namespace command
 
 namespace answer {
@@ -77,6 +78,10 @@ public:
     Q_INVOKABLE
     void boostOff();
 
+    // Lock the hardware buttons
+    Q_INVOKABLE
+    void hardwareButtonsLock();
+
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
@@ -130,6 +135,7 @@ private:
     void initCommandThermostatOff();
     void initCommandBoostOn();
     void initCommandBoostOff();
+    void initCommandHardwareButtonsLock();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
@@ -147,7 +153,8 @@ private:
         ThermostatOn,
         ThermostatOff,
         BoostOn,
-        BoostOff
+        BoostOff,
+        HardwareButtonsLock
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -166,6 +173,7 @@ private:
     std::unique_ptr<command::ThermostatOff> mCommandThermostatOff;
     std::unique_ptr<command::BoostOn> mCommandBoostOn;
     std::unique_ptr<command::BoostOff> mCommandBoostOff;
+    std::unique_ptr<command::HardwareButtonsLock> mCommandHardwareButtonsLock;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

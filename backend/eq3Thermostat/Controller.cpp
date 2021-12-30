@@ -6,6 +6,7 @@
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
 #include "command/DateTime.hpp"
+#include "command/HardwareButtonsLock.hpp"
 #include "command/SerialNumber.hpp"
 #include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
@@ -31,6 +32,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandThermostatOff();
     initCommandBoostOn();
     initCommandBoostOff();
+    initCommandHardwareButtonsLock();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -165,6 +167,18 @@ void Controller::boostOff()
     mCommandBoostOff->encodeCommand();
 }
 
+void Controller::hardwareButtonsLock()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::HardwareButtonsLock;
+    mWaitForAnswer = true;
+    mCommandHardwareButtonsLock->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -191,6 +205,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::BoostOn:
         [[fallthrough]];
     case CommandType::BoostOff:
+        [[fallthrough]];
+    case CommandType::HardwareButtonsLock:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -308,6 +324,16 @@ void Controller::initCommandThermostatOff()
 
     connect(mCommandThermostatOff.get(),
             &command::ThermostatOff::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandHardwareButtonsLock()
+{
+    mCommandHardwareButtonsLock =
+        std::make_unique<command::HardwareButtonsLock>(this);
+
+    connect(mCommandHardwareButtonsLock.get(),
+            &command::HardwareButtonsLock::commandEncoded, this,
             &Controller::commandRequested);
 }
 
