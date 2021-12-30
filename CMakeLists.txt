@@ -27,7 +27,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/SerialNumber.hpp
-        backend/eq3Thermostat/command/SerialNumber.cpp
+        backend/eq3Thermostat/command/SerialNumber.cpp       
+        backend/eq3Thermostat/command/SimpleCommandBase.hpp
+        backend/eq3Thermostat/command/SimpleCommandBase.cpp
         backend/eq3Thermostat/command/SwitchToComfortTemperature.hpp
         backend/eq3Thermostat/command/SwitchToComfortTemperature.cpp
         backend/eq3Thermostat/command/Temperature.hpp

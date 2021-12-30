@@ -13,23 +13,16 @@ Byte 0: request command "43"
 
 */
 
-#include <QObject>
+#include "SimpleCommandBase.hpp"
 
 namespace thermonator::eq3thermostat::command {
 
-class SwitchToComfortTemperature : public QObject {
+class SwitchToComfortTemperature : public SimpleCommandBase {
     Q_OBJECT
 public:
     explicit SwitchToComfortTemperature(QObject *parent = nullptr);
 
-    ~SwitchToComfortTemperature() = default;
-
-    // Request encoding the command
-    // triggers signal commandEncoded
-    void encodeCommand();
-
-signals:
-    void commandEncoded(const QByteArray &command);
+    ~SwitchToComfortTemperature() override = default;
 };
 
 } // namespace thermonator::eq3thermostat::command
