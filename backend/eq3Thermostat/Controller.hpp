@@ -17,6 +17,7 @@ class SwitchToEcoTemperature;
 class ThermostatOn;
 class ThermostatOff;
 class BoostOn;
+class BoostOff;
 } // namespace command
 
 namespace answer {
@@ -67,9 +68,14 @@ public:
     Q_INVOKABLE
     void thermostatOff();
 
-    // Turn on the temporary boost function
+    // Turn on the temporary boost function on for 300 seconds.
     Q_INVOKABLE
     void boostOn();
+
+    // Turn off the temporary boost function. Only does something if boost is
+    // on.
+    Q_INVOKABLE
+    void boostOff();
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -123,6 +129,7 @@ private:
     void initCommandThermostatOn();
     void initCommandThermostatOff();
     void initCommandBoostOn();
+    void initCommandBoostOff();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
@@ -139,7 +146,8 @@ private:
         SwitchToEcoTemperature,
         ThermostatOn,
         ThermostatOff,
-        BoostOn
+        BoostOn,
+        BoostOff
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -157,6 +165,7 @@ private:
     std::unique_ptr<command::ThermostatOn> mCommandThermostatOn;
     std::unique_ptr<command::ThermostatOff> mCommandThermostatOff;
     std::unique_ptr<command::BoostOn> mCommandBoostOn;
+    std::unique_ptr<command::BoostOff> mCommandBoostOff;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

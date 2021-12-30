@@ -2,6 +2,7 @@
 
 #include "answer/SerialNumberNotification.hpp"
 #include "answer/StatusNotification.hpp"
+#include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
 #include "command/DateTime.hpp"
@@ -29,6 +30,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandThermostatOn();
     initCommandThermostatOff();
     initCommandBoostOn();
+    initCommandBoostOff();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -151,6 +153,18 @@ void Controller::boostOn()
     mCommandBoostOn->encodeCommand();
 }
 
+void Controller::boostOff()
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::BoostOff;
+    mWaitForAnswer = true;
+    mCommandBoostOff->encodeCommand();
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -175,6 +189,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::ThermostatOff:
         [[fallthrough]];
     case CommandType::BoostOn:
+        [[fallthrough]];
+    case CommandType::BoostOff:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -300,6 +316,14 @@ void Controller::initCommandBoostOn()
     mCommandBoostOn = std::make_unique<command::BoostOn>(this);
 
     connect(mCommandBoostOn.get(), &command::BoostOn::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandBoostOff()
+{
+    mCommandBoostOff = std::make_unique<command::BoostOff>(this);
+
+    connect(mCommandBoostOff.get(), &command::BoostOff::commandEncoded, this,
             &Controller::commandRequested);
 }
 

@@ -251,7 +251,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->thermostatOff();
 
-    mEq3ThermostatController->boostOn();
+    // mEq3ThermostatController->boostOn();
+
+    mEq3ThermostatController->boostOff();
 }
 
 } // namespace thermonator
