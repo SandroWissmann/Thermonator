@@ -124,12 +124,16 @@ void DeviceManager::onIOServiceReady()
             mEq3ThermostatController.get(),
             &eq3thermostat::Controller::onAnswerReceived);
 
+    // Command SerialNumber connections
+
     connect(mEq3ThermostatController.get(),
             &eq3thermostat::Controller::serialNumberReceived,
             mEq3Thermostat.get(),
             &eq3thermostat::Eq3Thermostat::onSetSerialNumber);
 
-    mEq3ThermostatController->requestSerialNumber();
+    // mEq3ThermostatController->requestSerialNumber();
+
+    // Command DateTime connections
 
     connect(mEq3ThermostatController.get(),
             &eq3thermostat::Controller::temperatureOffsetReceived,
@@ -231,7 +235,11 @@ void DeviceManager::onIOServiceReady()
             mEq3Thermostat.get(),
             &eq3thermostat::Eq3Thermostat::onSetLowBatteryEnabled);
 
-    mEq3ThermostatController->setCurrentDateTime();
+    // mEq3ThermostatController->setCurrentDateTime();
+
+    // Command Temperature connections
+
+    mEq3ThermostatController->setTemperature(21.5);
 }
 
 } // namespace thermonator

@@ -10,7 +10,13 @@ namespace thermonator::eq3thermostat {
 namespace command {
 class SerialNumber;
 class DateTime;
+class Temperature;
 } // namespace command
+
+namespace answer {
+class SerialNumberNotification;
+class StatusNotification;
+} // namespace answer
 
 class Controller : public QObject {
     Q_OBJECT
@@ -23,6 +29,11 @@ public:
 
     Q_INVOKABLE
     void setCurrentDateTime();
+
+    // Temperature has to be in range 5.0 to 29.5. Steps have to be in 0.5
+    // If value is out of range clamping to the next value is performed
+    Q_INVOKABLE
+    void setTemperature(double temperature);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -54,11 +65,9 @@ signals:
     void lowBatteryEnabledReceived(bool lowBatteryEnabled);
 
 private slots:
-    void onSerialNumberCommandEncoded(const QByteArray &command);
     void onSerialNumberAnswerDecoded(const QString &serialNumber);
 
-    void onDateTimeCommandEncoded(const QByteArray &command);
-    void onDateTimeAnswerDecoded(
+    void onStatusAnswerDecoded(
         double temperatureOffset, double ecoTemperature,
         double comfortTemperature, int openWindowInterval,
         double openWindowTemperature, int minute, int hour, int day, int month,
@@ -69,12 +78,18 @@ private slots:
         bool unknownEnabled, bool lowBatteryEnabled);
 
 private:
-    enum class CommandType { Unknown, SerialNumber, DateTime };
+    enum class CommandType { Unknown, SerialNumber, DateTime, Temperature };
 
     CommandType mLastCommandType{CommandType::Unknown};
+    bool mWaitForAnswer{false};
 
     std::unique_ptr<command::SerialNumber> mCommandSerialNumber;
     std::unique_ptr<command::DateTime> mCommandDateTime;
+    std::unique_ptr<command::Temperature> mCommandTemperature;
+
+    std::unique_ptr<answer::SerialNumberNotification>
+        mAnswerSerialNumberNotification;
+    std::unique_ptr<answer::StatusNotification> mAnswerStatusNotification;
 };
 
 } // namespace thermonator::eq3thermostat

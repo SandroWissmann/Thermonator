@@ -49,6 +49,8 @@ QBluetoothUuid IOService::iOServiceUuid()
 
 void IOService::onWriteCommand(const QByteArray &command)
 {
+    qDebug() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO << command.toHex();
     if (!ready()) {
         return;
     }
@@ -58,7 +60,7 @@ void IOService::onWriteCommand(const QByteArray &command)
     mLowEnergyServicePtr->writeCharacteristic(characteristic, command);
 
     qDebug() << Q_FUNC_INFO
-             << "write command: " << utility::toHexWithSpace(command.toHex());
+             << "write command: " << utility::toHexWithSpace(command);
 }
 
 QBluetoothUuid IOService::writeCharacteristicUuid()

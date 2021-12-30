@@ -18,10 +18,16 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
+        backend/eq3Thermostat/answer/StatusNotification.hpp
+        backend/eq3Thermostat/answer/StatusNotification.cpp
+        backend/eq3Thermostat/answer/SerialNumberNotification.hpp
+        backend/eq3Thermostat/answer/SerialNumberNotification.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/SerialNumber.hpp
         backend/eq3Thermostat/command/SerialNumber.cpp
+        backend/eq3Thermostat/command/Temperature.hpp
+        backend/eq3Thermostat/command/Temperature.cpp
         backend/eq3Thermostat/Controller.hpp
         backend/eq3Thermostat/Controller.cpp
         backend/eq3Thermostat/Eq3Thermostat.hpp

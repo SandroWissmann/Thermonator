@@ -1,7 +1,10 @@
 #include "Controller.hpp"
 
+#include "answer/SerialNumberNotification.hpp"
+#include "answer/StatusNotification.hpp"
 #include "command/DateTime.hpp"
 #include "command/SerialNumber.hpp"
+#include "command/Temperature.hpp"
 
 #include <QDebug>
 
@@ -12,18 +15,31 @@ Controller::Controller(QObject *parent) : QObject{parent}
     mCommandSerialNumber = std::make_unique<command::SerialNumber>(this);
 
     connect(mCommandSerialNumber.get(), &command::SerialNumber::commandEncoded,
-            this, &Controller::onSerialNumberCommandEncoded);
-
-    connect(mCommandSerialNumber.get(), &command::SerialNumber::answerDecoded,
-            this, &Controller::onSerialNumberAnswerDecoded);
+            this, &Controller::commandRequested);
 
     mCommandDateTime = std::make_unique<command::DateTime>(this);
 
     connect(mCommandDateTime.get(), &command::DateTime::commandEncoded, this,
-            &Controller::onDateTimeCommandEncoded);
+            &Controller::commandRequested);
 
-    connect(mCommandDateTime.get(), &command::DateTime::answerDecoded, this,
-            &Controller::onDateTimeAnswerDecoded);
+    mCommandTemperature = std::make_unique<command::Temperature>(this);
+
+    connect(mCommandTemperature.get(), &command::Temperature::commandEncoded,
+            this, &Controller::commandRequested);
+
+    mAnswerSerialNumberNotification =
+        std::make_unique<answer::SerialNumberNotification>(this);
+
+    connect(mAnswerSerialNumberNotification.get(),
+            &answer::SerialNumberNotification::answerDecoded, this,
+            &Controller::onSerialNumberAnswerDecoded);
+
+    mAnswerStatusNotification =
+        std::make_unique<answer::StatusNotification>(this);
+
+    connect(mAnswerStatusNotification.get(),
+            &answer::StatusNotification::answerDecoded, this,
+            &Controller::onStatusAnswerDecoded);
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -33,37 +49,57 @@ Controller::~Controller() = default;
 void Controller::requestSerialNumber()
 {
     qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        return;
+    }
     mLastCommandType = CommandType::SerialNumber;
+    mWaitForAnswer = true;
     mCommandSerialNumber->encodeCommand();
 }
 
 void Controller::setCurrentDateTime()
 {
     qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        return;
+    }
     mLastCommandType = CommandType::DateTime;
+    mWaitForAnswer = true;
     mCommandDateTime->encodeCommand();
+}
+
+void Controller::setTemperature(double temperature)
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        return;
+    }
+    mLastCommandType = CommandType::Temperature;
+    mWaitForAnswer = true;
+    mCommandTemperature->encodeCommand(temperature);
 }
 
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
+    mWaitForAnswer = false;
     qDebug() << Q_FUNC_INFO;
     switch (mLastCommandType) {
     case CommandType::SerialNumber:
-        mCommandSerialNumber->decodeAnswer(answer);
+        qDebug() << Q_FUNC_INFO << "decode as SerialNumberNotification";
+        mAnswerSerialNumberNotification->decodeAnswer(answer);
         break;
     case CommandType::DateTime:
-        mCommandDateTime->decodeAnswer(answer);
+        qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
+        mAnswerStatusNotification->decodeAnswer(answer);
+        break;
+    case CommandType::Temperature:
+        qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
+        mAnswerStatusNotification->decodeAnswer(answer);
         break;
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "CommandType::Unknown";
         break;
     }
-}
-
-void Controller::onSerialNumberCommandEncoded(const QByteArray &command)
-{
-    qDebug() << Q_FUNC_INFO;
-    emit commandRequested(command);
 }
 
 void Controller::onSerialNumberAnswerDecoded(const QString &serialNumber)
@@ -72,13 +108,7 @@ void Controller::onSerialNumberAnswerDecoded(const QString &serialNumber)
     emit serialNumberReceived(serialNumber);
 }
 
-void Controller::onDateTimeCommandEncoded(const QByteArray &command)
-{
-    qDebug() << Q_FUNC_INFO;
-    emit commandRequested(command);
-}
-
-void Controller::onDateTimeAnswerDecoded(
+void Controller::onStatusAnswerDecoded(
     double temperatureOffset, double ecoTemperature, double comfortTemperature,
     int openWindowInterval, double openWindowTemperature, int minute, int hour,
     int day, int month, int year, double targetTemperature, int valvePosition,
