@@ -22,6 +22,10 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/answer/StatusNotification.cpp
         backend/eq3Thermostat/answer/SerialNumberNotification.hpp
         backend/eq3Thermostat/answer/SerialNumberNotification.cpp
+        backend/eq3Thermostat/command/BoostControl.hpp
+        backend/eq3Thermostat/command/BoostControl.cpp
+        backend/eq3Thermostat/command/BoostOn.hpp
+        backend/eq3Thermostat/command/BoostOn.cpp
         backend/eq3Thermostat/command/ComfortAndEcoTemperature.hpp
         backend/eq3Thermostat/command/ComfortAndEcoTemperature.cpp
         backend/eq3Thermostat/command/DateTime.hpp

@@ -1,5 +1,7 @@
 #include "ThermostatOff.hpp"
 
+#include "Temperature.hpp"
+
 namespace thermonator::eq3thermostat::command {
 
 ThermostatOff::ThermostatOff(QObject *parent) : QObject{parent}
@@ -9,6 +11,10 @@ ThermostatOff::ThermostatOff(QObject *parent) : QObject{parent}
     connect(mTemperature.get(), &Temperature::commandEncoded, this,
             &ThermostatOff::commandEncoded);
 }
+
+// declaration has to be in cpp to make std::unique_ptr member forward
+// declaration work
+ThermostatOff::~ThermostatOff() = default;
 
 void ThermostatOff::encodeCommand()
 {

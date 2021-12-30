@@ -15,18 +15,20 @@ Byte 0: request command "41"
 
 */
 
-#include "Temperature.hpp"
+#include <QObject>
 
 #include <memory>
 
 namespace thermonator::eq3thermostat::command {
+
+class Temperature;
 
 class ThermostatOff : public QObject {
     Q_OBJECT
 public:
     explicit ThermostatOff(QObject *parent = nullptr);
 
-    ~ThermostatOff() = default;
+    ~ThermostatOff();
 
     // Request encoding the command
     // triggers signal commandEncoded
