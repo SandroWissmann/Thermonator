@@ -5,6 +5,7 @@
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
+#include "command/ConfigureOffsetTemperature.hpp"
 #include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
 #include "command/HardwareButtonsLock.hpp"
@@ -37,6 +38,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandHardwareButtonsLock();
     initCommandHardwareButtonsUnlock();
     initCommandConfigureOpenWindowMode();
+    initCommandConfigureOffsetTemperature();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -211,6 +213,19 @@ void Controller::configureOpenWindowMode(double openWindowTemperature,
                                                    openWindowInterval);
 }
 
+void Controller::configureOffsetTemperature(double offsetTemperature)
+{
+    qDebug() << Q_FUNC_INFO;
+    offsetTemperature = clampOffsetTemperature(offsetTemperature);
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::ConfigureOffsetTemperature;
+    mWaitForAnswer = true;
+    mCommandConfigureOffsetTemperature->encodeCommand(offsetTemperature);
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -243,6 +258,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::HardwareButtonsUnlock:
         [[fallthrough]];
     case CommandType::ConfigureOpenWindowMode:
+        [[fallthrough]];
+    case CommandType::ConfigureOffsetTemperature:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -429,12 +446,31 @@ void Controller::initAnswerStatusNotification()
             &Controller::onStatusAnswerDecoded);
 }
 
+void Controller::initCommandConfigureOffsetTemperature()
+{
+    mCommandConfigureOffsetTemperature =
+        std::make_unique<command::ConfigureOffsetTemperature>(this);
+
+    connect(mCommandConfigureOffsetTemperature.get(),
+            &command::ConfigureOffsetTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
 double Controller::clampTemperature(double temperature)
 {
     constexpr auto minTemperature = 5.0;
     constexpr auto maxTemperature = 29.5;
     temperature = std::clamp(temperature, minTemperature, maxTemperature);
     return temperature;
+}
+
+double Controller::clampOffsetTemperature(double offsetTemperature)
+{
+    constexpr auto minOffsetTemperature = -3.5;
+    constexpr auto maxOffsetTemperature = 3.5;
+    offsetTemperature = std::clamp(offsetTemperature, minOffsetTemperature,
+                                   maxOffsetTemperature);
+    return offsetTemperature;
 }
 
 int Controller::clampInterval(int interval)

@@ -21,6 +21,7 @@ class BoostOff;
 class HardwareButtonsLock;
 class HardwareButtonsUnlock;
 class ConfigureOpenWindowMode;
+class ConfigureOffsetTemperature;
 } // namespace command
 
 namespace answer {
@@ -42,13 +43,13 @@ public:
     Q_INVOKABLE
     void setCurrentDateTime();
 
-    // Temperature has to be in range 5.0 to 29.5. Steps have to be in 0.5
-    // If value is out of range clamping to the next value is performed
+    // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
+    // °C. If value is out of range clamping to the next value is performed
     Q_INVOKABLE
     void setTemperature(double temperature);
 
-    // Temperature has to be in range 5.0 to 29.5. Steps have to be in 0.5
-    // If value is out of range clamping to the next value is performed
+    // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
+    // °C. If value is out of range clamping to the next value is performed
     Q_INVOKABLE
     void setComfortAndEcoTemperature(double comfortTemperature,
                                      double ecoTemperature);
@@ -98,6 +99,11 @@ public:
     Q_INVOKABLE
     void configureOpenWindowMode(double openWindowTemperature,
                                  int openWindowInterval);
+
+    // Temperature has to be in range -3.5 °C to 3.5 °C. Steps have to be in 0.5
+    // °C If value is out of range clamping to the next value is performed
+    Q_INVOKABLE
+    void configureOffsetTemperature(double offsetTemperature);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -155,11 +161,13 @@ private:
     void initCommandHardwareButtonsLock();
     void initCommandHardwareButtonsUnlock();
     void initCommandConfigureOpenWindowMode();
+    void initCommandConfigureOffsetTemperature();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
 
     double clampTemperature(double temperature);
+    double clampOffsetTemperature(double offsetTemperature);
     int clampInterval(int interval);
 
     enum class CommandType {
@@ -176,7 +184,8 @@ private:
         BoostOff,
         HardwareButtonsLock,
         HardwareButtonsUnlock,
-        ConfigureOpenWindowMode
+        ConfigureOpenWindowMode,
+        ConfigureOffsetTemperature
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -200,6 +209,8 @@ private:
         mCommandHardwareButtonsUnlock;
     std::unique_ptr<command::ConfigureOpenWindowMode>
         mCommandConfigureOpenWindowMode;
+    std::unique_ptr<command::ConfigureOffsetTemperature>
+        mCommandConfigureOffsetTemperature;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;

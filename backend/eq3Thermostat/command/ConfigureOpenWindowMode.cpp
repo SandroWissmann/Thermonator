@@ -14,6 +14,8 @@ ConfigureOpenWindowMode::ConfigureOpenWindowMode(QObject *parent)
 void ConfigureOpenWindowMode::encodeCommand(double openWindowTemperature,
                                             int openWindowIntervall)
 {
+    Q_ASSERT(openWindowTemperature >= 5.0 && openWindowTemperature <= 29.5);
+    Q_ASSERT(openWindowIntervall >= 0 && openWindowIntervall <= 60);
     qDebug() << Q_FUNC_INFO;
 
     QByteArray command;

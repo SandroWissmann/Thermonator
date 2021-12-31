@@ -29,7 +29,11 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/BoostOn.hpp
         backend/eq3Thermostat/command/BoostOn.cpp
         backend/eq3Thermostat/command/ComfortAndEcoTemperature.hpp
-        backend/eq3Thermostat/command/ComfortAndEcoTemperature.cpp
+        backend/eq3Thermostat/command/ComfortAndEcoTemperature.cpp        
+        backend/eq3Thermostat/command/ConfigureOffsetTemperature.hpp
+        backend/eq3Thermostat/command/ConfigureOffsetTemperature.cpp
+        backend/eq3Thermostat/command/ConfigureOpenWindowMode.hpp
+        backend/eq3Thermostat/command/ConfigureOpenWindowMode.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/HardwareButtonsControl.hpp
@@ -38,8 +42,6 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/HardwareButtonsLock.cpp
         backend/eq3Thermostat/command/HardwareButtonsUnlock.hpp
         backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp
-        backend/eq3Thermostat/command/ConfigureOpenWindowMode.hpp
-        backend/eq3Thermostat/command/ConfigureOpenWindowMode.cpp
         backend/eq3Thermostat/command/SerialNumber.hpp
         backend/eq3Thermostat/command/SerialNumber.cpp       
         backend/eq3Thermostat/command/SimpleCommandBase.hpp

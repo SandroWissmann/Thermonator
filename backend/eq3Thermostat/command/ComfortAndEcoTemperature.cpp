@@ -14,6 +14,8 @@ ComfortAndEcoTemperature::ComfortAndEcoTemperature(QObject *parent)
 void ComfortAndEcoTemperature::encodeCommand(double comfortTemperature,
                                              double ecoTemperature)
 {
+    Q_ASSERT(comfortTemperature >= 5.0 && comfortTemperature <= 29.5);
+    Q_ASSERT(ecoTemperature >= 5.0 && ecoTemperature <= 29.5);
     qDebug() << Q_FUNC_INFO;
 
     QByteArray command;

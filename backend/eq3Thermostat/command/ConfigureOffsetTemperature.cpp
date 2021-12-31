@@ -1,4 +1,4 @@
-#include "Temperature.hpp"
+#include "ConfigureOffsetTemperature.hpp"
 
 #include "../../utility/Utility.hpp"
 
@@ -6,22 +6,23 @@
 
 namespace thermonator::eq3thermostat::command {
 
-Temperature::Temperature(QObject *parent) : QObject{parent}
+ConfigureOffsetTemperature::ConfigureOffsetTemperature(QObject *parent)
+    : QObject{parent}
 {
 }
 
-void Temperature::encodeCommand(double temperature)
+void ConfigureOffsetTemperature::encodeCommand(double offsetTemperature)
 {
-    Q_ASSERT(temperature >= 4.5 && temperature <= 30.0);
+    Q_ASSERT(offsetTemperature >= -3.5 && offsetTemperature <= 3.5);
     qDebug() << Q_FUNC_INFO;
 
     QByteArray command;
     constexpr auto bytesCount = 15;
     command.reserve(bytesCount);
-    command.append(QByteArray::fromHex("41"));
+    command.append(QByteArray::fromHex("13"));
 
-    auto temperatureEncoded = static_cast<int>(temperature * 2);
-    command.append(temperatureEncoded);
+    auto offsetTemperatureEncoded = static_cast<int>(offsetTemperature * 2) + 7;
+    command.append(offsetTemperatureEncoded);
 
     command.append(QByteArray::fromHex("0000000000000000"));
 
