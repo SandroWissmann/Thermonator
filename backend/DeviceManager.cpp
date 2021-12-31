@@ -257,7 +257,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->hardwareButtonsLock();
 
-    mEq3ThermostatController->hardwareButtonsUnlock();
+    // mEq3ThermostatController->hardwareButtonsUnlock();
+
+    mEq3ThermostatController->configureOpenWindowMode(14.5, 38);
 }
 
 } // namespace thermonator

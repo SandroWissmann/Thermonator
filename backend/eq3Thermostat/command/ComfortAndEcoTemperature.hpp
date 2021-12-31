@@ -16,8 +16,8 @@ Byte 0: request command "11"
 For this example the bytes are decoded to this:
 
 Byte 3 to 14: N/A
-Byte 2: 0x23 -> 41 -> 17.5 °C
-Byte 1: 0x2b -> 41 -> 21.5 °C
+Byte 2: 0x23 -> 35/2.0 -> 17.5 °C
+Byte 1: 0x2b -> 43/2.0 -> 21.5 °C
 Byte 0: N/A
 
 */

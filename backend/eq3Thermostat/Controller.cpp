@@ -5,6 +5,7 @@
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
+#include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
 #include "command/HardwareButtonsLock.hpp"
 #include "command/HardwareButtonsUnlock.hpp"
@@ -35,6 +36,7 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandBoostOff();
     initCommandHardwareButtonsLock();
     initCommandHardwareButtonsUnlock();
+    initCommandConfigureOpenWindowMode();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
@@ -193,6 +195,22 @@ void Controller::hardwareButtonsUnlock()
     mCommandHardwareButtonsUnlock->encodeCommand();
 }
 
+void Controller::configureOpenWindowMode(double openWindowTemperature,
+                                         int openWindowInterval)
+{
+    qDebug() << Q_FUNC_INFO;
+    openWindowTemperature = clampTemperature(openWindowTemperature);
+    openWindowInterval = clampInterval(openWindowInterval);
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::ComfortAndEcoTemperature;
+    mWaitForAnswer = true;
+    mCommandConfigureOpenWindowMode->encodeCommand(openWindowTemperature,
+                                                   openWindowInterval);
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -223,6 +241,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::HardwareButtonsLock:
         [[fallthrough]];
     case CommandType::HardwareButtonsUnlock:
+        [[fallthrough]];
+    case CommandType::ConfigureOpenWindowMode:
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
@@ -379,6 +399,16 @@ void Controller::initCommandBoostOff()
             &Controller::commandRequested);
 }
 
+void Controller::initCommandConfigureOpenWindowMode()
+{
+    mCommandConfigureOpenWindowMode =
+        std::make_unique<command::ConfigureOpenWindowMode>(this);
+
+    connect(mCommandConfigureOpenWindowMode.get(),
+            &command::ConfigureOpenWindowMode::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
 void Controller::initAnswerSerialNumberNotification()
 {
     mAnswerSerialNumberNotification =
@@ -405,6 +435,14 @@ double Controller::clampTemperature(double temperature)
     constexpr auto maxTemperature = 29.5;
     temperature = std::clamp(temperature, minTemperature, maxTemperature);
     return temperature;
+}
+
+int Controller::clampInterval(int interval)
+{
+    constexpr auto minInterval = 0;
+    constexpr auto maxInterval = 60;
+    interval = std::clamp(interval, minInterval, maxInterval);
+    return interval;
 }
 
 } // namespace thermonator::eq3thermostat

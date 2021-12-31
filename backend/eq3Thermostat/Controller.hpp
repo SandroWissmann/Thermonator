@@ -20,6 +20,7 @@ class BoostOn;
 class BoostOff;
 class HardwareButtonsLock;
 class HardwareButtonsUnlock;
+class ConfigureOpenWindowMode;
 } // namespace command
 
 namespace answer {
@@ -87,6 +88,17 @@ public:
     Q_INVOKABLE
     void hardwareButtonsUnlock();
 
+    // Set the values for open Window mode.
+    // Temperature has to be in range 5.0 °C to 29.5 °C.
+    // Steps have to be in 0.5 °C.
+    // Intervall has to be in range 0 to 60 min.
+    // Steps have to be in 5 min.
+    // If value is out of range clamping to the next value is performed
+    // If value is not exact in step clamping is performed aswell.
+    Q_INVOKABLE
+    void configureOpenWindowMode(double openWindowTemperature,
+                                 int openWindowInterval);
+
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
@@ -142,11 +154,13 @@ private:
     void initCommandBoostOff();
     void initCommandHardwareButtonsLock();
     void initCommandHardwareButtonsUnlock();
+    void initCommandConfigureOpenWindowMode();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
 
     double clampTemperature(double temperature);
+    int clampInterval(int interval);
 
     enum class CommandType {
         Unknown,
@@ -161,7 +175,8 @@ private:
         BoostOn,
         BoostOff,
         HardwareButtonsLock,
-        HardwareButtonsUnlock
+        HardwareButtonsUnlock,
+        ConfigureOpenWindowMode
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -183,6 +198,8 @@ private:
     std::unique_ptr<command::HardwareButtonsLock> mCommandHardwareButtonsLock;
     std::unique_ptr<command::HardwareButtonsUnlock>
         mCommandHardwareButtonsUnlock;
+    std::unique_ptr<command::ConfigureOpenWindowMode>
+        mCommandConfigureOpenWindowMode;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;
