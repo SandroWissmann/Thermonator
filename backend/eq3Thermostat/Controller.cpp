@@ -1,5 +1,6 @@
 #include "Controller.hpp"
 
+#include "answer/DayTimerNotification.hpp"
 #include "answer/SerialNumberNotification.hpp"
 #include "answer/StatusNotification.hpp"
 #include "command/BoostOff.hpp"
@@ -8,6 +9,7 @@
 #include "command/ConfigureOffsetTemperature.hpp"
 #include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
+#include "command/DayTimer.hpp"
 #include "command/HardwareButtonsLock.hpp"
 #include "command/HardwareButtonsUnlock.hpp"
 #include "command/SerialNumber.hpp"
@@ -39,9 +41,11 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandHardwareButtonsUnlock();
     initCommandConfigureOpenWindowMode();
     initCommandConfigureOffsetTemperature();
+    initCommandDayTimer();
 
     initAnswerSerialNumberNotification();
     initAnswerStatusNotification();
+    initAnswerDayTimerNotification();
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -226,6 +230,18 @@ void Controller::configureOffsetTemperature(double offsetTemperature)
     mCommandConfigureOffsetTemperature->encodeCommand(offsetTemperature);
 }
 
+void Controller::requestDayTimer(types::DayOfWeek dayOfWeek)
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::DayTimer;
+    mWaitForAnswer = true;
+    mCommandDayTimer->encodeCommand(dayOfWeek);
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -263,8 +279,12 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
         mAnswerStatusNotification->decodeAnswer(answer);
         break;
+    case CommandType::DayTimer:
+        qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
+        mAnswerDayTimerNotification->decodeAnswer(answer);
+        break;
     case CommandType::Unknown:
-        qDebug() << Q_FUNC_INFO << "Unknown command cannot decode";
+        qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
 }
@@ -307,6 +327,18 @@ void Controller::onStatusAnswerDecoded(
     emit hardwareButtonsLockedReceived(hardwareButtonsLocked);
     emit unknownEnabledReceived(unknownEnabled);
     emit lowBatteryEnabledReceived(lowBatteryEnabled);
+}
+
+void Controller::onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
+                                               const types::DayTimer &dayTimer)
+{
+    qDebug() << Q_FUNC_INFO;
+    emit dayTimerReceived(dayOfWeek, dayTimer);
+}
+
+void Controller::onDayTimerNotificationNotDecoded()
+{
+    qDebug() << Q_FUNC_INFO;
 }
 
 void Controller::initCommandSerialNumber()
@@ -426,6 +458,24 @@ void Controller::initCommandConfigureOpenWindowMode()
             &Controller::commandRequested);
 }
 
+void Controller::initCommandConfigureOffsetTemperature()
+{
+    mCommandConfigureOffsetTemperature =
+        std::make_unique<command::ConfigureOffsetTemperature>(this);
+
+    connect(mCommandConfigureOffsetTemperature.get(),
+            &command::ConfigureOffsetTemperature::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
+void Controller::initCommandDayTimer()
+{
+    mCommandDayTimer = std::make_unique<command::DayTimer>(this);
+
+    connect(mCommandDayTimer.get(), &command::DayTimer::commandEncoded, this,
+            &Controller::commandRequested);
+}
+
 void Controller::initAnswerSerialNumberNotification()
 {
     mAnswerSerialNumberNotification =
@@ -446,14 +496,18 @@ void Controller::initAnswerStatusNotification()
             &Controller::onStatusAnswerDecoded);
 }
 
-void Controller::initCommandConfigureOffsetTemperature()
+void Controller::initAnswerDayTimerNotification()
 {
-    mCommandConfigureOffsetTemperature =
-        std::make_unique<command::ConfigureOffsetTemperature>(this);
+    mAnswerDayTimerNotification =
+        std::make_unique<answer::DayTimerNotification>(this);
 
-    connect(mCommandConfigureOffsetTemperature.get(),
-            &command::ConfigureOffsetTemperature::commandEncoded, this,
-            &Controller::commandRequested);
+    connect(mAnswerDayTimerNotification.get(),
+            &answer::DayTimerNotification::answerDecoded, this,
+            &Controller::onDayTimerNotificationDecoded);
+
+    connect(mAnswerDayTimerNotification.get(),
+            &answer::DayTimerNotification::answerNotDecodedable, this,
+            &Controller::onDayTimerNotificationNotDecoded);
 }
 
 double Controller::clampTemperature(double temperature)

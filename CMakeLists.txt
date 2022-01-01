@@ -18,6 +18,8 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
+        backend/eq3Thermostat/answer/DayTimerNotification.hpp
+        backend/eq3Thermostat/answer/DayTimerNotification.cpp
         backend/eq3Thermostat/answer/StatusNotification.hpp
         backend/eq3Thermostat/answer/StatusNotification.cpp
         backend/eq3Thermostat/answer/SerialNumberNotification.hpp
@@ -36,6 +38,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ConfigureOpenWindowMode.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
+        backend/eq3Thermostat/command/DayTimer.hpp
+        backend/eq3Thermostat/command/DayTimer.cpp
         backend/eq3Thermostat/command/HardwareButtonsControl.hpp
         backend/eq3Thermostat/command/HardwareButtonsControl.cpp
         backend/eq3Thermostat/command/HardwareButtonsLock.hpp
@@ -56,14 +60,24 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ThermostatOff.cpp
         backend/eq3Thermostat/command/ThermostatOn.hpp
         backend/eq3Thermostat/command/ThermostatOn.cpp
+        backend/eq3Thermostat/types/DayOfWeek.hpp
+        backend/eq3Thermostat/types/DayTimer.hpp
+        backend/eq3Thermostat/types/DayTimer.cpp
+        backend/eq3Thermostat/types/DayTimerEntry.hpp
+        backend/eq3Thermostat/types/DayTimerEntry.cpp       
+        backend/eq3Thermostat/types/Time.hpp
+        backend/eq3Thermostat/types/Time.cpp
+        backend/eq3Thermostat/types/WeekTimer.hpp
+        backend/eq3Thermostat/types/WeekTimer.cpp
         backend/eq3Thermostat/Controller.hpp
         backend/eq3Thermostat/Controller.cpp
         backend/eq3Thermostat/Eq3Thermostat.hpp
         backend/eq3Thermostat/Eq3Thermostat.cpp
         backend/eq3Thermostat/IOService.hpp
         backend/eq3Thermostat/IOService.cpp
+        backend/utility/EnumToString.hpp
         backend/utility/Utility.hpp
-        backend/utility/Utility.cpp
+        backend/utility/Utility.cpp     
         backend/ConnectionHandler.hpp
         backend/ConnectionHandler.cpp
         backend/DeviceManager.hpp

@@ -1,6 +1,8 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 #define THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 
+#include "types/WeekTimer.hpp"
+
 #include <QObject>
 #include <QString>
 
@@ -50,6 +52,11 @@ class Eq3Thermostat : public QObject {
     Q_PROPERTY(bool lowBatteryEnabled READ lowBatteryEnabled NOTIFY
                    lowBatteryEnabledChanged);
 
+    // TODO: Week Timer should be presented exposed with WeekTimerModel to be
+    // added later. Use QAbstractItemModel
+    Q_PROPERTY(
+        types::WeekTimer weekTimer READ weekTimer NOTIFY weekTimerChanged);
+
 public:
     explicit Eq3Thermostat(QObject *parent = nullptr);
 
@@ -79,6 +86,8 @@ public:
     bool unknownEnabled() const;
     bool lowBatteryEnabled() const;
 
+    types::WeekTimer weekTimer() const;
+
 public slots:
     void onSetSerialNumber(const QString &serialNumber);
 
@@ -103,6 +112,9 @@ public slots:
     void onSetHardwareButtonsLocked(bool hardwareButtonsLocked);
     void onSetUnknownEnabled(bool unknownEnabled);
     void onSetLowBatteryEnabled(bool lowBatteryEnabled);
+
+    void onSetDayTimer(types::DayOfWeek dayOfWeek,
+                       const types::DayTimer &dayTimer);
 
 signals:
     void serialNumberChanged();
@@ -129,6 +141,8 @@ signals:
     void unknownEnabledChanged();
     void lowBatteryEnabledChanged();
 
+    void weekTimerChanged();
+
 private:
     QString mSerialNumber;
 
@@ -153,6 +167,8 @@ private:
     bool mHardwareButtonsLocked{false};
     bool mUnknownEnabled{false};
     bool mLowBatteryEnabled{false};
+
+    types::WeekTimer mWeekTimer;
 };
 
 } // namespace thermonator::eq3thermostat

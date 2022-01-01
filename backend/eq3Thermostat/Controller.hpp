@@ -1,11 +1,19 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_CONTROLLER_HPP
 #define THERMONATOR_EQ3THERMOSTAT_CONTROLLER_HPP
 
+#include "types/DayOfWeek.hpp"
+
 #include <QObject>
 
 #include <memory>
 
 namespace thermonator::eq3thermostat {
+
+namespace answer {
+class SerialNumberNotification;
+class StatusNotification;
+class DayTimerNotification;
+} // namespace answer
 
 namespace command {
 class SerialNumber;
@@ -22,12 +30,12 @@ class HardwareButtonsLock;
 class HardwareButtonsUnlock;
 class ConfigureOpenWindowMode;
 class ConfigureOffsetTemperature;
+class DayTimer;
 } // namespace command
 
-namespace answer {
-class SerialNumberNotification;
-class StatusNotification;
-} // namespace answer
+namespace types {
+class DayTimer;
+}
 
 class Controller : public QObject {
     Q_OBJECT
@@ -105,6 +113,9 @@ public:
     Q_INVOKABLE
     void configureOffsetTemperature(double offsetTemperature);
 
+    Q_INVOKABLE
+    void requestDayTimer(types::DayOfWeek dayOfWeek);
+
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
@@ -134,6 +145,9 @@ signals:
     void unknownEnabledReceived(bool unknownEnabled);
     void lowBatteryEnabledReceived(bool lowBatteryEnabled);
 
+    void dayTimerReceived(types::DayOfWeek dayOfWeek,
+                          const types::DayTimer &dayTimer);
+
 private slots:
     void onSerialNumberAnswerDecoded(const QString &serialNumber);
 
@@ -146,6 +160,11 @@ private slots:
         bool boostEnabled, bool daylightSummerTimeEnabled,
         bool openWindowModeEnabled, bool hardwareButtonsLocked,
         bool unknownEnabled, bool lowBatteryEnabled);
+
+    void onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
+                                       const types::DayTimer &dayTimer);
+
+    void onDayTimerNotificationNotDecoded();
 
 private:
     void initCommandSerialNumber();
@@ -162,9 +181,11 @@ private:
     void initCommandHardwareButtonsUnlock();
     void initCommandConfigureOpenWindowMode();
     void initCommandConfigureOffsetTemperature();
+    void initCommandDayTimer();
 
     void initAnswerSerialNumberNotification();
     void initAnswerStatusNotification();
+    void initAnswerDayTimerNotification();
 
     double clampTemperature(double temperature);
     double clampOffsetTemperature(double offsetTemperature);
@@ -185,7 +206,8 @@ private:
         HardwareButtonsLock,
         HardwareButtonsUnlock,
         ConfigureOpenWindowMode,
-        ConfigureOffsetTemperature
+        ConfigureOffsetTemperature,
+        DayTimer
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
@@ -211,10 +233,12 @@ private:
         mCommandConfigureOpenWindowMode;
     std::unique_ptr<command::ConfigureOffsetTemperature>
         mCommandConfigureOffsetTemperature;
+    std::unique_ptr<command::DayTimer> mCommandDayTimer;
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;
     std::unique_ptr<answer::StatusNotification> mAnswerStatusNotification;
+    std::unique_ptr<answer::DayTimerNotification> mAnswerDayTimerNotification;
 };
 
 } // namespace thermonator::eq3thermostat

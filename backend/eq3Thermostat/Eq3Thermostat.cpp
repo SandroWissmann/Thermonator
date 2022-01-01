@@ -1,5 +1,7 @@
 #include "Eq3Thermostat.hpp"
 
+#include "../utility/EnumToString.hpp"
+
 #include <QDebug>
 
 namespace thermonator::eq3thermostat {
@@ -116,6 +118,11 @@ bool Eq3Thermostat::unknownEnabled() const
 bool Eq3Thermostat::lowBatteryEnabled() const
 {
     return mLowBatteryEnabled;
+}
+
+types::WeekTimer Eq3Thermostat::weekTimer() const
+{
+    return mWeekTimer;
 }
 
 void Eq3Thermostat::onSetSerialNumber(const QString &serialNumber)
@@ -341,6 +348,19 @@ void Eq3Thermostat::onSetLowBatteryEnabled(bool lowBatteryEnabled)
     }
     mLowBatteryEnabled = lowBatteryEnabled;
     emit lowBatteryEnabledChanged();
+}
+
+void Eq3Thermostat::onSetDayTimer(types::DayOfWeek dayOfWeek,
+                                  const types::DayTimer &dayTimer)
+{
+    qDebug() << Q_FUNC_INFO << "dayOfWeek:" << utility::enumToString(dayOfWeek);
+    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimer;
+
+    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimer) {
+        return;
+    }
+    mWeekTimer.setDayTimer(dayOfWeek, dayTimer);
+    emit weekTimerChanged();
 }
 
 } // namespace thermonator::eq3thermostat
