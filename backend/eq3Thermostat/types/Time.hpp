@@ -10,6 +10,8 @@ public:
     Time() = default;
     Time(int hour, int minute);
 
+    static Time fromEncodedByte(unsigned char byte);
+
     int hour() const;
     int minute() const;
 

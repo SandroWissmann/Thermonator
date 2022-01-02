@@ -9,6 +9,14 @@ Time::Time(int hour, int minute) : mHour{hour}, mMinute{minute}
 {
 }
 
+Time Time::fromEncodedByte(unsigned char byte)
+{
+    auto hour = static_cast<int>(byte) / 2;
+    auto minute = (static_cast<int>(byte) % 2) * 30;
+    Time time{hour, minute};
+    return time;
+}
+
 int Time::hour() const
 {
     return mHour;
@@ -35,7 +43,12 @@ QDebug operator<<(QDebug debug, const Time &time)
 {
     QDebugStateSaver saver(debug);
 
-    debug.nospace() << '(' << time.hour() << '/' << time.minute() << ')';
+    auto formatedHour =
+        QStringLiteral("%1").arg(time.hour(), 2, 10, QLatin1Char('0'));
+    auto formatedMinute =
+        QStringLiteral("%1").arg(time.minute(), 2, 10, QLatin1Char('0'));
+
+    debug.nospace() << '(' << formatedHour << ':' << formatedMinute << ')';
 
     return debug;
 }

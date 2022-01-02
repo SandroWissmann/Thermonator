@@ -25,4 +25,15 @@ char hexToAscii(char hex)
     return char(hex - 0x30);
 }
 
+std::vector<unsigned char> toUChars(const QByteArray &byteArray)
+{
+    std::vector<unsigned char> charArray;
+    charArray.reserve(charArray.size());
+
+    for (const auto &byte : byteArray) {
+        charArray.emplace_back(static_cast<unsigned char>(byte));
+    }
+    return charArray;
+}
+
 } // namespace thermonator::utility

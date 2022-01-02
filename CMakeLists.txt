@@ -20,8 +20,6 @@ set(PROJECT_SOURCES
         main.cpp
         backend/eq3Thermostat/answer/DayTimerNotification.hpp
         backend/eq3Thermostat/answer/DayTimerNotification.cpp
-        backend/eq3Thermostat/answer/StatusNotification.hpp
-        backend/eq3Thermostat/answer/StatusNotification.cpp
         backend/eq3Thermostat/answer/SerialNumberNotification.hpp
         backend/eq3Thermostat/answer/SerialNumberNotification.cpp
         backend/eq3Thermostat/command/BoostControl.hpp
@@ -60,13 +58,31 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ThermostatOff.cpp
         backend/eq3Thermostat/command/ThermostatOn.hpp
         backend/eq3Thermostat/command/ThermostatOn.cpp
+        backend/eq3Thermostat/types/Date.hpp
+        backend/eq3Thermostat/types/Date.cpp
+        backend/eq3Thermostat/types/DateTime.hpp
+        backend/eq3Thermostat/types/DateTime.cpp
         backend/eq3Thermostat/types/DayOfWeek.hpp
         backend/eq3Thermostat/types/DayTimer.hpp
         backend/eq3Thermostat/types/DayTimer.cpp
         backend/eq3Thermostat/types/DayTimerEntry.hpp
-        backend/eq3Thermostat/types/DayTimerEntry.cpp       
+        backend/eq3Thermostat/types/DayTimerEntry.cpp
+        backend/eq3Thermostat/types/OpenWindowInterval.hpp
+        backend/eq3Thermostat/types/OpenWindowInterval.cpp
+        backend/eq3Thermostat/types/StatusFlags.hpp
+        backend/eq3Thermostat/types/StatusFlags.cpp
+        backend/eq3Thermostat/types/StatusNotificationData.hpp
+        backend/eq3Thermostat/types/StatusNotificationData.cpp        
+        backend/eq3Thermostat/types/Temperature.hpp
+        backend/eq3Thermostat/types/Temperature.cpp
+        backend/eq3Thermostat/types/TemperatureOffset.hpp
+        backend/eq3Thermostat/types/TemperatureOffset.cpp
         backend/eq3Thermostat/types/Time.hpp
         backend/eq3Thermostat/types/Time.cpp
+        backend/eq3Thermostat/types/UnknownStatusByte.hpp
+        backend/eq3Thermostat/types/UnknownStatusByte.cpp
+        backend/eq3Thermostat/types/ValvePosition.hpp
+        backend/eq3Thermostat/types/ValvePosition.cpp
         backend/eq3Thermostat/types/WeekTimer.hpp
         backend/eq3Thermostat/types/WeekTimer.cpp
         backend/eq3Thermostat/Controller.hpp

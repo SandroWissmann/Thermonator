@@ -12,6 +12,8 @@ QString toHexWithSpace(const QByteArray &byteArray);
 
 char hexToAscii(char hex);
 
+std::vector<unsigned char> toUChars(const QByteArray &byteArray);
+
 } // namespace thermonator::utility
 
 #endif

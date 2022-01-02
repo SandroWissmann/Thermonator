@@ -2,7 +2,6 @@
 
 #include "answer/DayTimerNotification.hpp"
 #include "answer/SerialNumberNotification.hpp"
-#include "answer/StatusNotification.hpp"
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
@@ -18,6 +17,7 @@
 #include "command/Temperature.hpp"
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
+#include "types/StatusNotificationData.hpp"
 
 #include <QDebug>
 
@@ -44,7 +44,6 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandDayTimer();
 
     initAnswerSerialNumberNotification();
-    initAnswerStatusNotification();
     initAnswerDayTimerNotification();
 }
 
@@ -275,10 +274,18 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::ConfigureOpenWindowMode:
         [[fallthrough]];
-    case CommandType::ConfigureOffsetTemperature:
-        qDebug() << Q_FUNC_INFO << "decode as StatusNotification";
-        mAnswerStatusNotification->decodeAnswer(answer);
+    case CommandType::ConfigureOffsetTemperature: {
+        qDebug() << Q_FUNC_INFO << "decode as StatusNotificationData";
+        auto statusNotificationData =
+            types::StatusNotificationData::fromEncodedData(answer);
+        if (!statusNotificationData.isValid()) {
+            qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
+        }
+        else {
+            emit statusNotificationDataReceived(statusNotificationData);
+        }
         break;
+    }
     case CommandType::DayTimer:
         qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
         mAnswerDayTimerNotification->decodeAnswer(answer);
@@ -293,40 +300,6 @@ void Controller::onSerialNumberAnswerDecoded(const QString &serialNumber)
 {
     qDebug() << Q_FUNC_INFO;
     emit serialNumberReceived(serialNumber);
-}
-
-void Controller::onStatusAnswerDecoded(
-    double temperatureOffset, double ecoTemperature, double comfortTemperature,
-    int openWindowInterval, double openWindowTemperature, int minute, int hour,
-    int day, int month, int year, double targetTemperature, int valvePosition,
-    bool autoModeEnabled, bool manualModeEnabled, bool vacationModeEnabled,
-    bool boostEnabled, bool daylightSummerTimeEnabled,
-    bool openWindowModeEnabled, bool hardwareButtonsLocked, bool unknownEnabled,
-    bool lowBatteryEnabled)
-{
-    qDebug() << Q_FUNC_INFO;
-
-    emit temperatureOffsetReceived(temperatureOffset);
-    emit ecoTemperatureReceived(ecoTemperature);
-    emit comfortTemperatureReceived(comfortTemperature);
-    emit openWindowIntervalReceived(openWindowInterval);
-    emit openWindowTemperatureReceived(openWindowTemperature);
-    emit minuteReceived(minute);
-    emit hourReceived(hour);
-    emit dayReceived(day);
-    emit monthReceived(month);
-    emit yearReceived(year);
-    emit targetTemperatureReceived(targetTemperature);
-    emit valvePositionReceived(valvePosition);
-    emit autoModeEnabledReceived(autoModeEnabled);
-    emit manualModeEnabledReceived(manualModeEnabled);
-    emit vacationModeEnabledReceived(vacationModeEnabled);
-    emit boostEnabledReceived(boostEnabled);
-    emit daylightSummerTimeEnabledReceived(daylightSummerTimeEnabled);
-    emit openWindowModeEnabledReceived(openWindowModeEnabled);
-    emit hardwareButtonsLockedReceived(hardwareButtonsLocked);
-    emit unknownEnabledReceived(unknownEnabled);
-    emit lowBatteryEnabledReceived(lowBatteryEnabled);
 }
 
 void Controller::onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
@@ -484,16 +457,6 @@ void Controller::initAnswerSerialNumberNotification()
     connect(mAnswerSerialNumberNotification.get(),
             &answer::SerialNumberNotification::answerDecoded, this,
             &Controller::onSerialNumberAnswerDecoded);
-}
-
-void Controller::initAnswerStatusNotification()
-{
-    mAnswerStatusNotification =
-        std::make_unique<answer::StatusNotification>(this);
-
-    connect(mAnswerStatusNotification.get(),
-            &answer::StatusNotification::answerDecoded, this,
-            &Controller::onStatusAnswerDecoded);
 }
 
 void Controller::initAnswerDayTimerNotification()

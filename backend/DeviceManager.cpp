@@ -134,104 +134,9 @@ void DeviceManager::onIOServiceReady()
     // StatusNotifications connections
 
     connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::temperatureOffsetReceived,
+            &eq3thermostat::Controller::statusNotificationDataReceived,
             mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetTemperatureOffset);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::ecoTemperatureReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetEcoTemperature);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::comfortTemperatureReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetComfortTemperature);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::openWindowIntervalReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetOpenWindowInterval);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::openWindowTemperatureReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetOpenWindowTemperature);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::minuteReceived, mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetMinute);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::hourReceived, mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetHour);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::dayReceived, mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetDay);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::monthReceived, mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetMonth);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::yearReceived, mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetYear);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::targetTemperatureReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetTargetTemperature);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::valvePositionReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetValvePosition);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::autoModeEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetAutoModeEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::manualModeEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetManualModeEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::vacationModeEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetVacationModeEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::boostEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetBoostEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::daylightSummerTimeEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetDaylightSummerTimeEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::openWindowModeEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetOpenWindowModeEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::hardwareButtonsLockedReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetHardwareButtonsLocked);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::unknownEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetUnknownEnabled);
-
-    connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::lowBatteryEnabledReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetLowBatteryEnabled);
+            &eq3thermostat::Eq3Thermostat::onSetStatusNotificationData);
 
     // DayTimerNotifications connections
 
@@ -241,7 +146,7 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->requestSerialNumber();
 
-    // mEq3ThermostatController->setCurrentDateTime();
+    mEq3ThermostatController->setCurrentDateTime();
 
     // mEq3ThermostatController->setTemperature(21.5);
 
@@ -267,8 +172,7 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->configureOffsetTemperature(0.0);
 
-    mEq3ThermostatController->requestDayTimer(
-        eq3thermostat::types::DayOfWeek::friday);
+    // mEq3ThermostatController->requestDayTimer(eq3thermostat::types::DayOfWeek::friday);
 }
 
 } // namespace thermonator

@@ -35,7 +35,8 @@ class DayTimer;
 
 namespace types {
 class DayTimer;
-}
+class StatusNotificationData;
+} // namespace types
 
 class Controller : public QObject {
     Q_OBJECT
@@ -123,43 +124,14 @@ signals:
 
     void serialNumberReceived(const QString &serialNumber);
 
-    void temperatureOffsetReceived(double temperatureOffset);
-    void ecoTemperatureReceived(double ecoTemperature);
-    void comfortTemperatureReceived(double comfortTemperature);
-    void openWindowIntervalReceived(int openWindowInterval);
-    void openWindowTemperatureReceived(double openWindowTemperature);
-    void minuteReceived(int minute);
-    void hourReceived(int hour);
-    void dayReceived(int day);
-    void monthReceived(int month);
-    void yearReceived(int year);
-    void targetTemperatureReceived(double targetTemperature);
-    void valvePositionReceived(int valvePosition);
-    void autoModeEnabledReceived(bool autoModeEnabled);
-    void manualModeEnabledReceived(bool manualModeEnabled);
-    void vacationModeEnabledReceived(bool vacationModeEnabled);
-    void boostEnabledReceived(bool boostEnabled);
-    void daylightSummerTimeEnabledReceived(bool daylightSummerTimeEnabled);
-    void openWindowModeEnabledReceived(bool openWindowModeEnabled);
-    void hardwareButtonsLockedReceived(bool hardwareButtonsLocked);
-    void unknownEnabledReceived(bool unknownEnabled);
-    void lowBatteryEnabledReceived(bool lowBatteryEnabled);
+    void statusNotificationDataReceived(
+        const types::StatusNotificationData &statusNotificationData);
 
     void dayTimerReceived(types::DayOfWeek dayOfWeek,
                           const types::DayTimer &dayTimer);
 
 private slots:
     void onSerialNumberAnswerDecoded(const QString &serialNumber);
-
-    void onStatusAnswerDecoded(
-        double temperatureOffset, double ecoTemperature,
-        double comfortTemperature, int openWindowInterval,
-        double openWindowTemperature, int minute, int hour, int day, int month,
-        int year, double targetTemperature, int valvePosition,
-        bool autoModeEnabled, bool manualModeEnabled, bool vacationModeEnabled,
-        bool boostEnabled, bool daylightSummerTimeEnabled,
-        bool openWindowModeEnabled, bool hardwareButtonsLocked,
-        bool unknownEnabled, bool lowBatteryEnabled);
 
     void onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
                                        const types::DayTimer &dayTimer);
@@ -237,7 +209,6 @@ private:
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;
-    std::unique_ptr<answer::StatusNotification> mAnswerStatusNotification;
     std::unique_ptr<answer::DayTimerNotification> mAnswerDayTimerNotification;
 };
 

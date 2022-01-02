@@ -1,6 +1,7 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 #define THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 
+#include "types/StatusNotificationData.hpp"
 #include "types/WeekTimer.hpp"
 
 #include <QObject>
@@ -13,27 +14,6 @@ class Eq3Thermostat : public QObject {
     Q_PROPERTY(
         QString serialNumber READ serialNumber NOTIFY serialNumberChanged)
 
-    Q_PROPERTY(double temperatureOffset READ temperatureOffset NOTIFY
-                   temperatureOffsetChanged);
-    Q_PROPERTY(
-        double ecoTemperature READ ecoTemperature NOTIFY ecoTemperatureChanged);
-    Q_PROPERTY(double comfortTemperature READ comfortTemperature NOTIFY
-                   comfortTemperatureChanged);
-
-    Q_PROPERTY(int openWindowInterval READ openWindowInterval NOTIFY
-                   openWindowIntervalChanged);
-    Q_PROPERTY(double openWindowTemperature READ openWindowTemperature NOTIFY
-                   openWindowTemperatureChanged);
-    Q_PROPERTY(int minute READ minute NOTIFY minuteChanged);
-    Q_PROPERTY(int hour READ hour NOTIFY hourChanged);
-    Q_PROPERTY(int day READ day NOTIFY dayChanged);
-    Q_PROPERTY(int month READ month NOTIFY monthChanged);
-    Q_PROPERTY(int year READ year NOTIFY yearChanged);
-
-    Q_PROPERTY(double targetTemperature READ targetTemperature NOTIFY
-                   targetTemperatureChanged);
-    Q_PROPERTY(
-        int valvePosition READ valvePosition NOTIFY valvePositionChanged);
     Q_PROPERTY(bool autoModeEnabled READ autoModeEnabled NOTIFY
                    autoModeEnabledChanged);
     Q_PROPERTY(bool manualModeEnabled READ manualModeEnabled NOTIFY
@@ -51,6 +31,32 @@ class Eq3Thermostat : public QObject {
         bool unknownEnabled READ unknownEnabled NOTIFY unknownEnabledChanged);
     Q_PROPERTY(bool lowBatteryEnabled READ lowBatteryEnabled NOTIFY
                    lowBatteryEnabledChanged);
+    Q_PROPERTY(
+        int valvePosition READ valvePosition NOTIFY valvePositionChanged);
+    Q_PROPERTY(int unknownStatusByte READ unknownStatusByte NOTIFY
+                   unknownStatusByteChanged);
+    Q_PROPERTY(double targetTemperature READ targetTemperature NOTIFY
+                   targetTemperatureChanged);
+    Q_PROPERTY(
+        int holidayEndDay READ holidayEndDay NOTIFY holidayEndDayChanged);
+    Q_PROPERTY(
+        int holidayEndMonth READ holidayEndMonth NOTIFY holidayEndMonthChanged);
+    Q_PROPERTY(
+        int holidayEndYear READ holidayEndYear NOTIFY holidayEndYearChanged);
+    Q_PROPERTY(int holidayEndMinute READ holidayEndMinute NOTIFY
+                   holidayEndMinuteChanged);
+    Q_PROPERTY(
+        int holidayEndHour READ holidayEndHour NOTIFY holidayEndHourChanged);
+    Q_PROPERTY(double openWindowTemperature READ openWindowTemperature NOTIFY
+                   openWindowTemperatureChanged);
+    Q_PROPERTY(int openWindowInterval READ openWindowInterval NOTIFY
+                   openWindowIntervalChanged);
+    Q_PROPERTY(double comfortTemperature READ comfortTemperature NOTIFY
+                   comfortTemperatureChanged);
+    Q_PROPERTY(
+        double ecoTemperature READ ecoTemperature NOTIFY ecoTemperatureChanged);
+    Q_PROPERTY(double temperatureOffset READ temperatureOffset NOTIFY
+                   temperatureOffsetChanged);
 
     // TODO: Week Timer should be presented exposed with WeekTimerModel to be
     // added later. Use QAbstractItemModel
@@ -64,18 +70,7 @@ public:
 
     QString serialNumber() const;
 
-    double temperatureOffset() const;
-    double ecoTemperature() const;
-    double comfortTemperature() const;
-    int openWindowInterval() const;
-    double openWindowTemperature() const;
-    int minute() const;
-    int hour() const;
-    int day() const;
-    int month() const;
-    int year() const;
-    double targetTemperature() const;
-    int valvePosition() const;
+    // from StatusNotificationData
     bool autoModeEnabled() const;
     bool manualModeEnabled() const;
     bool vacationModeEnabled() const;
@@ -85,33 +80,38 @@ public:
     bool hardwareButtonsLocked() const;
     bool unknownEnabled() const;
     bool lowBatteryEnabled() const;
+    int valvePosition() const;
+    int unknownStatusByte() const;
+    double targetTemperature() const;
+    int holidayEndDay() const;
+    int holidayEndMonth() const;
+    int holidayEndYear() const;
+    int holidayEndMinute() const;
+    int holidayEndHour() const;
+    double openWindowTemperature() const;
+    int openWindowInterval() const;
+    double comfortTemperature() const;
+    double ecoTemperature() const;
+    double temperatureOffset() const;
 
     types::WeekTimer weekTimer() const;
 
 public slots:
     void onSetSerialNumber(const QString &serialNumber);
 
-    void onSetTemperatureOffset(double temperatureOffset);
-    void onSetEcoTemperature(double ecoTemperature);
-    void onSetComfortTemperature(double comfortTemperature);
-    void onSetOpenWindowInterval(int openWindowInterval);
-    void onSetOpenWindowTemperature(double openWindowTemperature);
-    void onSetMinute(int minute);
-    void onSetHour(int hour);
-    void onSetDay(int day);
-    void onSetMonth(int month);
-    void onSetYear(int year);
-    void onSetTargetTemperature(double targetTemperature);
-    void onSetValvePosition(int valvePosition);
-    void onSetAutoModeEnabled(bool autoModeEnabled);
-    void onSetManualModeEnabled(bool manualModeEnabled);
-    void onSetVacationModeEnabled(bool vacationModeEnabled);
-    void onSetBoostEnabled(bool boostEnabled);
-    void onSetDaylightSummerTimeEnabled(bool daylightSummerTimeEnabled);
-    void onSetOpenWindowModeEnabled(bool openWindowModeEnabled);
-    void onSetHardwareButtonsLocked(bool hardwareButtonsLocked);
-    void onSetUnknownEnabled(bool unknownEnabled);
-    void onSetLowBatteryEnabled(bool lowBatteryEnabled);
+    void onSetStatusNotificationData(
+        const types::StatusNotificationData &statusNotificationData);
+
+    void notifyChangesBaseStatusNotificationData(
+        const types::StatusNotificationData &oldStatusNotificationData,
+        const types::StatusNotificationData &newStatusNotificationData);
+
+    void notifyChangesInStatusFlags(const types::StatusFlags &oldStatusFlags,
+                                    const types::StatusFlags &newStatusFlags);
+
+    void notifyChangesInHolidayEndDateTime(
+        const types::DateTime &oldHolidayEndDateTime,
+        const types::DateTime &newHolidayEndDateTime);
 
     void onSetDayTimer(types::DayOfWeek dayOfWeek,
                        const types::DayTimer &dayTimer);
@@ -119,18 +119,6 @@ public slots:
 signals:
     void serialNumberChanged();
 
-    void temperatureOffsetChanged();
-    void ecoTemperatureChanged();
-    void comfortTemperatureChanged();
-    void openWindowIntervalChanged();
-    void openWindowTemperatureChanged();
-    void minuteChanged();
-    void hourChanged();
-    void dayChanged();
-    void monthChanged();
-    void yearChanged();
-    void targetTemperatureChanged();
-    void valvePositionChanged();
     void autoModeEnabledChanged();
     void manualModeEnabledChanged();
     void vacationModeEnabledChanged();
@@ -140,33 +128,26 @@ signals:
     void hardwareButtonsLockedChanged();
     void unknownEnabledChanged();
     void lowBatteryEnabledChanged();
+    void valvePositionChanged();
+    void unknownStatusByteChanged();
+    void targetTemperatureChanged();
+    void holidayEndDayChanged();
+    void holidayEndMonthChanged();
+    void holidayEndYearChanged();
+    void holidayEndMinuteChanged();
+    void holidayEndHourChanged();
+    void openWindowTemperatureChanged();
+    void openWindowIntervalChanged();
+    void comfortTemperatureChanged();
+    void ecoTemperatureChanged();
+    void temperatureOffsetChanged();
 
     void weekTimerChanged();
 
 private:
     QString mSerialNumber;
 
-    double mTemperatureOffset{0.0};
-    double mEcoTemperature{0.0};
-    double mComfortTemperature{0.0};
-    int mOpenWindowInterval{0};
-    double mOpenWindowTemperature{0.0};
-    int mMinute{0};
-    int mHour{0};
-    int mDay{0};
-    int mMonth{0};
-    int mYear{0};
-    double mTargetTemperature{0.0};
-    int mValvePosition{0};
-    bool mAutoModeEnabled{false};
-    bool mManualModeEnabled{false};
-    bool mVacationModeEnabled{false};
-    bool mBoostEnabled{false};
-    bool mDaylightSummerTimeEnabled{false};
-    bool mOpenWindowModeEnabled{false};
-    bool mHardwareButtonsLocked{false};
-    bool mUnknownEnabled{false};
-    bool mLowBatteryEnabled{false};
+    types::StatusNotificationData mStatusNotificationData;
 
     types::WeekTimer mWeekTimer;
 };
