@@ -127,9 +127,9 @@ void DeviceManager::onIOServiceReady()
     // SerialNumberNotifications connections
 
     connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::serialNumberReceived,
+            &eq3thermostat::Controller::serialNumberNotificationDataReceived,
             mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetSerialNumber);
+            &eq3thermostat::Eq3Thermostat::onSetSerialNumberNotificationData);
 
     // StatusNotifications connections
 
@@ -144,7 +144,7 @@ void DeviceManager::onIOServiceReady()
             &eq3thermostat::Controller::dayTimerReceived, mEq3Thermostat.get(),
             &eq3thermostat::Eq3Thermostat::onSetDayTimer);
 
-    // mEq3ThermostatController->requestSerialNumber();
+    mEq3ThermostatController->requestSerialNumber();
 
     // mEq3ThermostatController->setCurrentDateTime();
 
@@ -172,8 +172,8 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->configureOffsetTemperature(0.0);
 
-    mEq3ThermostatController->requestDayTimer(
-        eq3thermostat::types::DayOfWeek::friday);
+    // mEq3ThermostatController->requestDayTimer(
+    //     eq3thermostat::types::DayOfWeek::friday);
 }
 
 } // namespace thermonator

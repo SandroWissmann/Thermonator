@@ -1,6 +1,5 @@
 #include "Controller.hpp"
 
-#include "answer/SerialNumberNotification.hpp"
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
 #include "command/ComfortAndEcoTemperature.hpp"
@@ -16,6 +15,8 @@
 #include "command/Temperature.hpp"
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
+#include "types/DayTimer.hpp"
+#include "types/SerialNumberNotificationData.hpp"
 #include "types/StatusNotificationData.hpp"
 
 #include <QDebug>
@@ -41,8 +42,6 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandConfigureOpenWindowMode();
     initCommandConfigureOffsetTemperature();
     initCommandDayTimer();
-
-    initAnswerSerialNumberNotification();
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -245,8 +244,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     qDebug() << Q_FUNC_INFO;
     switch (mLastCommandType) {
     case CommandType::SerialNumber:
-        qDebug() << Q_FUNC_INFO << "decode as SerialNumberNotification";
-        mAnswerSerialNumberNotification->decodeAnswer(answer);
+        decodeAsSerialNumberNotification(answer);
         break;
     case CommandType::DateTime:
         [[fallthrough]];
@@ -272,41 +270,16 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::ConfigureOpenWindowMode:
         [[fallthrough]];
-    case CommandType::ConfigureOffsetTemperature: {
-        qDebug() << Q_FUNC_INFO << "decode as StatusNotificationData";
-        auto statusNotificationData =
-            types::StatusNotificationData::fromEncodedData(answer);
-
-        if (!statusNotificationData.isValid()) {
-            qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
-        }
-        else {
-            emit statusNotificationDataReceived(statusNotificationData);
-        }
+    case CommandType::ConfigureOffsetTemperature:
+        decodeAsStatusNotification(answer);
         break;
-    }
-    case CommandType::DayTimer: {
-        qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
-        auto dayTimer = types::DayTimer::fromEncodedData(answer);
-
-        if (!dayTimer.isValid()) {
-            qDebug() << Q_FUNC_INFO << "dayTimer is invalid";
-        }
-        else {
-            emit dayTimerReceived(dayTimer);
-        }
+    case CommandType::DayTimer:
+        decodeAsDayTimerNotification(answer);
         break;
-    }
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::onSerialNumberAnswerDecoded(const QString &serialNumber)
-{
-    qDebug() << Q_FUNC_INFO;
-    emit serialNumberReceived(serialNumber);
 }
 
 void Controller::initCommandSerialNumber()
@@ -444,14 +417,42 @@ void Controller::initCommandDayTimer()
             &Controller::commandRequested);
 }
 
-void Controller::initAnswerSerialNumberNotification()
+void Controller::decodeAsSerialNumberNotification(const QByteArray &answer)
 {
-    mAnswerSerialNumberNotification =
-        std::make_unique<answer::SerialNumberNotification>(this);
+    qDebug() << Q_FUNC_INFO;
+    auto serialNumberNotificationData =
+        types::SerialNumberNotificationData::fromEncodedData(answer);
 
-    connect(mAnswerSerialNumberNotification.get(),
-            &answer::SerialNumberNotification::answerDecoded, this,
-            &Controller::onSerialNumberAnswerDecoded);
+    if (!serialNumberNotificationData.isValid()) {
+        qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
+        return;
+    }
+    emit serialNumberNotificationDataReceived(serialNumberNotificationData);
+}
+
+void Controller::decodeAsStatusNotification(const QByteArray &answer)
+{
+    qDebug() << Q_FUNC_INFO;
+    auto statusNotificationData =
+        types::StatusNotificationData::fromEncodedData(answer);
+
+    if (!statusNotificationData.isValid()) {
+        qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
+        return;
+    }
+    emit statusNotificationDataReceived(statusNotificationData);
+}
+
+void Controller::decodeAsDayTimerNotification(const QByteArray &answer)
+{
+    qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
+    auto dayTimer = types::DayTimer::fromEncodedData(answer);
+
+    if (!dayTimer.isValid()) {
+        qDebug() << Q_FUNC_INFO << "dayTimer is invalid";
+        return;
+    }
+    emit dayTimerReceived(dayTimer);
 }
 
 double Controller::clampTemperature(double temperature)

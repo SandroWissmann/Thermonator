@@ -18,8 +18,6 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        backend/eq3Thermostat/answer/SerialNumberNotification.hpp
-        backend/eq3Thermostat/answer/SerialNumberNotification.cpp
         backend/eq3Thermostat/command/BoostControl.hpp
         backend/eq3Thermostat/command/BoostControl.cpp
         backend/eq3Thermostat/command/BoostOff.hpp
@@ -56,6 +54,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ThermostatOff.cpp
         backend/eq3Thermostat/command/ThermostatOn.hpp
         backend/eq3Thermostat/command/ThermostatOn.cpp
+        backend/eq3Thermostat/types/AsciiSign.hpp
+        backend/eq3Thermostat/types/AsciiSign.cpp
         backend/eq3Thermostat/types/Date.hpp
         backend/eq3Thermostat/types/Date.cpp
         backend/eq3Thermostat/types/DateTime.hpp
@@ -67,6 +67,10 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/DayTimerEntry.cpp
         backend/eq3Thermostat/types/OpenWindowInterval.hpp
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
+        backend/eq3Thermostat/types/SerialNumber.hpp
+        backend/eq3Thermostat/types/SerialNumber.cpp
+        backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
+        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
         backend/eq3Thermostat/types/StatusFlags.cpp
         backend/eq3Thermostat/types/StatusNotificationData.hpp

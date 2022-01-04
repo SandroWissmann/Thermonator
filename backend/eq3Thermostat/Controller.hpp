@@ -9,10 +9,6 @@
 
 namespace thermonator::eq3thermostat {
 
-namespace answer {
-class SerialNumberNotification;
-} // namespace answer
-
 namespace command {
 class SerialNumber;
 class DateTime;
@@ -34,6 +30,7 @@ class DayTimer;
 namespace types {
 class DayTimer;
 class StatusNotificationData;
+class SerialNumberNotificationData;
 } // namespace types
 
 class Controller : public QObject {
@@ -120,15 +117,14 @@ public slots:
 signals:
     void commandRequested(const QByteArray &command);
 
-    void serialNumberReceived(const QString &serialNumber);
+    void serialNumberNotificationDataReceived(
+        const types::SerialNumberNotificationData
+            &serialNumberNotificationData);
 
     void statusNotificationDataReceived(
         const types::StatusNotificationData &statusNotificationData);
 
     void dayTimerReceived(const types::DayTimer &dayTimer);
-
-private slots:
-    void onSerialNumberAnswerDecoded(const QString &serialNumber);
 
 private:
     void initCommandSerialNumber();
@@ -147,7 +143,9 @@ private:
     void initCommandConfigureOffsetTemperature();
     void initCommandDayTimer();
 
-    void initAnswerSerialNumberNotification();
+    void decodeAsSerialNumberNotification(const QByteArray &answer);
+    void decodeAsStatusNotification(const QByteArray &answer);
+    void decodeAsDayTimerNotification(const QByteArray &answer);
 
     double clampTemperature(double temperature);
     double clampOffsetTemperature(double offsetTemperature);
@@ -196,9 +194,6 @@ private:
     std::unique_ptr<command::ConfigureOffsetTemperature>
         mCommandConfigureOffsetTemperature;
     std::unique_ptr<command::DayTimer> mCommandDayTimer;
-
-    std::unique_ptr<answer::SerialNumberNotification>
-        mAnswerSerialNumberNotification;
 };
 
 } // namespace thermonator::eq3thermostat

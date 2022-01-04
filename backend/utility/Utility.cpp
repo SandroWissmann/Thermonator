@@ -20,11 +20,6 @@ QString toHexWithSpace(const QByteArray &byteArray)
     return hexWithSpace;
 }
 
-char hexToAscii(char hex)
-{
-    return char(hex - 0x30);
-}
-
 std::vector<unsigned char> toUChars(const QByteArray &byteArray)
 {
     std::vector<unsigned char> charArray;

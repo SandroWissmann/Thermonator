@@ -1,6 +1,7 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 #define THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 
+#include "types/SerialNumberNotificationData.hpp"
 #include "types/StatusNotificationData.hpp"
 #include "types/WeekTimer.hpp"
 
@@ -97,7 +98,9 @@ public:
     types::WeekTimer weekTimer() const;
 
 public slots:
-    void onSetSerialNumber(const QString &serialNumber);
+    void
+    onSetSerialNumberNotificationData(const types::SerialNumberNotificationData
+                                          &serialNumberNotificationData);
 
     void onSetStatusNotificationData(
         const types::StatusNotificationData &statusNotificationData);
@@ -144,10 +147,8 @@ signals:
     void weekTimerChanged();
 
 private:
-    QString mSerialNumber;
-
+    types::SerialNumberNotificationData mSerialNumberNotificationData;
     types::StatusNotificationData mStatusNotificationData;
-
     types::WeekTimer mWeekTimer;
 };
 
