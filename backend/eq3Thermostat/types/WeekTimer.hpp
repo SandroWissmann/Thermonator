@@ -14,15 +14,11 @@ public:
     // isValid() == false
     WeekTimer() = default;
 
-    // constructs object with isValid == true
-    // week days are ordered 0 = saturday to 6  = friday
-    WeekTimer(const std::array<DayTimer, 7> &weekTimer);
-
     bool isValid();
 
     bool dayTimerIsValid(DayOfWeek dayOfWeek) const;
 
-    void setDayTimer(DayOfWeek dayOfWeek, const DayTimer &dayTimer);
+    void setDayTimer(const DayTimer &dayTimer);
 
     DayTimer dayTimer(DayOfWeek dayOfWeek) const;
 

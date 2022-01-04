@@ -113,8 +113,7 @@ public slots:
         const types::DateTime &oldHolidayEndDateTime,
         const types::DateTime &newHolidayEndDateTime);
 
-    void onSetDayTimer(types::DayOfWeek dayOfWeek,
-                       const types::DayTimer &dayTimer);
+    void onSetDayTimer(const types::DayTimer &dayTimer);
 
 signals:
     void serialNumberChanged();

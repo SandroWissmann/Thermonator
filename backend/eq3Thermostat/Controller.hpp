@@ -11,8 +11,6 @@ namespace thermonator::eq3thermostat {
 
 namespace answer {
 class SerialNumberNotification;
-class StatusNotification;
-class DayTimerNotification;
 } // namespace answer
 
 namespace command {
@@ -127,16 +125,10 @@ signals:
     void statusNotificationDataReceived(
         const types::StatusNotificationData &statusNotificationData);
 
-    void dayTimerReceived(types::DayOfWeek dayOfWeek,
-                          const types::DayTimer &dayTimer);
+    void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private slots:
     void onSerialNumberAnswerDecoded(const QString &serialNumber);
-
-    void onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
-                                       const types::DayTimer &dayTimer);
-
-    void onDayTimerNotificationNotDecoded();
 
 private:
     void initCommandSerialNumber();
@@ -156,8 +148,6 @@ private:
     void initCommandDayTimer();
 
     void initAnswerSerialNumberNotification();
-    void initAnswerStatusNotification();
-    void initAnswerDayTimerNotification();
 
     double clampTemperature(double temperature);
     double clampOffsetTemperature(double offsetTemperature);
@@ -209,7 +199,6 @@ private:
 
     std::unique_ptr<answer::SerialNumberNotification>
         mAnswerSerialNumberNotification;
-    std::unique_ptr<answer::DayTimerNotification> mAnswerDayTimerNotification;
 };
 
 } // namespace thermonator::eq3thermostat

@@ -2,11 +2,6 @@
 
 namespace thermonator::eq3thermostat::types {
 
-WeekTimer::WeekTimer(const std::array<DayTimer, 7> &weekTimer)
-    : mWeekTimer{weekTimer}
-{
-}
-
 bool WeekTimer::isValid()
 {
     for (const auto &dayTimer : mWeekTimer) {
@@ -23,8 +18,9 @@ bool WeekTimer::dayTimerIsValid(DayOfWeek dayOfWeek) const
     return mWeekTimer[index].isValid();
 }
 
-void WeekTimer::setDayTimer(DayOfWeek dayOfWeek, const DayTimer &dayTimer)
+void WeekTimer::setDayTimer(const DayTimer &dayTimer)
 {
+    auto dayOfWeek = dayTimer.dayOfWeek();
     auto index = toIndex(dayOfWeek);
 
     if (mWeekTimer[index] == dayTimer) {

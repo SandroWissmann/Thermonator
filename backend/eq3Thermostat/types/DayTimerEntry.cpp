@@ -40,7 +40,7 @@ QDebug operator<<(QDebug debug, const DayTimerEntry &dayTimerEntry)
     QDebugStateSaver saver(debug);
 
     debug.nospace() << '(' << dayTimerEntry.time() << '/'
-                    << dayTimerEntry.temperature() << ')';
+                    << dayTimerEntry.temperature() << " °C)";
 
     return debug;
 }

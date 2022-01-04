@@ -34,11 +34,15 @@ StatusNotificationData::fromEncodedData(const QByteArray &data)
         return StatusNotificationData{};
     }
     if (data.at(0) != 0x02) {
-        qDebug() << Q_FUNC_INFO << "first byte of data has wrong value";
+        qDebug() << Q_FUNC_INFO
+                 << "first byte of data has wrong value: " << Qt::hex
+                 << static_cast<int>(data.at(0));
         return StatusNotificationData{};
     }
     if (data.at(1) != 0x01) {
-        qDebug() << Q_FUNC_INFO << "second byte of data has wrong value";
+        qDebug() << Q_FUNC_INFO
+                 << "second byte of data has wrong value: " << Qt::hex
+                 << static_cast<int>(data.at(1));
         return StatusNotificationData{};
     }
 

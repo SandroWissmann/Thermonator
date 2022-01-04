@@ -146,7 +146,7 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->requestSerialNumber();
 
-    mEq3ThermostatController->setCurrentDateTime();
+    // mEq3ThermostatController->setCurrentDateTime();
 
     // mEq3ThermostatController->setTemperature(21.5);
 
@@ -172,7 +172,8 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->configureOffsetTemperature(0.0);
 
-    // mEq3ThermostatController->requestDayTimer(eq3thermostat::types::DayOfWeek::friday);
+    mEq3ThermostatController->requestDayTimer(
+        eq3thermostat::types::DayOfWeek::friday);
 }
 
 } // namespace thermonator

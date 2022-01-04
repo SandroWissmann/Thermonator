@@ -18,8 +18,6 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        backend/eq3Thermostat/answer/DayTimerNotification.hpp
-        backend/eq3Thermostat/answer/DayTimerNotification.cpp
         backend/eq3Thermostat/answer/SerialNumberNotification.hpp
         backend/eq3Thermostat/answer/SerialNumberNotification.cpp
         backend/eq3Thermostat/command/BoostControl.hpp

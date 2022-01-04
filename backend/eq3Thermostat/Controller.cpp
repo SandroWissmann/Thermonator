@@ -1,6 +1,5 @@
 #include "Controller.hpp"
 
-#include "answer/DayTimerNotification.hpp"
 #include "answer/SerialNumberNotification.hpp"
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
@@ -44,7 +43,6 @@ Controller::Controller(QObject *parent) : QObject{parent}
     initCommandDayTimer();
 
     initAnswerSerialNumberNotification();
-    initAnswerDayTimerNotification();
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -278,6 +276,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "decode as StatusNotificationData";
         auto statusNotificationData =
             types::StatusNotificationData::fromEncodedData(answer);
+
         if (!statusNotificationData.isValid()) {
             qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
         }
@@ -286,10 +285,18 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         }
         break;
     }
-    case CommandType::DayTimer:
+    case CommandType::DayTimer: {
         qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
-        mAnswerDayTimerNotification->decodeAnswer(answer);
+        auto dayTimer = types::DayTimer::fromEncodedData(answer);
+
+        if (!dayTimer.isValid()) {
+            qDebug() << Q_FUNC_INFO << "dayTimer is invalid";
+        }
+        else {
+            emit dayTimerReceived(dayTimer);
+        }
         break;
+    }
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
@@ -300,18 +307,6 @@ void Controller::onSerialNumberAnswerDecoded(const QString &serialNumber)
 {
     qDebug() << Q_FUNC_INFO;
     emit serialNumberReceived(serialNumber);
-}
-
-void Controller::onDayTimerNotificationDecoded(types::DayOfWeek dayOfWeek,
-                                               const types::DayTimer &dayTimer)
-{
-    qDebug() << Q_FUNC_INFO;
-    emit dayTimerReceived(dayOfWeek, dayTimer);
-}
-
-void Controller::onDayTimerNotificationNotDecoded()
-{
-    qDebug() << Q_FUNC_INFO;
 }
 
 void Controller::initCommandSerialNumber()
@@ -457,20 +452,6 @@ void Controller::initAnswerSerialNumberNotification()
     connect(mAnswerSerialNumberNotification.get(),
             &answer::SerialNumberNotification::answerDecoded, this,
             &Controller::onSerialNumberAnswerDecoded);
-}
-
-void Controller::initAnswerDayTimerNotification()
-{
-    mAnswerDayTimerNotification =
-        std::make_unique<answer::DayTimerNotification>(this);
-
-    connect(mAnswerDayTimerNotification.get(),
-            &answer::DayTimerNotification::answerDecoded, this,
-            &Controller::onDayTimerNotificationDecoded);
-
-    connect(mAnswerDayTimerNotification.get(),
-            &answer::DayTimerNotification::answerNotDecodedable, this,
-            &Controller::onDayTimerNotificationNotDecoded);
 }
 
 double Controller::clampTemperature(double temperature)
