@@ -16,6 +16,7 @@
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
 #include "types/DayTimer.hpp"
+#include "types/SerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
 #include "types/StatusNotificationData.hpp"
 
@@ -27,7 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandSerialNumber();
     initCommandDateTime();
     initCommandTemperature();
     initCommandComfortAndEcoTemperature();
@@ -56,8 +56,10 @@ void Controller::requestSerialNumber()
         return;
     }
     mLastCommandType = CommandType::SerialNumber;
-    mWaitForAnswer = true;
-    mCommandSerialNumber->encodeCommand();
+
+    types::SerialNumberCommand serialNumberCommand;
+    auto command = serialNumberCommand.encoded();
+    sendCommand(command);
 }
 
 void Controller::setCurrentDateTime()
@@ -282,20 +284,12 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     }
 }
 
-void Controller::initCommandSerialNumber()
-{
-    mCommandSerialNumber = std::make_unique<command::SerialNumber>(this);
-
-    connect(mCommandSerialNumber.get(), &command::SerialNumber::commandEncoded,
-            this, &Controller::commandRequested);
-}
-
 void Controller::initCommandDateTime()
 {
     mCommandDateTime = std::make_unique<command::DateTime>(this);
 
     connect(mCommandDateTime.get(), &command::DateTime::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandTemperature()
@@ -303,7 +297,7 @@ void Controller::initCommandTemperature()
     mCommandTemperature = std::make_unique<command::Temperature>(this);
 
     connect(mCommandTemperature.get(), &command::Temperature::commandEncoded,
-            this, &Controller::commandRequested);
+            this, &Controller::sendCommand);
 }
 
 void Controller::initCommandComfortAndEcoTemperature()
@@ -313,7 +307,7 @@ void Controller::initCommandComfortAndEcoTemperature()
 
     connect(mCommandComfortAndEcoTemperature.get(),
             &command::ComfortAndEcoTemperature::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandSwitchToComfortTemperature()
@@ -323,7 +317,7 @@ void Controller::initCommandSwitchToComfortTemperature()
 
     connect(mCommandSwitchToComfortTemperature.get(),
             &command::SwitchToComfortTemperature::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandSwitchToEcoTemperature()
@@ -333,7 +327,7 @@ void Controller::initCommandSwitchToEcoTemperature()
 
     connect(mCommandSwitchToEcoTemperature.get(),
             &command::SwitchToEcoTemperature::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandThermostatOn()
@@ -341,7 +335,7 @@ void Controller::initCommandThermostatOn()
     mCommandThermostatOn = std::make_unique<command::ThermostatOn>(this);
 
     connect(mCommandThermostatOn.get(), &command::ThermostatOn::commandEncoded,
-            this, &Controller::commandRequested);
+            this, &Controller::sendCommand);
 }
 
 void Controller::initCommandThermostatOff()
@@ -350,7 +344,7 @@ void Controller::initCommandThermostatOff()
 
     connect(mCommandThermostatOff.get(),
             &command::ThermostatOff::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandHardwareButtonsLock()
@@ -360,7 +354,7 @@ void Controller::initCommandHardwareButtonsLock()
 
     connect(mCommandHardwareButtonsLock.get(),
             &command::HardwareButtonsLock::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandHardwareButtonsUnlock()
@@ -370,7 +364,7 @@ void Controller::initCommandHardwareButtonsUnlock()
 
     connect(mCommandHardwareButtonsUnlock.get(),
             &command::HardwareButtonsUnlock::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandBoostOn()
@@ -378,7 +372,7 @@ void Controller::initCommandBoostOn()
     mCommandBoostOn = std::make_unique<command::BoostOn>(this);
 
     connect(mCommandBoostOn.get(), &command::BoostOn::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandBoostOff()
@@ -386,7 +380,7 @@ void Controller::initCommandBoostOff()
     mCommandBoostOff = std::make_unique<command::BoostOff>(this);
 
     connect(mCommandBoostOff.get(), &command::BoostOff::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandConfigureOpenWindowMode()
@@ -396,7 +390,7 @@ void Controller::initCommandConfigureOpenWindowMode()
 
     connect(mCommandConfigureOpenWindowMode.get(),
             &command::ConfigureOpenWindowMode::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandConfigureOffsetTemperature()
@@ -406,7 +400,7 @@ void Controller::initCommandConfigureOffsetTemperature()
 
     connect(mCommandConfigureOffsetTemperature.get(),
             &command::ConfigureOffsetTemperature::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::initCommandDayTimer()
@@ -414,7 +408,7 @@ void Controller::initCommandDayTimer()
     mCommandDayTimer = std::make_unique<command::DayTimer>(this);
 
     connect(mCommandDayTimer.get(), &command::DayTimer::commandEncoded, this,
-            &Controller::commandRequested);
+            &Controller::sendCommand);
 }
 
 void Controller::decodeAsSerialNumberNotification(const QByteArray &answer)

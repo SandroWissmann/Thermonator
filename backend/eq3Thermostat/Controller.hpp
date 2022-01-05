@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class SerialNumber;
 class DateTime;
 class Temperature;
 class ComfortAndEcoTemperature;
@@ -115,7 +114,7 @@ public:
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
-    void commandRequested(const QByteArray &command);
+    void sendCommand(const QByteArray &command);
 
     void serialNumberNotificationDataReceived(
         const types::SerialNumberNotificationData
@@ -127,7 +126,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandSerialNumber();
     void initCommandDateTime();
     void initCommandTemperature();
     void initCommandComfortAndEcoTemperature();
@@ -173,7 +171,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::SerialNumber> mCommandSerialNumber;
     std::unique_ptr<command::DateTime> mCommandDateTime;
     std::unique_ptr<command::Temperature> mCommandTemperature;
     std::unique_ptr<command::ComfortAndEcoTemperature>

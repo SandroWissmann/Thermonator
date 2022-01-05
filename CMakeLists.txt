@@ -39,9 +39,7 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/HardwareButtonsLock.hpp
         backend/eq3Thermostat/command/HardwareButtonsLock.cpp
         backend/eq3Thermostat/command/HardwareButtonsUnlock.hpp
-        backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp
-        backend/eq3Thermostat/command/SerialNumber.hpp
-        backend/eq3Thermostat/command/SerialNumber.cpp       
+        backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp    
         backend/eq3Thermostat/command/SimpleCommandBase.hpp
         backend/eq3Thermostat/command/SimpleCommandBase.cpp
         backend/eq3Thermostat/command/SwitchToComfortTemperature.hpp
@@ -69,6 +67,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
         backend/eq3Thermostat/types/SerialNumber.hpp
         backend/eq3Thermostat/types/SerialNumber.cpp
+        backend/eq3Thermostat/types/SerialNumberCommand.hpp
+        backend/eq3Thermostat/types/SerialNumberCommand.cpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp

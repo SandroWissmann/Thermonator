@@ -115,7 +115,7 @@ void DeviceManager::onIOServiceReady()
         std::make_unique<eq3thermostat::Controller>(this);
 
     connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::commandRequested,
+            &eq3thermostat::Controller::sendCommand,
             mEq3ThermostatIOService.get(),
             &eq3thermostat::IOService::onWriteCommand);
 
