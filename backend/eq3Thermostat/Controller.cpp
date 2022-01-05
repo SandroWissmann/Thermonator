@@ -9,15 +9,15 @@
 #include "command/DayTimer.hpp"
 #include "command/HardwareButtonsLock.hpp"
 #include "command/HardwareButtonsUnlock.hpp"
-#include "command/SerialNumber.hpp"
 #include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
 #include "command/Temperature.hpp"
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
 #include "types/DayTimer.hpp"
-#include "types/SerialNumberCommand.hpp"
+#include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
+#include "types/SetCurrentDateTimeCommand.hpp"
 #include "types/StatusNotificationData.hpp"
 
 #include <QDebug>
@@ -28,7 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandDateTime();
     initCommandTemperature();
     initCommandComfortAndEcoTemperature();
     initCommandSwitchToComfortTemperature();
@@ -55,10 +54,10 @@ void Controller::requestSerialNumber()
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::SerialNumber;
+    mLastCommandType = CommandType::RequestSerialNumber;
 
-    types::SerialNumberCommand serialNumberCommand;
-    auto command = serialNumberCommand.encoded();
+    types::RequestSerialNumberCommand requestSerialNumberCommand;
+    auto command = requestSerialNumberCommand.encoded();
     sendCommand(command);
 }
 
@@ -69,9 +68,11 @@ void Controller::setCurrentDateTime()
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::DateTime;
-    mWaitForAnswer = true;
-    mCommandDateTime->encodeCommand();
+    mLastCommandType = CommandType::SetCurrentDateTime;
+
+    types::SetCurrentDateTimeCommand setCurrentDateTimeCommand;
+    auto command = setCurrentDateTimeCommand.encoded();
+    sendCommand(command);
 }
 
 void Controller::setTemperature(double temperature)
@@ -245,10 +246,10 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     mWaitForAnswer = false;
     qDebug() << Q_FUNC_INFO;
     switch (mLastCommandType) {
-    case CommandType::SerialNumber:
+    case CommandType::RequestSerialNumber:
         decodeAsSerialNumberNotification(answer);
         break;
-    case CommandType::DateTime:
+    case CommandType::SetCurrentDateTime:
         [[fallthrough]];
     case CommandType::Temperature:
         [[fallthrough]];
@@ -282,14 +283,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandDateTime()
-{
-    mCommandDateTime = std::make_unique<command::DateTime>(this);
-
-    connect(mCommandDateTime.get(), &command::DateTime::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandTemperature()

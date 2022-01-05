@@ -4,11 +4,11 @@
 /*
 Command:
 
-0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 Bytes
+0   Bytes
 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 Values in hex
+00  Values in hex
 
-Byte 1 to 14: unused
+
 Byte 0: request command "00"
 
 */
@@ -17,9 +17,9 @@ Byte 0: request command "00"
 
 namespace thermonator::eq3thermostat::types {
 
-class SerialNumberCommand {
+class RequestSerialNumberCommand {
 public:
-    SerialNumberCommand();
+    RequestSerialNumberCommand();
 
     QByteArray encoded() const;
 
@@ -29,7 +29,7 @@ private:
     QByteArray mCommand{};
 };
 
-QDebug operator<<(QDebug debug, const SerialNumberCommand &serialNumberCommand);
+QDebug operator<<(QDebug debug, const RequestSerialNumberCommand &serialNumberCommand);
 
 } // namespace thermonator::eq3thermostat::types
 

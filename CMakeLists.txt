@@ -65,12 +65,14 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/DayTimerEntry.cpp
         backend/eq3Thermostat/types/OpenWindowInterval.hpp
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
+        backend/eq3Thermostat/types/RequestSerialNumberCommand.hpp
+        backend/eq3Thermostat/types/RequestSerialNumberCommand.cpp
         backend/eq3Thermostat/types/SerialNumber.hpp
         backend/eq3Thermostat/types/SerialNumber.cpp
-        backend/eq3Thermostat/types/SerialNumberCommand.hpp
-        backend/eq3Thermostat/types/SerialNumberCommand.cpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
-        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
+        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp   
+        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
+        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
         backend/eq3Thermostat/types/StatusFlags.cpp
         backend/eq3Thermostat/types/StatusNotificationData.hpp

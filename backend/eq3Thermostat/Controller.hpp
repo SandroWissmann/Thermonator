@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class DateTime;
 class Temperature;
 class ComfortAndEcoTemperature;
 class SwitchToComfortTemperature;
@@ -126,7 +125,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandDateTime();
     void initCommandTemperature();
     void initCommandComfortAndEcoTemperature();
     void initCommandSwitchToComfortTemperature();
@@ -151,8 +149,8 @@ private:
 
     enum class CommandType {
         Unknown,
-        SerialNumber,
-        DateTime,
+        RequestSerialNumber,
+        SetCurrentDateTime,
         Temperature,
         ComfortAndEcoTemperature,
         SwitchToComfortTemperature,
@@ -171,7 +169,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::DateTime> mCommandDateTime;
     std::unique_ptr<command::Temperature> mCommandTemperature;
     std::unique_ptr<command::ComfortAndEcoTemperature>
         mCommandComfortAndEcoTemperature;

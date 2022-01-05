@@ -144,9 +144,9 @@ void DeviceManager::onIOServiceReady()
             &eq3thermostat::Controller::dayTimerReceived, mEq3Thermostat.get(),
             &eq3thermostat::Eq3Thermostat::onSetDayTimer);
 
-    mEq3ThermostatController->requestSerialNumber();
+    // mEq3ThermostatController->requestSerialNumber();
 
-    // mEq3ThermostatController->setCurrentDateTime();
+    mEq3ThermostatController->setCurrentDateTime();
 
     // mEq3ThermostatController->setTemperature(21.5);
 
