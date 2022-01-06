@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class SwitchToComfortTemperature;
 class SwitchToEcoTemperature;
 class ThermostatOn;
 class ThermostatOff;
@@ -59,7 +58,7 @@ public:
     // Current temperature is changed to the comfort temperature saved in the
     // thermostate
     Q_INVOKABLE
-    void switchToComfortTemperature();
+    void setComfortTemperature();
 
     // Current temperature is changed to the eco temperature saved in the
     // thermostate
@@ -125,7 +124,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandSwitchToComfortTemperature();
     void initCommandSwitchToEcoTemperature();
     void initCommandThermostatOn();
     void initCommandThermostatOff();
@@ -151,7 +149,7 @@ private:
         SetCurrentDateTime,
         SetTemperature,
         ConfigureComfortAndEcoTemperature,
-        SwitchToComfortTemperature,
+        SetComfortTemperature,
         SwitchToEcoTemperature,
         ThermostatOn,
         ThermostatOff,
@@ -167,8 +165,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::SwitchToComfortTemperature>
-        mCommandSwitchToComfortTemperature;
     std::unique_ptr<command::SwitchToEcoTemperature>
         mCommandSwitchToEcoTemperature;
     std::unique_ptr<command::ThermostatOn> mCommandThermostatOn;

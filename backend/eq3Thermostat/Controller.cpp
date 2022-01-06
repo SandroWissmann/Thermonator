@@ -8,7 +8,6 @@
 #include "command/DayTimer.hpp"
 #include "command/HardwareButtonsLock.hpp"
 #include "command/HardwareButtonsUnlock.hpp"
-#include "command/SwitchToComfortTemperature.hpp"
 #include "command/SwitchToEcoTemperature.hpp"
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
@@ -16,6 +15,7 @@
 #include "types/DayTimer.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
+#include "types/SetComfortTemperatureCommand.hpp"
 #include "types/SetCurrentDateTimeCommand.hpp"
 #include "types/SetTemperatureCommand.hpp"
 #include "types/StatusNotificationData.hpp"
@@ -28,7 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandSwitchToComfortTemperature();
     initCommandSwitchToEcoTemperature();
     initCommandThermostatOn();
     initCommandThermostatOff();
@@ -107,16 +106,18 @@ void Controller::configureComfortAndEcoTemperature(double comfortValue,
     emit sendCommand(command);
 }
 
-void Controller::switchToComfortTemperature()
+void Controller::setComfortTemperature()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::SwitchToComfortTemperature;
-    mWaitForAnswer = true;
-    mCommandSwitchToComfortTemperature->encodeCommand();
+    mLastCommandType = CommandType::SetComfortTemperature;
+
+    types::SetComfortTemperatureCommand setComfortTemperatureCommand;
+    auto command = setComfortTemperatureCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::switchToEcoTemperature()
@@ -258,7 +259,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::ConfigureComfortAndEcoTemperature:
         [[fallthrough]];
-    case CommandType::SwitchToComfortTemperature:
+    case CommandType::SetComfortTemperature:
         [[fallthrough]];
     case CommandType::SwitchToEcoTemperature:
         [[fallthrough]];
@@ -286,16 +287,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandSwitchToComfortTemperature()
-{
-    mCommandSwitchToComfortTemperature =
-        std::make_unique<command::SwitchToComfortTemperature>(this);
-
-    connect(mCommandSwitchToComfortTemperature.get(),
-            &command::SwitchToComfortTemperature::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandSwitchToEcoTemperature()
