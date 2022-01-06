@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class Temperature;
 class ComfortAndEcoTemperature;
 class SwitchToComfortTemperature;
 class SwitchToEcoTemperature;
@@ -48,7 +47,7 @@ public:
     // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
     // °C. If value is out of range clamping to the next value is performed
     Q_INVOKABLE
-    void setTemperature(double temperature);
+    void setTemperature(double value);
 
     // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
     // °C. If value is out of range clamping to the next value is performed
@@ -125,7 +124,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandTemperature();
     void initCommandComfortAndEcoTemperature();
     void initCommandSwitchToComfortTemperature();
     void initCommandSwitchToEcoTemperature();
@@ -151,7 +149,7 @@ private:
         Unknown,
         RequestSerialNumber,
         SetCurrentDateTime,
-        Temperature,
+        SetTemperature,
         ComfortAndEcoTemperature,
         SwitchToComfortTemperature,
         SwitchToEcoTemperature,
@@ -169,7 +167,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::Temperature> mCommandTemperature;
     std::unique_ptr<command::ComfortAndEcoTemperature>
         mCommandComfortAndEcoTemperature;
     std::unique_ptr<command::SwitchToComfortTemperature>

@@ -10,14 +10,22 @@ public:
     Temperature() = default;
     explicit Temperature(unsigned char byte);
 
+    // value is made valid during construction
+    explicit Temperature(double value);
+
     // return value in %
     double value() const;
+
+    // returns temperature as encoded byte
+    // returns 0 if isInvalid() is true
+    unsigned char encoded() const;
 
     // valid range 5.0 °C to 29.5 °C
     bool isValid() const;
 
 private:
     static double decodeByte(unsigned char byte);
+    static double makeValid(double value);
 
     double mValue{0};
 };

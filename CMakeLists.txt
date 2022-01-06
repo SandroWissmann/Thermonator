@@ -72,7 +72,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.cpp   
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
-        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp
+        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp      
+        backend/eq3Thermostat/types/SetTemperatureCommand.hpp
+        backend/eq3Thermostat/types/SetTemperatureCommand.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
         backend/eq3Thermostat/types/StatusFlags.cpp
         backend/eq3Thermostat/types/StatusNotificationData.hpp

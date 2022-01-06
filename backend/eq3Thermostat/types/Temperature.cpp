@@ -1,14 +1,28 @@
 #include "Temperature.hpp"
 
+#include <algorithm> // std::clamp
+
 namespace thermonator::eq3thermostat::types {
 
 Temperature::Temperature(unsigned char byte) : mValue(decodeByte(byte))
 {
 }
 
+Temperature::Temperature(double value) : mValue{makeValid(value)}
+{
+}
+
 double Temperature::value() const
 {
     return mValue;
+}
+
+unsigned char Temperature::encoded() const
+{
+    if (!isValid()) {
+        return 0;
+    }
+    return static_cast<unsigned char>(mValue * 2);
 }
 
 bool Temperature::isValid() const
@@ -26,6 +40,21 @@ double Temperature::decodeByte(unsigned char byte)
 {
     auto temperature = (static_cast<int>(byte) / 2.0);
     return temperature;
+}
+
+double Temperature::makeValid(double value)
+{
+    qDebug() << Q_FUNC_INFO << "temperature" << value;
+
+    constexpr auto minTemperature = 5.0;
+    constexpr auto maxTemperature = 29.5;
+    value = std::clamp(value, minTemperature, maxTemperature);
+
+    int tmp = static_cast<int>((value * 2));
+    value = static_cast<double>(tmp / 2.0);
+
+    qDebug() << Q_FUNC_INFO << "valid temperature" << value;
+    return value;
 }
 
 QDebug operator<<(QDebug debug, const Temperature &temperature)
