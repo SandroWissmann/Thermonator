@@ -20,7 +20,7 @@ QByteArray RequestSerialNumberCommand::encode()
     QByteArray command;
     constexpr auto bytesCount = 1;
     command.reserve(bytesCount);
-    command.append(static_cast<int>(0x00));
+    command.append(QByteArray::fromHex("00"));
 
     return command;
 }

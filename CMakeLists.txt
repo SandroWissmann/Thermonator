@@ -18,12 +18,6 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        backend/eq3Thermostat/command/BoostControl.hpp
-        backend/eq3Thermostat/command/BoostControl.cpp
-        backend/eq3Thermostat/command/BoostOff.hpp
-        backend/eq3Thermostat/command/BoostOff.cpp
-        backend/eq3Thermostat/command/BoostOn.hpp
-        backend/eq3Thermostat/command/BoostOn.cpp     
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.hpp
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.cpp
         backend/eq3Thermostat/command/ConfigureOpenWindowMode.hpp
@@ -60,7 +54,11 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SerialNumber.hpp
         backend/eq3Thermostat/types/SerialNumber.cpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
-        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp        
+        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
+        backend/eq3Thermostat/types/SetBoostOffCommand.hpp
+        backend/eq3Thermostat/types/SetBoostOffCommand.cpp
+        backend/eq3Thermostat/types/SetBoostOnCommand.hpp
+        backend/eq3Thermostat/types/SetBoostOnCommand.cpp
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetEcoTemperatureCommand.hpp

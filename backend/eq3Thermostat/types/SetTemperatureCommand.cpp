@@ -22,7 +22,7 @@ QByteArray SetTemperatureCommand::encode(const Temperature &temperature)
     QByteArray command;
     constexpr auto bytesCount = 2;
     command.reserve(bytesCount);
-    command.append(static_cast<unsigned char>(0x41));
+    command.append(QByteArray::fromHex("41"));
     command.append(temperature.encoded());
     return command;
 }

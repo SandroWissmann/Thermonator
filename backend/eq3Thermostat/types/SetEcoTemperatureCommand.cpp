@@ -20,7 +20,7 @@ QByteArray SetEcoTemperatureCommand::encode()
     QByteArray command;
     constexpr auto bytesCount = 1;
     command.reserve(bytesCount);
-    command.append(static_cast<int>(0x44));
+    command.append(QByteArray::fromHex("44"));
 
     return command;
 }

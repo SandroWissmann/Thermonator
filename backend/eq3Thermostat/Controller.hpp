@@ -10,8 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class BoostOn;
-class BoostOff;
 class HardwareButtonsLock;
 class HardwareButtonsUnlock;
 class ConfigureOpenWindowMode;
@@ -72,12 +70,12 @@ public:
 
     // Turn on the temporary boost function on for 300 seconds.
     Q_INVOKABLE
-    void boostOn();
+    void setBoostOn();
 
     // Turn off the temporary boost function. Only does something if boost is
     // on.
     Q_INVOKABLE
-    void boostOff();
+    void setBoostOff();
 
     // Lock the hardware buttons
     Q_INVOKABLE
@@ -121,8 +119,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandBoostOn();
-    void initCommandBoostOff();
     void initCommandHardwareButtonsLock();
     void initCommandHardwareButtonsUnlock();
     void initCommandConfigureOpenWindowMode();
@@ -147,8 +143,8 @@ private:
         SetEcoTemperature,
         SetThermostatOn,
         SetThermostatOff,
-        BoostOn,
-        BoostOff,
+        SetBoostOn,
+        SetBoostOff,
         HardwareButtonsLock,
         HardwareButtonsUnlock,
         ConfigureOpenWindowMode,
@@ -159,8 +155,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::BoostOn> mCommandBoostOn;
-    std::unique_ptr<command::BoostOff> mCommandBoostOff;
     std::unique_ptr<command::HardwareButtonsLock> mCommandHardwareButtonsLock;
     std::unique_ptr<command::HardwareButtonsUnlock>
         mCommandHardwareButtonsUnlock;

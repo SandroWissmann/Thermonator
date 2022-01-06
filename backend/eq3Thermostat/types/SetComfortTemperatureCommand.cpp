@@ -21,7 +21,7 @@ QByteArray SetComfortTemperatureCommand::encode()
     QByteArray command;
     constexpr auto bytesCount = 1;
     command.reserve(bytesCount);
-    command.append(static_cast<int>(0x43));
+    command.append(QByteArray::fromHex("43"));
 
     return command;
 }

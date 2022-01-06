@@ -1,7 +1,5 @@
 #include "Controller.hpp"
 
-#include "command/BoostOff.hpp"
-#include "command/BoostOn.hpp"
 #include "command/ConfigureOffsetTemperature.hpp"
 #include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
@@ -12,6 +10,8 @@
 #include "types/DayTimer.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
+#include "types/SetBoostOffCommand.hpp"
+#include "types/SetBoostOnCommand.hpp"
 #include "types/SetComfortTemperatureCommand.hpp"
 #include "types/SetCurrentDateTimeCommand.hpp"
 #include "types/SetEcoTemperatureCommand.hpp"
@@ -28,8 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandBoostOn();
-    initCommandBoostOff();
     initCommandHardwareButtonsLock();
     initCommandHardwareButtonsUnlock();
     initCommandConfigureOpenWindowMode();
@@ -159,28 +157,32 @@ void Controller::setThermostatOff()
     emit sendCommand(command);
 }
 
-void Controller::boostOn()
+void Controller::setBoostOn()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::BoostOn;
-    mWaitForAnswer = true;
-    mCommandBoostOn->encodeCommand();
+    mLastCommandType = CommandType::SetBoostOn;
+
+    types::SetBoostOnCommand setBoostOnCommand;
+    auto command = setBoostOnCommand.encoded();
+    emit sendCommand(command);
 }
 
-void Controller::boostOff()
+void Controller::setBoostOff()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::BoostOff;
-    mWaitForAnswer = true;
-    mCommandBoostOff->encodeCommand();
+    mLastCommandType = CommandType::SetBoostOff;
+
+    types::SetBoostOffCommand setBoostOffCommand;
+    auto command = setBoostOffCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::hardwareButtonsLock()
@@ -270,9 +272,9 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::SetThermostatOff:
         [[fallthrough]];
-    case CommandType::BoostOn:
+    case CommandType::SetBoostOn:
         [[fallthrough]];
-    case CommandType::BoostOff:
+    case CommandType::SetBoostOff:
         [[fallthrough]];
     case CommandType::HardwareButtonsLock:
         [[fallthrough]];
@@ -309,22 +311,6 @@ void Controller::initCommandHardwareButtonsUnlock()
 
     connect(mCommandHardwareButtonsUnlock.get(),
             &command::HardwareButtonsUnlock::commandEncoded, this,
-            &Controller::sendCommand);
-}
-
-void Controller::initCommandBoostOn()
-{
-    mCommandBoostOn = std::make_unique<command::BoostOn>(this);
-
-    connect(mCommandBoostOn.get(), &command::BoostOn::commandEncoded, this,
-            &Controller::sendCommand);
-}
-
-void Controller::initCommandBoostOff()
-{
-    mCommandBoostOff = std::make_unique<command::BoostOff>(this);
-
-    connect(mCommandBoostOff.get(), &command::BoostOff::commandEncoded, this,
             &Controller::sendCommand);
 }
 
