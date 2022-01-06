@@ -40,12 +40,6 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp    
         backend/eq3Thermostat/command/SimpleCommandBase.hpp
         backend/eq3Thermostat/command/SimpleCommandBase.cpp
-        backend/eq3Thermostat/command/Temperature.hpp
-        backend/eq3Thermostat/command/Temperature.cpp
-        backend/eq3Thermostat/command/ThermostatOff.hpp
-        backend/eq3Thermostat/command/ThermostatOff.cpp
-        backend/eq3Thermostat/command/ThermostatOn.hpp
-        backend/eq3Thermostat/command/ThermostatOn.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp
         backend/eq3Thermostat/types/AsciiSign.cpp
         backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
@@ -75,6 +69,10 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp      
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetTemperatureCommand.cpp
+        backend/eq3Thermostat/types/SetThermostatOffCommand.hpp
+        backend/eq3Thermostat/types/SetThermostatOffCommand.cpp
+        backend/eq3Thermostat/types/SetThermostatOnCommand.hpp
+        backend/eq3Thermostat/types/SetThermostatOnCommand.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
         backend/eq3Thermostat/types/StatusFlags.cpp
         backend/eq3Thermostat/types/StatusNotificationData.hpp

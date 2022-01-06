@@ -154,11 +154,11 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->setComfortTemperature();
 
-    mEq3ThermostatController->setEcoTemperature();
+    // mEq3ThermostatController->setEcoTemperature();
 
-    // mEq3ThermostatController->thermostatOn();
+    mEq3ThermostatController->setThermostatOn();
 
-    // mEq3ThermostatController->thermostatOff();
+    // mEq3ThermostatController->setThermostatOff();
 
     // mEq3ThermostatController->boostOn();
 

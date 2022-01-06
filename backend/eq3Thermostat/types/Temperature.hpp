@@ -23,6 +23,12 @@ public:
     // valid range 5.0 °C to 29.5 °C
     bool isValid() const;
 
+    // indicate is special temperature 30.0°C out of valid range
+    bool isThermostatOnTemperature() const;
+
+    // indicate is special temperature 4.5°C out of valid range
+    bool isThermostatOffTemperature() const;
+
 private:
     static double decodeByte(unsigned char byte);
     static double makeValid(double value);

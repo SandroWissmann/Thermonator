@@ -19,10 +19,11 @@ double Temperature::value() const
 
 unsigned char Temperature::encoded() const
 {
-    if (!isValid()) {
-        return 0;
+    if (isValid() || isThermostatOnTemperature() ||
+        isThermostatOffTemperature()) {
+        return static_cast<unsigned char>(mValue * 2);
     }
-    return static_cast<unsigned char>(mValue * 2);
+    return 0;
 }
 
 bool Temperature::isValid() const
@@ -31,6 +32,22 @@ bool Temperature::isValid() const
         return false;
     }
     if (mValue > 29.5) {
+        return false;
+    }
+    return true;
+}
+
+bool Temperature::isThermostatOnTemperature() const
+{
+    if (mValue != 30.0) {
+        return false;
+    }
+    return true;
+}
+
+bool Temperature::isThermostatOffTemperature() const
+{
+    if (mValue != 4.5) {
         return false;
     }
     return true;

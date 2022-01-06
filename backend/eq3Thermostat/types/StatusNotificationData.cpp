@@ -58,7 +58,9 @@ StatusNotificationData::fromEncodedData(const QByteArray &data)
     types::UnknownStatusByte unknownStatusByte{bytes.at(4)};
 
     types::Temperature targetTemperature{bytes.at(5)};
-    if (!targetTemperature.isValid()) {
+    if (!targetTemperature.isValid() &&
+        !targetTemperature.isThermostatOffTemperature() &&
+        !targetTemperature.isThermostatOnTemperature()) {
         qDebug() << Q_FUNC_INFO
                  << "targetTemperature is invalid. value:" << targetTemperature;
         return StatusNotificationData{};
@@ -123,7 +125,9 @@ bool StatusNotificationData::isValid() const
     if (!mUnknownStatusByte.isValid()) {
         return false;
     }
-    if (!mTargetTemperature.isValid()) {
+    if (!mTargetTemperature.isValid() &&
+        !mTargetTemperature.isThermostatOffTemperature() &&
+        !mTargetTemperature.isThermostatOnTemperature()) {
         return false;
     }
     // When vacation flag is not set we dont get a valid time from the

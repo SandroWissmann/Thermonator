@@ -8,8 +8,6 @@
 #include "command/DayTimer.hpp"
 #include "command/HardwareButtonsLock.hpp"
 #include "command/HardwareButtonsUnlock.hpp"
-#include "command/ThermostatOff.hpp"
-#include "command/ThermostatOn.hpp"
 #include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
 #include "types/DayTimer.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
@@ -18,6 +16,8 @@
 #include "types/SetCurrentDateTimeCommand.hpp"
 #include "types/SetEcoTemperatureCommand.hpp"
 #include "types/SetTemperatureCommand.hpp"
+#include "types/SetThermostatOffCommand.hpp"
+#include "types/SetThermostatOnCommand.hpp"
 #include "types/StatusNotificationData.hpp"
 
 #include <QDebug>
@@ -28,8 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandThermostatOn();
-    initCommandThermostatOff();
     initCommandBoostOn();
     initCommandBoostOff();
     initCommandHardwareButtonsLock();
@@ -133,28 +131,32 @@ void Controller::setEcoTemperature()
     emit sendCommand(command);
 }
 
-void Controller::thermostatOn()
+void Controller::setThermostatOn()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::ThermostatOn;
-    mWaitForAnswer = true;
-    mCommandThermostatOn->encodeCommand();
+    mLastCommandType = CommandType::SetThermostatOn;
+
+    types::SetThermostatOnCommand setThermostatOnCommand;
+    auto command = setThermostatOnCommand.encoded();
+    emit sendCommand(command);
 }
 
-void Controller::thermostatOff()
+void Controller::setThermostatOff()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::ThermostatOff;
-    mWaitForAnswer = true;
-    mCommandThermostatOff->encodeCommand();
+    mLastCommandType = CommandType::SetThermostatOff;
+
+    types::SetThermostatOffCommand setThermostatOffCommand;
+    auto command = setThermostatOffCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::boostOn()
@@ -264,9 +266,9 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::SetEcoTemperature:
         [[fallthrough]];
-    case CommandType::ThermostatOn:
+    case CommandType::SetThermostatOn:
         [[fallthrough]];
-    case CommandType::ThermostatOff:
+    case CommandType::SetThermostatOff:
         [[fallthrough]];
     case CommandType::BoostOn:
         [[fallthrough]];
@@ -288,23 +290,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandThermostatOn()
-{
-    mCommandThermostatOn = std::make_unique<command::ThermostatOn>(this);
-
-    connect(mCommandThermostatOn.get(), &command::ThermostatOn::commandEncoded,
-            this, &Controller::sendCommand);
-}
-
-void Controller::initCommandThermostatOff()
-{
-    mCommandThermostatOff = std::make_unique<command::ThermostatOff>(this);
-
-    connect(mCommandThermostatOff.get(),
-            &command::ThermostatOff::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandHardwareButtonsLock()
