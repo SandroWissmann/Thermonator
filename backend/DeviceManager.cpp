@@ -152,9 +152,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->configureComfortAndEcoTemperature(21.3, 17.8);
 
-    mEq3ThermostatController->setComfortTemperature();
+    // mEq3ThermostatController->setComfortTemperature();
 
-    // mEq3ThermostatController->switchToEcoTemperature();
+    mEq3ThermostatController->setEcoTemperature();
 
     // mEq3ThermostatController->thermostatOn();
 

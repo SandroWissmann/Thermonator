@@ -40,8 +40,6 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp    
         backend/eq3Thermostat/command/SimpleCommandBase.hpp
         backend/eq3Thermostat/command/SimpleCommandBase.cpp
-        backend/eq3Thermostat/command/SwitchToEcoTemperature.hpp
-        backend/eq3Thermostat/command/SwitchToEcoTemperature.cpp
         backend/eq3Thermostat/command/Temperature.hpp
         backend/eq3Thermostat/command/Temperature.cpp
         backend/eq3Thermostat/command/ThermostatOff.hpp
@@ -71,6 +69,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SerialNumberNotificationData.cpp        
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.cpp
+        backend/eq3Thermostat/types/SetEcoTemperatureCommand.hpp
+        backend/eq3Thermostat/types/SetEcoTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp      
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp
