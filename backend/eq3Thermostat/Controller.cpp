@@ -4,8 +4,6 @@
 #include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
 #include "command/DayTimer.hpp"
-#include "command/HardwareButtonsLock.hpp"
-#include "command/HardwareButtonsUnlock.hpp"
 #include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
 #include "types/DayTimer.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
@@ -15,6 +13,8 @@
 #include "types/SetComfortTemperatureCommand.hpp"
 #include "types/SetCurrentDateTimeCommand.hpp"
 #include "types/SetEcoTemperatureCommand.hpp"
+#include "types/SetHardwareButtonsLockCommand.hpp"
+#include "types/SetHardwareButtonsUnlockCommand.hpp"
 #include "types/SetTemperatureCommand.hpp"
 #include "types/SetThermostatOffCommand.hpp"
 #include "types/SetThermostatOnCommand.hpp"
@@ -28,8 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandHardwareButtonsLock();
-    initCommandHardwareButtonsUnlock();
     initCommandConfigureOpenWindowMode();
     initCommandConfigureOffsetTemperature();
     initCommandDayTimer();
@@ -185,28 +183,32 @@ void Controller::setBoostOff()
     emit sendCommand(command);
 }
 
-void Controller::hardwareButtonsLock()
+void Controller::setHardwareButtonsLock()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::HardwareButtonsLock;
-    mWaitForAnswer = true;
-    mCommandHardwareButtonsLock->encodeCommand();
+    mLastCommandType = CommandType::SetHardwareButtonsLock;
+
+    types::SetHardwareButtonsLockCommand setHardwareButtonsLockCommand;
+    auto command = setHardwareButtonsLockCommand.encoded();
+    emit sendCommand(command);
 }
 
-void Controller::hardwareButtonsUnlock()
+void Controller::setHardwareButtonsUnlock()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::HardwareButtonsUnlock;
-    mWaitForAnswer = true;
-    mCommandHardwareButtonsUnlock->encodeCommand();
+    mLastCommandType = CommandType::SetHardwareButtonsUnlock;
+
+    types::SetHardwareButtonsUnlockCommand setHardwareButtonsUnlockCommand;
+    auto command = setHardwareButtonsUnlockCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::configureOpenWindowMode(double openWindowTemperature,
@@ -276,9 +278,9 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::SetBoostOff:
         [[fallthrough]];
-    case CommandType::HardwareButtonsLock:
+    case CommandType::SetHardwareButtonsLock:
         [[fallthrough]];
-    case CommandType::HardwareButtonsUnlock:
+    case CommandType::SetHardwareButtonsUnlock:
         [[fallthrough]];
     case CommandType::ConfigureOpenWindowMode:
         [[fallthrough]];
@@ -292,26 +294,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandHardwareButtonsLock()
-{
-    mCommandHardwareButtonsLock =
-        std::make_unique<command::HardwareButtonsLock>(this);
-
-    connect(mCommandHardwareButtonsLock.get(),
-            &command::HardwareButtonsLock::commandEncoded, this,
-            &Controller::sendCommand);
-}
-
-void Controller::initCommandHardwareButtonsUnlock()
-{
-    mCommandHardwareButtonsUnlock =
-        std::make_unique<command::HardwareButtonsUnlock>(this);
-
-    connect(mCommandHardwareButtonsUnlock.get(),
-            &command::HardwareButtonsUnlock::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandConfigureOpenWindowMode()

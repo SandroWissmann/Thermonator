@@ -25,13 +25,7 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/DayTimer.hpp
-        backend/eq3Thermostat/command/DayTimer.cpp
-        backend/eq3Thermostat/command/HardwareButtonsControl.hpp
-        backend/eq3Thermostat/command/HardwareButtonsControl.cpp
-        backend/eq3Thermostat/command/HardwareButtonsLock.hpp
-        backend/eq3Thermostat/command/HardwareButtonsLock.cpp
-        backend/eq3Thermostat/command/HardwareButtonsUnlock.hpp
-        backend/eq3Thermostat/command/HardwareButtonsUnlock.cpp    
+        backend/eq3Thermostat/command/DayTimer.cpp  
         backend/eq3Thermostat/command/SimpleCommandBase.hpp
         backend/eq3Thermostat/command/SimpleCommandBase.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp
@@ -61,10 +55,14 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SetBoostOnCommand.cpp
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetComfortTemperatureCommand.cpp
+        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
+        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp
         backend/eq3Thermostat/types/SetEcoTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetEcoTemperatureCommand.cpp
-        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
-        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp      
+        backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.hpp
+        backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.cpp
+        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.hpp
+        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.cpp
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetThermostatOffCommand.hpp

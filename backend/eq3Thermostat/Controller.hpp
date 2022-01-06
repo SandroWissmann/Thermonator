@@ -10,8 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class HardwareButtonsLock;
-class HardwareButtonsUnlock;
 class ConfigureOpenWindowMode;
 class ConfigureOffsetTemperature;
 class DayTimer;
@@ -79,11 +77,11 @@ public:
 
     // Lock the hardware buttons
     Q_INVOKABLE
-    void hardwareButtonsLock();
+    void setHardwareButtonsLock();
 
     // Unlock the hardware buttons
     Q_INVOKABLE
-    void hardwareButtonsUnlock();
+    void setHardwareButtonsUnlock();
 
     // Set the values for open Window mode.
     // Temperature has to be in range 5.0 °C to 29.5 °C.
@@ -119,8 +117,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandHardwareButtonsLock();
-    void initCommandHardwareButtonsUnlock();
     void initCommandConfigureOpenWindowMode();
     void initCommandConfigureOffsetTemperature();
     void initCommandDayTimer();
@@ -145,8 +141,8 @@ private:
         SetThermostatOff,
         SetBoostOn,
         SetBoostOff,
-        HardwareButtonsLock,
-        HardwareButtonsUnlock,
+        SetHardwareButtonsLock,
+        SetHardwareButtonsUnlock,
         ConfigureOpenWindowMode,
         ConfigureOffsetTemperature,
         DayTimer
@@ -155,9 +151,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::HardwareButtonsLock> mCommandHardwareButtonsLock;
-    std::unique_ptr<command::HardwareButtonsUnlock>
-        mCommandHardwareButtonsUnlock;
     std::unique_ptr<command::ConfigureOpenWindowMode>
         mCommandConfigureOpenWindowMode;
     std::unique_ptr<command::ConfigureOffsetTemperature>
