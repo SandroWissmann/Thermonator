@@ -23,9 +23,7 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/BoostOff.hpp
         backend/eq3Thermostat/command/BoostOff.cpp
         backend/eq3Thermostat/command/BoostOn.hpp
-        backend/eq3Thermostat/command/BoostOn.cpp
-        backend/eq3Thermostat/command/ComfortAndEcoTemperature.hpp
-        backend/eq3Thermostat/command/ComfortAndEcoTemperature.cpp        
+        backend/eq3Thermostat/command/BoostOn.cpp     
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.hpp
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.cpp
         backend/eq3Thermostat/command/ConfigureOpenWindowMode.hpp
@@ -54,6 +52,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/ThermostatOn.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp
         backend/eq3Thermostat/types/AsciiSign.cpp
+        backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
+        backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.cpp
         backend/eq3Thermostat/types/Date.hpp
         backend/eq3Thermostat/types/Date.cpp
         backend/eq3Thermostat/types/DateTime.hpp
@@ -70,7 +70,7 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SerialNumber.hpp
         backend/eq3Thermostat/types/SerialNumber.cpp
         backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
-        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp   
+        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
         backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp      
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp

@@ -148,9 +148,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->setCurrentDateTime();
 
-    mEq3ThermostatController->setTemperature(21.2);
+    // mEq3ThermostatController->setTemperature(21.2);
 
-    // mEq3ThermostatController->setComfortAndEcoTemperature(21.5, 17.5);
+    mEq3ThermostatController->configureComfortAndEcoTemperature(21.3, 17.8);
 
     // mEq3ThermostatController->switchToComfortTemperature();
 

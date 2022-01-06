@@ -2,7 +2,6 @@
 
 #include "command/BoostOff.hpp"
 #include "command/BoostOn.hpp"
-#include "command/ComfortAndEcoTemperature.hpp"
 #include "command/ConfigureOffsetTemperature.hpp"
 #include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
@@ -13,6 +12,7 @@
 #include "command/SwitchToEcoTemperature.hpp"
 #include "command/ThermostatOff.hpp"
 #include "command/ThermostatOn.hpp"
+#include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
 #include "types/DayTimer.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
@@ -28,7 +28,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandComfortAndEcoTemperature();
     initCommandSwitchToComfortTemperature();
     initCommandSwitchToEcoTemperature();
     initCommandThermostatOn();
@@ -89,20 +88,23 @@ void Controller::setTemperature(double value)
     emit sendCommand(command);
 }
 
-void Controller::setComfortAndEcoTemperature(double comfortTemperature,
-                                             double ecoTemperature)
+void Controller::configureComfortAndEcoTemperature(double comfortValue,
+                                                   double ecoValue)
 {
     qDebug() << Q_FUNC_INFO;
-    comfortTemperature = clampTemperature(comfortTemperature);
-    ecoTemperature = clampTemperature(ecoTemperature);
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::ComfortAndEcoTemperature;
-    mWaitForAnswer = true;
-    mCommandComfortAndEcoTemperature->encodeCommand(comfortTemperature,
-                                                    ecoTemperature);
+    mLastCommandType = CommandType::ConfigureComfortAndEcoTemperature;
+
+    types::Temperature comfortTemperature{comfortValue};
+    types::Temperature ecoTemperature{ecoValue};
+    types::ConfigureComfortAndEcoTemperatureCommand
+        configureComfortAndEcoTemperatureCommand(comfortTemperature,
+                                                 ecoTemperature);
+    auto command = configureComfortAndEcoTemperatureCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::switchToComfortTemperature()
@@ -211,7 +213,7 @@ void Controller::configureOpenWindowMode(double openWindowTemperature,
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::ComfortAndEcoTemperature;
+    mLastCommandType = CommandType::ConfigureOpenWindowMode;
     mWaitForAnswer = true;
     mCommandConfigureOpenWindowMode->encodeCommand(openWindowTemperature,
                                                    openWindowInterval);
@@ -254,7 +256,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::SetTemperature:
         [[fallthrough]];
-    case CommandType::ComfortAndEcoTemperature:
+    case CommandType::ConfigureComfortAndEcoTemperature:
         [[fallthrough]];
     case CommandType::SwitchToComfortTemperature:
         [[fallthrough]];
@@ -284,16 +286,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandComfortAndEcoTemperature()
-{
-    mCommandComfortAndEcoTemperature =
-        std::make_unique<command::ComfortAndEcoTemperature>(this);
-
-    connect(mCommandComfortAndEcoTemperature.get(),
-            &command::ComfortAndEcoTemperature::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandSwitchToComfortTemperature()

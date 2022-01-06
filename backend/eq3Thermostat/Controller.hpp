@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class ComfortAndEcoTemperature;
 class SwitchToComfortTemperature;
 class SwitchToEcoTemperature;
 class ThermostatOn;
@@ -44,16 +43,18 @@ public:
     Q_INVOKABLE
     void setCurrentDateTime();
 
+    // set the current temperature
     // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
     // °C. If value is out of range clamping to the next value is performed
     Q_INVOKABLE
     void setTemperature(double value);
 
+    // configure the comfort and eco temperature
     // Temperature has to be in range 5.0 °C to 29.5 °C. Steps have to be in 0.5
     // °C. If value is out of range clamping to the next value is performed
     Q_INVOKABLE
-    void setComfortAndEcoTemperature(double comfortTemperature,
-                                     double ecoTemperature);
+    void configureComfortAndEcoTemperature(double comfortValue,
+                                           double ecoValue);
 
     // Current temperature is changed to the comfort temperature saved in the
     // thermostate
@@ -124,7 +125,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandComfortAndEcoTemperature();
     void initCommandSwitchToComfortTemperature();
     void initCommandSwitchToEcoTemperature();
     void initCommandThermostatOn();
@@ -150,7 +150,7 @@ private:
         RequestSerialNumber,
         SetCurrentDateTime,
         SetTemperature,
-        ComfortAndEcoTemperature,
+        ConfigureComfortAndEcoTemperature,
         SwitchToComfortTemperature,
         SwitchToEcoTemperature,
         ThermostatOn,
@@ -167,8 +167,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::ComfortAndEcoTemperature>
-        mCommandComfortAndEcoTemperature;
     std::unique_ptr<command::SwitchToComfortTemperature>
         mCommandSwitchToComfortTemperature;
     std::unique_ptr<command::SwitchToEcoTemperature>
