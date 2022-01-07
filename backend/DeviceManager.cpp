@@ -166,9 +166,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->setHardwareButtonsLock();
 
-    mEq3ThermostatController->setHardwareButtonsUnlock();
+    // mEq3ThermostatController->setHardwareButtonsUnlock();
 
-    // mEq3ThermostatController->configureOpenWindowMode(14.5, 38);
+    mEq3ThermostatController->configureOpenWindowMode(12, 15);
 
     // mEq3ThermostatController->configureOffsetTemperature(0.0);
 

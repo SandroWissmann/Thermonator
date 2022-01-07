@@ -20,8 +20,6 @@ set(PROJECT_SOURCES
         main.cpp
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.hpp
         backend/eq3Thermostat/command/ConfigureOffsetTemperature.cpp
-        backend/eq3Thermostat/command/ConfigureOpenWindowMode.hpp
-        backend/eq3Thermostat/command/ConfigureOpenWindowMode.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/DayTimer.hpp
@@ -32,6 +30,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/AsciiSign.cpp
         backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
         backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.cpp
+        backend/eq3Thermostat/types/ConfigureOpenWindowModeCommand.hpp
+        backend/eq3Thermostat/types/ConfigureOpenWindowModeCommand.cpp
         backend/eq3Thermostat/types/Date.hpp
         backend/eq3Thermostat/types/Date.cpp
         backend/eq3Thermostat/types/DateTime.hpp
@@ -62,7 +62,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.hpp
         backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.cpp
         backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.hpp
-        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.cpp
+        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.cpp        
+        backend/eq3Thermostat/types/SetOffsetTemperatureCommand.hpp
+        backend/eq3Thermostat/types/SetOffsetTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetThermostatOffCommand.hpp

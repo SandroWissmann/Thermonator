@@ -10,7 +10,6 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class ConfigureOpenWindowMode;
 class ConfigureOffsetTemperature;
 class DayTimer;
 } // namespace command
@@ -91,8 +90,8 @@ public:
     // If value is out of range clamping to the next value is performed
     // If value is not exact in step clamping is performed aswell.
     Q_INVOKABLE
-    void configureOpenWindowMode(double openWindowTemperature,
-                                 int openWindowInterval);
+    void configureOpenWindowMode(double openWindowTemperatureValue,
+                                 int openWindowIntervalValue);
 
     // Temperature has to be in range -3.5 °C to 3.5 °C. Steps have to be in 0.5
     // °C If value is out of range clamping to the next value is performed
@@ -117,7 +116,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandConfigureOpenWindowMode();
     void initCommandConfigureOffsetTemperature();
     void initCommandDayTimer();
 
@@ -151,8 +149,6 @@ private:
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::ConfigureOpenWindowMode>
-        mCommandConfigureOpenWindowMode;
     std::unique_ptr<command::ConfigureOffsetTemperature>
         mCommandConfigureOffsetTemperature;
     std::unique_ptr<command::DayTimer> mCommandDayTimer;

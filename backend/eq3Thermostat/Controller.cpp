@@ -1,11 +1,12 @@
 #include "Controller.hpp"
 
 #include "command/ConfigureOffsetTemperature.hpp"
-#include "command/ConfigureOpenWindowMode.hpp"
 #include "command/DateTime.hpp"
 #include "command/DayTimer.hpp"
 #include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
+#include "types/ConfigureOpenWindowModeCommand.hpp"
 #include "types/DayTimer.hpp"
+#include "types/OpenWindowInterval.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
 #include "types/SetBoostOffCommand.hpp"
@@ -28,7 +29,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandConfigureOpenWindowMode();
     initCommandConfigureOffsetTemperature();
     initCommandDayTimer();
 }
@@ -211,20 +211,22 @@ void Controller::setHardwareButtonsUnlock()
     emit sendCommand(command);
 }
 
-void Controller::configureOpenWindowMode(double openWindowTemperature,
-                                         int openWindowInterval)
+void Controller::configureOpenWindowMode(double openWindowTemperatureValue,
+                                         int openWindowIntervalValue)
 {
     qDebug() << Q_FUNC_INFO;
-    openWindowTemperature = clampTemperature(openWindowTemperature);
-    openWindowInterval = clampInterval(openWindowInterval);
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
     mLastCommandType = CommandType::ConfigureOpenWindowMode;
-    mWaitForAnswer = true;
-    mCommandConfigureOpenWindowMode->encodeCommand(openWindowTemperature,
-                                                   openWindowInterval);
+
+    types::Temperature openWindowTemperature{openWindowTemperatureValue};
+    types::OpenWindowInterval openWindowInterval{openWindowIntervalValue};
+    types::ConfigureOpenWindowModeCommand configureOpenWindowModeCommand(
+        openWindowTemperature, openWindowInterval);
+    auto command = configureOpenWindowModeCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::configureOffsetTemperature(double offsetTemperature)
@@ -294,16 +296,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandConfigureOpenWindowMode()
-{
-    mCommandConfigureOpenWindowMode =
-        std::make_unique<command::ConfigureOpenWindowMode>(this);
-
-    connect(mCommandConfigureOpenWindowMode.get(),
-            &command::ConfigureOpenWindowMode::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandConfigureOffsetTemperature()
