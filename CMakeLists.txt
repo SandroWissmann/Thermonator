@@ -18,10 +18,6 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        backend/eq3Thermostat/command/DateTime.hpp
-        backend/eq3Thermostat/command/DateTime.cpp
-        backend/eq3Thermostat/command/DayTimer.hpp
-        backend/eq3Thermostat/command/DayTimer.cpp  
         backend/eq3Thermostat/types/AsciiSign.hpp
         backend/eq3Thermostat/types/AsciiSign.cpp
         backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
@@ -33,10 +29,13 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/DateTime.hpp
         backend/eq3Thermostat/types/DateTime.cpp
         backend/eq3Thermostat/types/DayOfWeek.hpp
+        backend/eq3Thermostat/types/DayOfWeek.cpp
         backend/eq3Thermostat/types/DayTimer.hpp
         backend/eq3Thermostat/types/DayTimer.cpp
         backend/eq3Thermostat/types/DayTimerEntry.hpp
-        backend/eq3Thermostat/types/DayTimerEntry.cpp
+        backend/eq3Thermostat/types/DayTimerEntry.cpp     
+        backend/eq3Thermostat/types/GetDayTimerCommand.hpp
+        backend/eq3Thermostat/types/GetDayTimerCommand.cpp
         backend/eq3Thermostat/types/OpenWindowInterval.hpp
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
         backend/eq3Thermostat/types/RequestSerialNumberCommand.hpp

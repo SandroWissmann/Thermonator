@@ -1,10 +1,9 @@
 #include "Controller.hpp"
 
-#include "command/DateTime.hpp"
-#include "command/DayTimer.hpp"
 #include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
 #include "types/ConfigureOpenWindowModeCommand.hpp"
 #include "types/DayTimer.hpp"
+#include "types/GetDayTimerCommand.hpp"
 #include "types/OpenWindowInterval.hpp"
 #include "types/RequestSerialNumberCommand.hpp"
 #include "types/SerialNumberNotificationData.hpp"
@@ -28,7 +27,6 @@ namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandDayTimer();
 }
 
 // declaration has to be in cpp to make std::unique_ptr member forward
@@ -243,16 +241,21 @@ void Controller::setTemperatureOffset(double value)
     emit sendCommand(command);
 }
 
-void Controller::requestDayTimer(types::DayOfWeek dayOfWeek)
+void Controller::getDayTimer(types::DayOfWeek dayOfWeek)
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::DayTimer;
-    mWaitForAnswer = true;
-    mCommandDayTimer->encodeCommand(dayOfWeek);
+    mLastCommandType = CommandType::GetDayTimer;
+
+    // assume here dayOfWeek is never invalid from caller site
+    Q_ASSERT(dayOfWeek != types::DayOfWeek::invalid);
+
+    types::GetDayTimerCommand getDayTimerCommand(dayOfWeek);
+    auto command = getDayTimerCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::onAnswerReceived(const QByteArray &answer)
@@ -290,21 +293,13 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     case CommandType::SetTemperatureOffset:
         decodeAsStatusNotification(answer);
         break;
-    case CommandType::DayTimer:
+    case CommandType::GetDayTimer:
         decodeAsDayTimerNotification(answer);
         break;
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandDayTimer()
-{
-    mCommandDayTimer = std::make_unique<command::DayTimer>(this);
-
-    connect(mCommandDayTimer.get(), &command::DayTimer::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::decodeAsSerialNumberNotification(const QByteArray &answer)

@@ -170,10 +170,10 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->configureOpenWindowMode(12, 15);
 
-    mEq3ThermostatController->setTemperatureOffset(0.0);
+    // mEq3ThermostatController->setTemperatureOffset(0.0);
 
-    // mEq3ThermostatController->requestDayTimer(
-    //     eq3thermostat::types::DayOfWeek::friday);
+    mEq3ThermostatController->getDayTimer(
+        eq3thermostat::types::DayOfWeek::friday);
 }
 
 } // namespace thermonator

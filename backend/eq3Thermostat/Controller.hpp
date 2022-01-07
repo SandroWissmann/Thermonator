@@ -9,11 +9,6 @@
 
 namespace thermonator::eq3thermostat {
 
-namespace command {
-class SetTemperatureOffset;
-class DayTimer;
-} // namespace command
-
 namespace types {
 class DayTimer;
 class StatusNotificationData;
@@ -100,7 +95,7 @@ public:
     void setTemperatureOffset(double temperatureOffset);
 
     Q_INVOKABLE
-    void requestDayTimer(types::DayOfWeek dayOfWeek);
+    void getDayTimer(types::DayOfWeek dayOfWeek);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -117,8 +112,6 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandDayTimer();
-
     void decodeAsSerialNumberNotification(const QByteArray &answer);
     void decodeAsStatusNotification(const QByteArray &answer);
     void decodeAsDayTimerNotification(const QByteArray &answer);
@@ -139,13 +132,15 @@ private:
         SetHardwareButtonsUnlock,
         ConfigureOpenWindowMode,
         SetTemperatureOffset,
-        DayTimer
+        GetDayTimer
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
-    bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::DayTimer> mCommandDayTimer;
+    // we should move this into io service and create a queue there which
+    // "stacks" commands in a queue. probally we should also tell it which
+    // command type we are sending. Or create a queue class inbetween ?
+    bool mWaitForAnswer{false};
 };
 
 } // namespace thermonator::eq3thermostat

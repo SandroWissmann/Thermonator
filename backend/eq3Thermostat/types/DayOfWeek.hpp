@@ -26,6 +26,9 @@ private:
 
 typedef DayOfWeekQEnum::Value DayOfWeek;
 
+// if value is invalid we return 0 == saturday and log a warning
+unsigned char encoded(DayOfWeek dayOfWeek);
+
 } // namespace thermonator::eq3thermostat::types
 
 #endif
