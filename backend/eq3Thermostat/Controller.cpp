@@ -1,6 +1,5 @@
 #include "Controller.hpp"
 
-#include "command/ConfigureOffsetTemperature.hpp"
 #include "command/DateTime.hpp"
 #include "command/DayTimer.hpp"
 #include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
@@ -17,19 +16,18 @@
 #include "types/SetHardwareButtonsLockCommand.hpp"
 #include "types/SetHardwareButtonsUnlockCommand.hpp"
 #include "types/SetTemperatureCommand.hpp"
+#include "types/SetTemperatureOffsetCommand.hpp"
 #include "types/SetThermostatOffCommand.hpp"
 #include "types/SetThermostatOnCommand.hpp"
 #include "types/StatusNotificationData.hpp"
+#include "types/TemperatureOffset.hpp"
 
 #include <QDebug>
-
-#include <algorithm> // for std::clamp
 
 namespace thermonator::eq3thermostat {
 
 Controller::Controller(QObject *parent) : QObject{parent}
 {
-    initCommandConfigureOffsetTemperature();
     initCommandDayTimer();
 }
 
@@ -229,17 +227,20 @@ void Controller::configureOpenWindowMode(double openWindowTemperatureValue,
     emit sendCommand(command);
 }
 
-void Controller::configureOffsetTemperature(double offsetTemperature)
+void Controller::setTemperatureOffset(double value)
 {
     qDebug() << Q_FUNC_INFO;
-    offsetTemperature = clampOffsetTemperature(offsetTemperature);
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::ConfigureOffsetTemperature;
-    mWaitForAnswer = true;
-    mCommandConfigureOffsetTemperature->encodeCommand(offsetTemperature);
+    mLastCommandType = CommandType::SetTemperatureOffset;
+
+    types::TemperatureOffset temperatureOffset{value};
+    types::SetTemperatureOffsetCommand setTemperatureOffsetCommand(
+        temperatureOffset);
+    auto command = setTemperatureOffsetCommand.encoded();
+    emit sendCommand(command);
 }
 
 void Controller::requestDayTimer(types::DayOfWeek dayOfWeek)
@@ -286,7 +287,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         [[fallthrough]];
     case CommandType::ConfigureOpenWindowMode:
         [[fallthrough]];
-    case CommandType::ConfigureOffsetTemperature:
+    case CommandType::SetTemperatureOffset:
         decodeAsStatusNotification(answer);
         break;
     case CommandType::DayTimer:
@@ -296,16 +297,6 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
         break;
     }
-}
-
-void Controller::initCommandConfigureOffsetTemperature()
-{
-    mCommandConfigureOffsetTemperature =
-        std::make_unique<command::ConfigureOffsetTemperature>(this);
-
-    connect(mCommandConfigureOffsetTemperature.get(),
-            &command::ConfigureOffsetTemperature::commandEncoded, this,
-            &Controller::sendCommand);
 }
 
 void Controller::initCommandDayTimer()
@@ -352,31 +343,6 @@ void Controller::decodeAsDayTimerNotification(const QByteArray &answer)
         return;
     }
     emit dayTimerReceived(dayTimer);
-}
-
-double Controller::clampTemperature(double temperature)
-{
-    constexpr auto minTemperature = 5.0;
-    constexpr auto maxTemperature = 29.5;
-    temperature = std::clamp(temperature, minTemperature, maxTemperature);
-    return temperature;
-}
-
-double Controller::clampOffsetTemperature(double offsetTemperature)
-{
-    constexpr auto minOffsetTemperature = -3.5;
-    constexpr auto maxOffsetTemperature = 3.5;
-    offsetTemperature = std::clamp(offsetTemperature, minOffsetTemperature,
-                                   maxOffsetTemperature);
-    return offsetTemperature;
-}
-
-int Controller::clampInterval(int interval)
-{
-    constexpr auto minInterval = 0;
-    constexpr auto maxInterval = 60;
-    interval = std::clamp(interval, minInterval, maxInterval);
-    return interval;
 }
 
 } // namespace thermonator::eq3thermostat

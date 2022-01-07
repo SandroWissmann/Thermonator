@@ -168,9 +168,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->setHardwareButtonsUnlock();
 
-    mEq3ThermostatController->configureOpenWindowMode(12, 15);
+    // mEq3ThermostatController->configureOpenWindowMode(12, 15);
 
-    // mEq3ThermostatController->configureOffsetTemperature(0.0);
+    mEq3ThermostatController->setTemperatureOffset(0.0);
 
     // mEq3ThermostatController->requestDayTimer(
     //     eq3thermostat::types::DayOfWeek::friday);

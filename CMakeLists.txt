@@ -18,14 +18,10 @@ set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        backend/eq3Thermostat/command/ConfigureOffsetTemperature.hpp
-        backend/eq3Thermostat/command/ConfigureOffsetTemperature.cpp
         backend/eq3Thermostat/command/DateTime.hpp
         backend/eq3Thermostat/command/DateTime.cpp
         backend/eq3Thermostat/command/DayTimer.hpp
         backend/eq3Thermostat/command/DayTimer.cpp  
-        backend/eq3Thermostat/command/SimpleCommandBase.hpp
-        backend/eq3Thermostat/command/SimpleCommandBase.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp
         backend/eq3Thermostat/types/AsciiSign.cpp
         backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
@@ -63,10 +59,10 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.cpp
         backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.hpp
         backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.cpp        
-        backend/eq3Thermostat/types/SetOffsetTemperatureCommand.hpp
-        backend/eq3Thermostat/types/SetOffsetTemperatureCommand.cpp
         backend/eq3Thermostat/types/SetTemperatureCommand.hpp
         backend/eq3Thermostat/types/SetTemperatureCommand.cpp
+        backend/eq3Thermostat/types/SetTemperatureOffsetCommand.hpp
+        backend/eq3Thermostat/types/SetTemperatureOffsetCommand.cpp
         backend/eq3Thermostat/types/SetThermostatOffCommand.hpp
         backend/eq3Thermostat/types/SetThermostatOffCommand.cpp
         backend/eq3Thermostat/types/SetThermostatOnCommand.hpp

@@ -10,7 +10,7 @@
 namespace thermonator::eq3thermostat {
 
 namespace command {
-class ConfigureOffsetTemperature;
+class SetTemperatureOffset;
 class DayTimer;
 } // namespace command
 
@@ -93,10 +93,11 @@ public:
     void configureOpenWindowMode(double openWindowTemperatureValue,
                                  int openWindowIntervalValue);
 
-    // Temperature has to be in range -3.5 °C to 3.5 °C. Steps have to be in 0.5
-    // °C If value is out of range clamping to the next value is performed
+    // Temperature offset has to be in range -3.5 °C to 3.5 °C. Steps have to be
+    // in 0.5 °C. If value is out of range clamping to the next value is
+    // performed
     Q_INVOKABLE
-    void configureOffsetTemperature(double offsetTemperature);
+    void setTemperatureOffset(double temperatureOffset);
 
     Q_INVOKABLE
     void requestDayTimer(types::DayOfWeek dayOfWeek);
@@ -116,16 +117,11 @@ signals:
     void dayTimerReceived(const types::DayTimer &dayTimer);
 
 private:
-    void initCommandConfigureOffsetTemperature();
     void initCommandDayTimer();
 
     void decodeAsSerialNumberNotification(const QByteArray &answer);
     void decodeAsStatusNotification(const QByteArray &answer);
     void decodeAsDayTimerNotification(const QByteArray &answer);
-
-    double clampTemperature(double temperature);
-    double clampOffsetTemperature(double offsetTemperature);
-    int clampInterval(int interval);
 
     enum class CommandType {
         Unknown,
@@ -142,15 +138,13 @@ private:
         SetHardwareButtonsLock,
         SetHardwareButtonsUnlock,
         ConfigureOpenWindowMode,
-        ConfigureOffsetTemperature,
+        SetTemperatureOffset,
         DayTimer
     };
 
     CommandType mLastCommandType{CommandType::Unknown};
     bool mWaitForAnswer{false};
 
-    std::unique_ptr<command::ConfigureOffsetTemperature>
-        mCommandConfigureOffsetTemperature;
     std::unique_ptr<command::DayTimer> mCommandDayTimer;
 };
 
