@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 DayTimerEntry::DayTimerEntry(const Time &time, double temperature)
     : mTime{time}, mTemperature{temperature}
@@ -45,4 +45,4 @@ QDebug operator<<(QDebug debug, const DayTimerEntry &dayTimerEntry)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

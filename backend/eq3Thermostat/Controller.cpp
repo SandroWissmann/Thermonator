@@ -1,24 +1,24 @@
 #include "Controller.hpp"
 
-#include "types/ConfigureComfortAndEcoTemperatureCommand.hpp"
-#include "types/ConfigureOpenWindowModeCommand.hpp"
-#include "types/DayTimer.hpp"
-#include "types/GetDayTimerCommand.hpp"
+#include "command/ConfigureComfortAndEcoTemperatureCommand.hpp"
+#include "command/ConfigureOpenWindowModeCommand.hpp"
+#include "command/GetDayTimerCommand.hpp"
+#include "command/GetSerialNumberCommand.hpp"
+#include "command/SetBoostOffCommand.hpp"
+#include "command/SetBoostOnCommand.hpp"
+#include "command/SetComfortTemperatureCommand.hpp"
+#include "command/SetCurrentDateTimeCommand.hpp"
+#include "command/SetEcoTemperatureCommand.hpp"
+#include "command/SetHardwareButtonsLockCommand.hpp"
+#include "command/SetHardwareButtonsUnlockCommand.hpp"
+#include "command/SetTemperatureCommand.hpp"
+#include "command/SetTemperatureOffsetCommand.hpp"
+#include "command/SetThermostatOffCommand.hpp"
+#include "command/SetThermostatOnCommand.hpp"
+#include "notification/DayTimerNotification.hpp"
+#include "notification/SerialNumberNotification.hpp"
+#include "notification/StatusNotification.hpp"
 #include "types/OpenWindowInterval.hpp"
-#include "types/RequestSerialNumberCommand.hpp"
-#include "types/SerialNumberNotificationData.hpp"
-#include "types/SetBoostOffCommand.hpp"
-#include "types/SetBoostOnCommand.hpp"
-#include "types/SetComfortTemperatureCommand.hpp"
-#include "types/SetCurrentDateTimeCommand.hpp"
-#include "types/SetEcoTemperatureCommand.hpp"
-#include "types/SetHardwareButtonsLockCommand.hpp"
-#include "types/SetHardwareButtonsUnlockCommand.hpp"
-#include "types/SetTemperatureCommand.hpp"
-#include "types/SetTemperatureOffsetCommand.hpp"
-#include "types/SetThermostatOffCommand.hpp"
-#include "types/SetThermostatOnCommand.hpp"
-#include "types/StatusNotificationData.hpp"
 #include "types/TemperatureOffset.hpp"
 
 #include <QDebug>
@@ -33,16 +33,16 @@ Controller::Controller(QObject *parent) : QObject{parent}
 // declaration work
 Controller::~Controller() = default;
 
-void Controller::requestSerialNumber()
+void Controller::getSerialNumber()
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
         qDebug() << Q_FUNC_INFO << "Command already in progress";
         return;
     }
-    mLastCommandType = CommandType::RequestSerialNumber;
+    mLastCommandType = CommandType::GetSerialNumber;
 
-    types::RequestSerialNumberCommand requestSerialNumberCommand;
+    GetSerialNumberCommand requestSerialNumberCommand;
     auto command = requestSerialNumberCommand.encoded();
     emit sendCommand(command);
 }
@@ -56,7 +56,7 @@ void Controller::setCurrentDateTime()
     }
     mLastCommandType = CommandType::SetCurrentDateTime;
 
-    types::SetCurrentDateTimeCommand setCurrentDateTimeCommand;
+    SetCurrentDateTimeCommand setCurrentDateTimeCommand;
     auto command = setCurrentDateTimeCommand.encoded();
     emit sendCommand(command);
 }
@@ -70,8 +70,8 @@ void Controller::setTemperature(double value)
     }
     mLastCommandType = CommandType::SetTemperature;
 
-    types::Temperature temperature{value};
-    types::SetTemperatureCommand setTemperatureCommand(temperature);
+    Temperature temperature{value};
+    SetTemperatureCommand setTemperatureCommand(temperature);
     auto command = setTemperatureCommand.encoded();
     emit sendCommand(command);
 }
@@ -86,9 +86,9 @@ void Controller::configureComfortAndEcoTemperature(double comfortValue,
     }
     mLastCommandType = CommandType::ConfigureComfortAndEcoTemperature;
 
-    types::Temperature comfortTemperature{comfortValue};
-    types::Temperature ecoTemperature{ecoValue};
-    types::ConfigureComfortAndEcoTemperatureCommand
+    Temperature comfortTemperature{comfortValue};
+    Temperature ecoTemperature{ecoValue};
+    ConfigureComfortAndEcoTemperatureCommand
         configureComfortAndEcoTemperatureCommand(comfortTemperature,
                                                  ecoTemperature);
     auto command = configureComfortAndEcoTemperatureCommand.encoded();
@@ -104,7 +104,7 @@ void Controller::setComfortTemperature()
     }
     mLastCommandType = CommandType::SetComfortTemperature;
 
-    types::SetComfortTemperatureCommand setComfortTemperatureCommand;
+    SetComfortTemperatureCommand setComfortTemperatureCommand;
     auto command = setComfortTemperatureCommand.encoded();
     emit sendCommand(command);
 }
@@ -118,7 +118,7 @@ void Controller::setEcoTemperature()
     }
     mLastCommandType = CommandType::SetEcoTemperature;
 
-    types::SetEcoTemperatureCommand setEcoTemperatureCommand;
+    SetEcoTemperatureCommand setEcoTemperatureCommand;
     auto command = setEcoTemperatureCommand.encoded();
     emit sendCommand(command);
 }
@@ -132,7 +132,7 @@ void Controller::setThermostatOn()
     }
     mLastCommandType = CommandType::SetThermostatOn;
 
-    types::SetThermostatOnCommand setThermostatOnCommand;
+    SetThermostatOnCommand setThermostatOnCommand;
     auto command = setThermostatOnCommand.encoded();
     emit sendCommand(command);
 }
@@ -146,7 +146,7 @@ void Controller::setThermostatOff()
     }
     mLastCommandType = CommandType::SetThermostatOff;
 
-    types::SetThermostatOffCommand setThermostatOffCommand;
+    SetThermostatOffCommand setThermostatOffCommand;
     auto command = setThermostatOffCommand.encoded();
     emit sendCommand(command);
 }
@@ -160,7 +160,7 @@ void Controller::setBoostOn()
     }
     mLastCommandType = CommandType::SetBoostOn;
 
-    types::SetBoostOnCommand setBoostOnCommand;
+    SetBoostOnCommand setBoostOnCommand;
     auto command = setBoostOnCommand.encoded();
     emit sendCommand(command);
 }
@@ -174,7 +174,7 @@ void Controller::setBoostOff()
     }
     mLastCommandType = CommandType::SetBoostOff;
 
-    types::SetBoostOffCommand setBoostOffCommand;
+    SetBoostOffCommand setBoostOffCommand;
     auto command = setBoostOffCommand.encoded();
     emit sendCommand(command);
 }
@@ -188,7 +188,7 @@ void Controller::setHardwareButtonsLock()
     }
     mLastCommandType = CommandType::SetHardwareButtonsLock;
 
-    types::SetHardwareButtonsLockCommand setHardwareButtonsLockCommand;
+    SetHardwareButtonsLockCommand setHardwareButtonsLockCommand;
     auto command = setHardwareButtonsLockCommand.encoded();
     emit sendCommand(command);
 }
@@ -202,7 +202,7 @@ void Controller::setHardwareButtonsUnlock()
     }
     mLastCommandType = CommandType::SetHardwareButtonsUnlock;
 
-    types::SetHardwareButtonsUnlockCommand setHardwareButtonsUnlockCommand;
+    SetHardwareButtonsUnlockCommand setHardwareButtonsUnlockCommand;
     auto command = setHardwareButtonsUnlockCommand.encoded();
     emit sendCommand(command);
 }
@@ -217,9 +217,9 @@ void Controller::configureOpenWindowMode(double openWindowTemperatureValue,
     }
     mLastCommandType = CommandType::ConfigureOpenWindowMode;
 
-    types::Temperature openWindowTemperature{openWindowTemperatureValue};
-    types::OpenWindowInterval openWindowInterval{openWindowIntervalValue};
-    types::ConfigureOpenWindowModeCommand configureOpenWindowModeCommand(
+    Temperature openWindowTemperature{openWindowTemperatureValue};
+    OpenWindowInterval openWindowInterval{openWindowIntervalValue};
+    ConfigureOpenWindowModeCommand configureOpenWindowModeCommand(
         openWindowTemperature, openWindowInterval);
     auto command = configureOpenWindowModeCommand.encoded();
     emit sendCommand(command);
@@ -234,14 +234,13 @@ void Controller::setTemperatureOffset(double value)
     }
     mLastCommandType = CommandType::SetTemperatureOffset;
 
-    types::TemperatureOffset temperatureOffset{value};
-    types::SetTemperatureOffsetCommand setTemperatureOffsetCommand(
-        temperatureOffset);
+    TemperatureOffset temperatureOffset{value};
+    SetTemperatureOffsetCommand setTemperatureOffsetCommand(temperatureOffset);
     auto command = setTemperatureOffsetCommand.encoded();
     emit sendCommand(command);
 }
 
-void Controller::getDayTimer(types::DayOfWeek dayOfWeek)
+void Controller::getDayTimer(DayOfWeek dayOfWeek)
 {
     qDebug() << Q_FUNC_INFO;
     if (mWaitForAnswer) {
@@ -251,9 +250,9 @@ void Controller::getDayTimer(types::DayOfWeek dayOfWeek)
     mLastCommandType = CommandType::GetDayTimer;
 
     // assume here dayOfWeek is never invalid from caller site
-    Q_ASSERT(dayOfWeek != types::DayOfWeek::invalid);
+    Q_ASSERT(dayOfWeek != DayOfWeek::invalid);
 
-    types::GetDayTimerCommand getDayTimerCommand(dayOfWeek);
+    GetDayTimerCommand getDayTimerCommand(dayOfWeek);
     auto command = getDayTimerCommand.encoded();
     emit sendCommand(command);
 }
@@ -263,7 +262,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
     mWaitForAnswer = false;
     qDebug() << Q_FUNC_INFO;
     switch (mLastCommandType) {
-    case CommandType::RequestSerialNumber:
+    case CommandType::GetSerialNumber:
         decodeAsSerialNumberNotification(answer);
         break;
     case CommandType::SetCurrentDateTime:
@@ -305,39 +304,38 @@ void Controller::onAnswerReceived(const QByteArray &answer)
 void Controller::decodeAsSerialNumberNotification(const QByteArray &answer)
 {
     qDebug() << Q_FUNC_INFO;
-    auto serialNumberNotificationData =
-        types::SerialNumberNotificationData::fromEncodedData(answer);
+    auto serialNumberNotification =
+        SerialNumberNotification::fromEncodedData(answer);
 
-    if (!serialNumberNotificationData.isValid()) {
-        qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
+    if (!serialNumberNotification.isValid()) {
+        qDebug() << Q_FUNC_INFO << "serialNumberNotification is invalid";
         return;
     }
-    emit serialNumberNotificationDataReceived(serialNumberNotificationData);
+    emit serialNumberNotificationReceived(serialNumberNotification);
 }
 
 void Controller::decodeAsStatusNotification(const QByteArray &answer)
 {
     qDebug() << Q_FUNC_INFO;
-    auto statusNotificationData =
-        types::StatusNotificationData::fromEncodedData(answer);
+    auto statusNotification = StatusNotification::fromEncodedData(answer);
 
-    if (!statusNotificationData.isValid()) {
-        qDebug() << Q_FUNC_INFO << "statusNotificationData is invalid";
+    if (!statusNotification.isValid()) {
+        qDebug() << Q_FUNC_INFO << "statusNotification is invalid";
         return;
     }
-    emit statusNotificationDataReceived(statusNotificationData);
+    emit statusNotificationReceived(statusNotification);
 }
 
 void Controller::decodeAsDayTimerNotification(const QByteArray &answer)
 {
-    qDebug() << Q_FUNC_INFO << "decode as DayTimerNotification";
-    auto dayTimer = types::DayTimer::fromEncodedData(answer);
+    qDebug() << Q_FUNC_INFO;
+    auto dayTimerNotification = DayTimerNotification::fromEncodedData(answer);
 
-    if (!dayTimer.isValid()) {
-        qDebug() << Q_FUNC_INFO << "dayTimer is invalid";
+    if (!dayTimerNotification.isValid()) {
+        qDebug() << Q_FUNC_INFO << "DayTimerNotification is invalid";
         return;
     }
-    emit dayTimerReceived(dayTimer);
+    emit dayTimerNotificationReceived(dayTimerNotification);
 }
 
 } // namespace thermonator::eq3thermostat

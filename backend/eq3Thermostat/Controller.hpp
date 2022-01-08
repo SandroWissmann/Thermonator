@@ -9,11 +9,9 @@
 
 namespace thermonator::eq3thermostat {
 
-namespace types {
-class DayTimer;
-class StatusNotificationData;
-class SerialNumberNotificationData;
-} // namespace types
+class SerialNumberNotification;
+class StatusNotification;
+class DayTimerNotification;
 
 class Controller : public QObject {
     Q_OBJECT
@@ -23,7 +21,7 @@ public:
 
     // Query serial number of thermostate
     Q_INVOKABLE
-    void requestSerialNumber();
+    void getSerialNumber();
 
     // Set current date and time from system in the thermostate
     Q_INVOKABLE
@@ -95,21 +93,24 @@ public:
     void setTemperatureOffset(double temperatureOffset);
 
     Q_INVOKABLE
-    void getDayTimer(types::DayOfWeek dayOfWeek);
+    void getDayTimer(DayOfWeek dayOfWeek);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
 signals:
     void sendCommand(const QByteArray &command);
 
-    void serialNumberNotificationDataReceived(
-        const types::SerialNumberNotificationData
-            &serialNumberNotificationData);
+    void serialNumberNotificationReceived(
+        const thermonator::eq3thermostat::SerialNumberNotification
+            &serialNumberNotification);
 
-    void statusNotificationDataReceived(
-        const types::StatusNotificationData &statusNotificationData);
+    void statusNotificationReceived(
+        const thermonator::eq3thermostat::StatusNotification
+            &statusNotification);
 
-    void dayTimerReceived(const types::DayTimer &dayTimer);
+    void dayTimerNotificationReceived(
+        const thermonator::eq3thermostat::DayTimerNotification
+            &dayTimerNotification);
 
 private:
     void decodeAsSerialNumberNotification(const QByteArray &answer);
@@ -118,7 +119,7 @@ private:
 
     enum class CommandType {
         Unknown,
-        RequestSerialNumber,
+        GetSerialNumber,
         SetCurrentDateTime,
         SetTemperature,
         ConfigureComfortAndEcoTemperature,

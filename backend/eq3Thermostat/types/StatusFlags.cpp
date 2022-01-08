@@ -1,6 +1,6 @@
 #include "StatusFlags.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 StatusFlags::StatusFlags(unsigned char byte)
     : mBitset{static_cast<unsigned int>(byte)}
@@ -74,4 +74,4 @@ QDebug operator<<(QDebug debug, const StatusFlags &statusFlags)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

@@ -1,6 +1,6 @@
 #include "ValvePosition.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 ValvePosition::ValvePosition(unsigned char byte) : mValue(decodeByte(byte))
 {
@@ -37,4 +37,4 @@ QDebug operator<<(QDebug debug, const ValvePosition &valvePosition)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

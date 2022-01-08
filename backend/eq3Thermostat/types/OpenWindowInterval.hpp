@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_OPENWINDOWINTERVAL_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_OPENWINDOWINTERVAL_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_OPENWINDOWINTERVAL_HPP
+#define THERMONATOR_EQ3THERMOSTAT_OPENWINDOWINTERVAL_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class OpenWindowInterval {
 public:
@@ -46,6 +46,6 @@ inline bool operator!=(const OpenWindowInterval &lhs,
 
 QDebug operator<<(QDebug debug, const OpenWindowInterval &openWindowInterval);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

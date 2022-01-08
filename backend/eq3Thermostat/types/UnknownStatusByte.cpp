@@ -1,6 +1,6 @@
 #include "UnknownStatusByte.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 UnknownStatusByte::UnknownStatusByte(unsigned char byte)
     : mValue(decodeByte(byte))
@@ -32,4 +32,4 @@ QDebug operator<<(QDebug debug, const UnknownStatusByte &unknownStatusByte)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

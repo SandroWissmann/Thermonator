@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_ASCIISIGN_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_ASCIISIGN_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_ASCIISIGN_HPP
+#define THERMONATOR_EQ3THERMOSTAT_ASCIISIGN_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class AsciiSign {
 public:
@@ -33,6 +33,6 @@ inline bool operator!=(const AsciiSign &lhs, const AsciiSign &rhs)
 
 QDebug operator<<(QDebug debug, const AsciiSign &asciiSign);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

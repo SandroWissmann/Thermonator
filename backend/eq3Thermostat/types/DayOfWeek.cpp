@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 unsigned char encoded(DayOfWeek dayOfWeek)
 {
@@ -13,4 +13,4 @@ unsigned char encoded(DayOfWeek dayOfWeek)
     return static_cast<unsigned char>(dayOfWeek);
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

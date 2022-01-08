@@ -1,8 +1,8 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 #define THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 
-#include "types/SerialNumberNotificationData.hpp"
-#include "types/StatusNotificationData.hpp"
+#include "notification/SerialNumberNotification.hpp"
+#include "notification/StatusNotification.hpp"
 #include "types/WeekTimer.hpp"
 
 #include <QObject>
@@ -61,8 +61,7 @@ class Eq3Thermostat : public QObject {
 
     // TODO: Week Timer should be presented exposed with WeekTimerModel to be
     // added later. Use QAbstractItemModel
-    Q_PROPERTY(
-        types::WeekTimer weekTimer READ weekTimer NOTIFY weekTimerChanged);
+    Q_PROPERTY(WeekTimer weekTimer READ weekTimer NOTIFY weekTimerChanged);
 
 public:
     explicit Eq3Thermostat(QObject *parent = nullptr);
@@ -95,28 +94,34 @@ public:
     double ecoTemperature() const;
     double temperatureOffset() const;
 
-    types::WeekTimer weekTimer() const;
+    WeekTimer weekTimer() const;
 
 public slots:
+    void onSetSerialNumberNotification(
+        const thermonator::eq3thermostat::SerialNumberNotification
+            &serialNumberNotification);
+
     void
-    onSetSerialNumberNotificationData(const types::SerialNumberNotificationData
-                                          &serialNumberNotificationData);
+    onSetStatusNotification(const thermonator::eq3thermostat::StatusNotification
+                                &statusNotification);
 
-    void onSetStatusNotificationData(
-        const types::StatusNotificationData &statusNotificationData);
+    void notifyChangesBaseStatusNotification(
+        const thermonator::eq3thermostat::StatusNotification
+            &oldStatusNotification,
+        const thermonator::eq3thermostat::StatusNotification
+            &newStatusNotification);
 
-    void notifyChangesBaseStatusNotificationData(
-        const types::StatusNotificationData &oldStatusNotificationData,
-        const types::StatusNotificationData &newStatusNotificationData);
-
-    void notifyChangesInStatusFlags(const types::StatusFlags &oldStatusFlags,
-                                    const types::StatusFlags &newStatusFlags);
+    void notifyChangesInStatusFlags(
+        const thermonator::eq3thermostat::StatusFlags &oldStatusFlags,
+        const thermonator::eq3thermostat::StatusFlags &newStatusFlags);
 
     void notifyChangesInHolidayEndDateTime(
-        const types::DateTime &oldHolidayEndDateTime,
-        const types::DateTime &newHolidayEndDateTime);
+        const thermonator::eq3thermostat::DateTime &oldHolidayEndDateTime,
+        const thermonator::eq3thermostat::DateTime &newHolidayEndDateTime);
 
-    void onSetDayTimer(const types::DayTimer &dayTimer);
+    void onSetDayTimerNotification(
+        const thermonator::eq3thermostat::DayTimerNotification
+            &dayTimerNotification);
 
 signals:
     void serialNumberChanged();
@@ -147,9 +152,9 @@ signals:
     void weekTimerChanged();
 
 private:
-    types::SerialNumberNotificationData mSerialNumberNotificationData;
-    types::StatusNotificationData mStatusNotificationData;
-    types::WeekTimer mWeekTimer;
+    SerialNumberNotification mSerialNumberNotification;
+    StatusNotification mStatusNotification;
+    WeekTimer mWeekTimer;
 };
 
 } // namespace thermonator::eq3thermostat

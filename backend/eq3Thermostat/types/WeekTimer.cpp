@@ -1,6 +1,6 @@
 #include "WeekTimer.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 bool WeekTimer::isValid()
 {
@@ -18,18 +18,18 @@ bool WeekTimer::dayTimerIsValid(DayOfWeek dayOfWeek) const
     return mWeekTimer[index].isValid();
 }
 
-void WeekTimer::setDayTimer(const DayTimer &dayTimer)
+void WeekTimer::setDayTimer(const DayTimerNotification &dayTimerNotification)
 {
-    auto dayOfWeek = dayTimer.dayOfWeek();
+    auto dayOfWeek = dayTimerNotification.dayOfWeek();
     auto index = toIndex(dayOfWeek);
 
-    if (mWeekTimer[index] == dayTimer) {
+    if (mWeekTimer[index] == dayTimerNotification) {
         return;
     }
-    mWeekTimer[index] = dayTimer;
+    mWeekTimer[index] = dayTimerNotification;
 }
 
-DayTimer WeekTimer::dayTimer(DayOfWeek dayOfWeek) const
+DayTimerNotification WeekTimer::dayTimer(DayOfWeek dayOfWeek) const
 {
     auto index = toIndex(dayOfWeek);
     return mWeekTimer[index];
@@ -40,4 +40,4 @@ int WeekTimer::toIndex(DayOfWeek dayOfWeek) const
     return static_cast<int>(dayOfWeek);
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

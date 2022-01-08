@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_TEMPERATURE_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_TEMPERATURE_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_TEMPERATURE_HPP
+#define THERMONATOR_EQ3THERMOSTAT_TEMPERATURE_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class Temperature {
 public:
@@ -51,6 +51,6 @@ inline bool operator!=(const Temperature &lhs, const Temperature &rhs)
 
 QDebug operator<<(QDebug debug, const Temperature &temperature);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

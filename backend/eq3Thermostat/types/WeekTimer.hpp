@@ -1,12 +1,12 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_WEEKTIMER_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_WEEKTIMER_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_WEEKTIMER_HPP
+#define THERMONATOR_EQ3THERMOSTAT_WEEKTIMER_HPP
 
+#include "../notification/DayTimerNotification.hpp"
 #include "DayOfWeek.hpp"
-#include "DayTimer.hpp"
 
 #include <array>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class WeekTimer {
 public:
@@ -18,15 +18,15 @@ public:
 
     bool dayTimerIsValid(DayOfWeek dayOfWeek) const;
 
-    void setDayTimer(const DayTimer &dayTimer);
+    void setDayTimer(const DayTimerNotification &dayTimerNotification);
 
-    DayTimer dayTimer(DayOfWeek dayOfWeek) const;
+    DayTimerNotification dayTimer(DayOfWeek dayOfWeek) const;
 
 private:
     int toIndex(DayOfWeek dayOfWeek) const;
 
-    std::array<DayTimer, 7> mWeekTimer;
+    std::array<DayTimerNotification, 7> mWeekTimer;
 };
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 #endif

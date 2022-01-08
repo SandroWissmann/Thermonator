@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_VALVEPOSITION_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_VALVEPOSITION_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_VALVEPOSITION_HPP
+#define THERMONATOR_EQ3THERMOSTAT_VALVEPOSITION_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class ValvePosition {
 public:
@@ -37,6 +37,6 @@ inline bool operator!=(const ValvePosition &lhs, const ValvePosition &rhs)
 
 QDebug operator<<(QDebug debug, const ValvePosition &valvePosition);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

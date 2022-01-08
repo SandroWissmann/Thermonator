@@ -4,7 +4,7 @@
 
 #include <algorithm>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 SerialNumber::SerialNumber(const std::array<unsigned char, 10> &bytes)
     : mValue{decodeBytes(bytes)}, mIsValid{true}
@@ -42,4 +42,4 @@ QDebug operator<<(QDebug debug, const SerialNumber &serialNumber)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

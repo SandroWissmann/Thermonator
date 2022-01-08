@@ -12,234 +12,231 @@ Eq3Thermostat::Eq3Thermostat(QObject *parent)
 
 QString Eq3Thermostat::serialNumber() const
 {
-    auto serialNumber = mSerialNumberNotificationData.serialNumber();
+    auto serialNumber = mSerialNumberNotification.serialNumber();
     return serialNumber.value();
 }
 
 bool Eq3Thermostat::autoModeEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.autoModeEnabled();
 }
 
 bool Eq3Thermostat::manualModeEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.manualModeEnabled();
 }
 
 bool Eq3Thermostat::vacationModeEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.vacationModeEnabled();
 }
 
 bool Eq3Thermostat::boostEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.boostEnabled();
 }
 
 bool Eq3Thermostat::daylightSummerTimeEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.daylightSummerTimeEnabled();
 }
 
 bool Eq3Thermostat::openWindowModeEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.openWindowModeEnabled();
 }
 
 bool Eq3Thermostat::hardwareButtonsLocked() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.hardwareButtonsLocked();
 }
 
 bool Eq3Thermostat::unknownEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.hardwareButtonsLocked();
 }
 
 bool Eq3Thermostat::lowBatteryEnabled() const
 {
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
     return statusFlags.lowBatteryEnabled();
 }
 
 int Eq3Thermostat::valvePosition() const
 {
-    auto valvePosition = mStatusNotificationData.valvePosition();
+    auto valvePosition = mStatusNotification.valvePosition();
     return valvePosition.value();
 }
 
 int Eq3Thermostat::unknownStatusByte() const
 {
-    auto unknownStatusByte = mStatusNotificationData.unknownStatusByte();
+    auto unknownStatusByte = mStatusNotification.unknownStatusByte();
     return unknownStatusByte.value();
 }
 
 double Eq3Thermostat::targetTemperature() const
 {
-    auto targetTemperature = mStatusNotificationData.targetTemperature();
+    auto targetTemperature = mStatusNotification.targetTemperature();
     return targetTemperature.value();
 }
 
 int Eq3Thermostat::holidayEndDay() const
 {
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
     return holidayEndDateTime.day();
 }
 
 int Eq3Thermostat::holidayEndMonth() const
 {
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
     return holidayEndDateTime.month();
 }
 
 int Eq3Thermostat::holidayEndYear() const
 {
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
     return holidayEndDateTime.year();
 }
 
 int Eq3Thermostat::holidayEndMinute() const
 {
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
     return holidayEndDateTime.minute();
 }
 
 int Eq3Thermostat::holidayEndHour() const
 {
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
     return holidayEndDateTime.hour();
 }
 
 double Eq3Thermostat::openWindowTemperature() const
 {
-    auto openWindowTemperature =
-        mStatusNotificationData.openWindowTemperature();
+    auto openWindowTemperature = mStatusNotification.openWindowTemperature();
     return openWindowTemperature.value();
 }
 
 int Eq3Thermostat::openWindowInterval() const
 {
-    auto openWindowInterval = mStatusNotificationData.openWindowInterval();
+    auto openWindowInterval = mStatusNotification.openWindowInterval();
     return openWindowInterval.value();
 }
 
 double Eq3Thermostat::comfortTemperature() const
 {
-    auto comfortTemperature = mStatusNotificationData.comfortTemperature();
+    auto comfortTemperature = mStatusNotification.comfortTemperature();
     return comfortTemperature.value();
 }
 
 double Eq3Thermostat::ecoTemperature() const
 {
-    auto ecoTemperature = mStatusNotificationData.ecoTemperature();
+    auto ecoTemperature = mStatusNotification.ecoTemperature();
     return ecoTemperature.value();
 }
 
 double Eq3Thermostat::temperatureOffset() const
 {
-    auto temperatureOffset = mStatusNotificationData.temperatureOffset();
+    auto temperatureOffset = mStatusNotification.temperatureOffset();
     return temperatureOffset.value();
 }
 
-types::WeekTimer Eq3Thermostat::weekTimer() const
+WeekTimer Eq3Thermostat::weekTimer() const
 {
     return mWeekTimer;
 }
 
-void Eq3Thermostat::onSetSerialNumberNotificationData(
-    const types::SerialNumberNotificationData &serialNumberNotificationData)
+void Eq3Thermostat::onSetSerialNumberNotification(
+    const SerialNumberNotification &serialNumberNotification)
 {
     qDebug() << Q_FUNC_INFO
-             << "serialNumberNotificationData:" << serialNumberNotificationData;
-    if (mSerialNumberNotificationData == serialNumberNotificationData) {
+             << "serialNumberNotification:" << serialNumberNotification;
+    if (mSerialNumberNotification == serialNumberNotification) {
         return;
     }
-    auto backuoSerialNumberNotification = mSerialNumberNotificationData;
-    mSerialNumberNotificationData = serialNumberNotificationData;
+    auto backupSerialNumberNotification = mSerialNumberNotification;
+    mSerialNumberNotification = serialNumberNotification;
 
-    if (backuoSerialNumberNotification.serialNumber() !=
-        mSerialNumberNotificationData.serialNumber()) {
+    if (backupSerialNumberNotification.serialNumber() !=
+        mSerialNumberNotification.serialNumber()) {
         emit serialNumberChanged();
     }
 }
 
-void Eq3Thermostat::onSetStatusNotificationData(
-    const types::StatusNotificationData &statusNotificationData)
+void Eq3Thermostat::onSetStatusNotification(
+    const StatusNotification &statusNotification)
 {
-    qDebug() << Q_FUNC_INFO
-             << "statusNotificationData:" << statusNotificationData;
+    qDebug() << Q_FUNC_INFO << "statusNotification:" << statusNotification;
 
-    if (mStatusNotificationData == statusNotificationData) {
+    if (mStatusNotification == statusNotification) {
         return;
     }
-    auto backupNotificationData = mStatusNotificationData;
-    mStatusNotificationData = statusNotificationData;
+    auto backupNotification = mStatusNotification;
+    mStatusNotification = statusNotification;
 
-    notifyChangesBaseStatusNotificationData(backupNotificationData,
-                                            mStatusNotificationData);
+    notifyChangesBaseStatusNotification(backupNotification,
+                                        mStatusNotification);
 
-    auto backupStatusFlags = backupNotificationData.statusFlags();
-    auto statusFlags = mStatusNotificationData.statusFlags();
+    auto backupStatusFlags = backupNotification.statusFlags();
+    auto statusFlags = mStatusNotification.statusFlags();
 
     notifyChangesInStatusFlags(backupStatusFlags, statusFlags);
 
-    auto backupHolidayEndDateTime = backupNotificationData.holidayEndDateTime();
-    auto holidayEndDateTime = mStatusNotificationData.holidayEndDateTime();
+    auto backupHolidayEndDateTime = backupNotification.holidayEndDateTime();
+    auto holidayEndDateTime = mStatusNotification.holidayEndDateTime();
 
     notifyChangesInHolidayEndDateTime(backupHolidayEndDateTime,
                                       holidayEndDateTime);
 }
 
-void Eq3Thermostat::notifyChangesBaseStatusNotificationData(
-    const types::StatusNotificationData &oldStatusNotificationData,
-    const types::StatusNotificationData &newStatusNotificationData)
+void Eq3Thermostat::notifyChangesBaseStatusNotification(
+    const StatusNotification &oldStatusNotification,
+    const StatusNotification &newStatusNotification)
 {
-    if (oldStatusNotificationData.valvePosition() !=
-        newStatusNotificationData.valvePosition()) {
+    if (oldStatusNotification.valvePosition() !=
+        newStatusNotification.valvePosition()) {
         emit valvePositionChanged();
     }
-    if (oldStatusNotificationData.unknownStatusByte() !=
-        newStatusNotificationData.unknownStatusByte()) {
+    if (oldStatusNotification.unknownStatusByte() !=
+        oldStatusNotification.unknownStatusByte()) {
         emit valvePositionChanged();
     }
-    if (oldStatusNotificationData.targetTemperature() !=
-        newStatusNotificationData.targetTemperature()) {
+    if (oldStatusNotification.targetTemperature() !=
+        oldStatusNotification.targetTemperature()) {
         emit valvePositionChanged();
     }
 
-    if (oldStatusNotificationData.openWindowTemperature() !=
-        newStatusNotificationData.openWindowTemperature()) {
+    if (oldStatusNotification.openWindowTemperature() !=
+        oldStatusNotification.openWindowTemperature()) {
         emit openWindowTemperatureChanged();
     }
-    if (oldStatusNotificationData.openWindowInterval() !=
-        newStatusNotificationData.openWindowInterval()) {
+    if (oldStatusNotification.openWindowInterval() !=
+        oldStatusNotification.openWindowInterval()) {
         emit openWindowIntervalChanged();
     }
-    if (oldStatusNotificationData.comfortTemperature() !=
-        newStatusNotificationData.comfortTemperature()) {
+    if (oldStatusNotification.comfortTemperature() !=
+        oldStatusNotification.comfortTemperature()) {
         emit comfortTemperatureChanged();
     }
-    if (oldStatusNotificationData.ecoTemperature() !=
-        newStatusNotificationData.ecoTemperature()) {
+    if (oldStatusNotification.ecoTemperature() !=
+        oldStatusNotification.ecoTemperature()) {
         emit ecoTemperatureChanged();
     }
-    if (oldStatusNotificationData.temperatureOffset() !=
-        newStatusNotificationData.temperatureOffset()) {
+    if (oldStatusNotification.temperatureOffset() !=
+        oldStatusNotification.temperatureOffset()) {
         emit temperatureOffsetChanged();
     }
 }
 
 void Eq3Thermostat::notifyChangesInStatusFlags(
-    const types::StatusFlags &oldStatusFlags,
-    const types::StatusFlags &newStatusFlags)
+    const StatusFlags &oldStatusFlags, const StatusFlags &newStatusFlags)
 {
     if (oldStatusFlags == newStatusFlags) {
         return;
@@ -277,8 +274,8 @@ void Eq3Thermostat::notifyChangesInStatusFlags(
 }
 
 void Eq3Thermostat::notifyChangesInHolidayEndDateTime(
-    const types::DateTime &oldHolidayEndDateTime,
-    const types::DateTime &newHolidayEndDateTime)
+    const DateTime &oldHolidayEndDateTime,
+    const DateTime &newHolidayEndDateTime)
 {
     if (oldHolidayEndDateTime == newHolidayEndDateTime) {
         return;
@@ -300,16 +297,17 @@ void Eq3Thermostat::notifyChangesInHolidayEndDateTime(
     }
 }
 
-void Eq3Thermostat::onSetDayTimer(const types::DayTimer &dayTimer)
+void Eq3Thermostat::onSetDayTimerNotification(
+    const DayTimerNotification &dayTimerNotification)
 {
-    auto dayOfWeek = dayTimer.dayOfWeek();
+    auto dayOfWeek = dayTimerNotification.dayOfWeek();
     qDebug() << Q_FUNC_INFO << "dayOfWeek:" << utility::enumToString(dayOfWeek);
-    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimer;
+    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimerNotification;
 
-    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimer) {
+    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimerNotification) {
         return;
     }
-    mWeekTimer.setDayTimer(dayTimer);
+    mWeekTimer.setDayTimer(dayTimerNotification);
     emit weekTimerChanged();
 }
 

@@ -1,6 +1,6 @@
 #include "OpenWindowInterval.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 OpenWindowInterval::OpenWindowInterval(unsigned char byte)
     : mValue(decodeByte(byte))
@@ -66,4 +66,4 @@ QDebug operator<<(QDebug debug, const OpenWindowInterval &openWindowInterval)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

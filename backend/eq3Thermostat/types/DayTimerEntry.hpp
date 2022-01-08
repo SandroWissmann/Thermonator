@@ -1,11 +1,11 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_DAYTIMERENTRY_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_DAYTIMERENTRY_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_DAYTIMERENTRY_HPP
+#define THERMONATOR_EQ3THERMOSTAT_DAYTIMERENTRY_HPP
 
 #include "Time.hpp"
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class DayTimerEntry {
 public:
@@ -39,5 +39,5 @@ inline bool operator!=(const DayTimerEntry &lhs, const DayTimerEntry &rhs)
 
 QDebug operator<<(QDebug debug, const DayTimerEntry &dayTimerEntry);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 #endif

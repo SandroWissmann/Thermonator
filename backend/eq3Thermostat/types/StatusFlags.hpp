@@ -1,11 +1,11 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_STATUSFLAGS_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_STATUSFLAGS_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_STATUSFLAGS_HPP
+#define THERMONATOR_EQ3THERMOSTAT_STATUSFLAGS_HPP
 
 #include <QDebug>
 
 #include <bitset>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 /*
 Status Notification Byte 2 flags:
@@ -77,6 +77,6 @@ inline bool operator!=(const StatusFlags &lhs, const StatusFlags &rhs)
 
 QDebug operator<<(QDebug debug, const StatusFlags &statusFlags);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

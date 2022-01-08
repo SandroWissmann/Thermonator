@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_UNKNOWNSTATUSBYTE_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_UNKNOWNSTATUSBYTE_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_UNKNOWNSTATUSBYTE_HPP
+#define THERMONATOR_EQ3THERMOSTAT_UNKNOWNSTATUSBYTE_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class UnknownStatusByte {
 public:
@@ -39,6 +39,6 @@ inline bool operator!=(const UnknownStatusByte &lhs,
 
 QDebug operator<<(QDebug debug, const UnknownStatusByte &unknownStatusByte);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

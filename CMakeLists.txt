@@ -17,59 +17,59 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Bluetooth LinguistTools
 set(TS_FILES Thermonator_de_DE.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
+        main.cpp      
+        backend/eq3Thermostat/command/ConfigureComfortAndEcoTemperatureCommand.hpp
+        backend/eq3Thermostat/command/ConfigureComfortAndEcoTemperatureCommand.cpp
+        backend/eq3Thermostat/command/ConfigureOpenWindowModeCommand.hpp
+        backend/eq3Thermostat/command/ConfigureOpenWindowModeCommand.cpp
+        backend/eq3Thermostat/command/GetDayTimerCommand.hpp
+        backend/eq3Thermostat/command/GetDayTimerCommand.cpp
+        backend/eq3Thermostat/command/GetSerialNumberCommand.hpp
+        backend/eq3Thermostat/command/GetSerialNumberCommand.cpp
+        backend/eq3Thermostat/command/SetBoostOffCommand.hpp
+        backend/eq3Thermostat/command/SetBoostOffCommand.cpp
+        backend/eq3Thermostat/command/SetBoostOnCommand.hpp
+        backend/eq3Thermostat/command/SetBoostOnCommand.cpp
+        backend/eq3Thermostat/command/SetComfortTemperatureCommand.hpp
+        backend/eq3Thermostat/command/SetComfortTemperatureCommand.cpp
+        backend/eq3Thermostat/command/SetCurrentDateTimeCommand.hpp
+        backend/eq3Thermostat/command/SetCurrentDateTimeCommand.cpp
+        backend/eq3Thermostat/command/SetEcoTemperatureCommand.hpp
+        backend/eq3Thermostat/command/SetEcoTemperatureCommand.cpp
+        backend/eq3Thermostat/command/SetHardwareButtonsLockCommand.hpp
+        backend/eq3Thermostat/command/SetHardwareButtonsLockCommand.cpp
+        backend/eq3Thermostat/command/SetHardwareButtonsUnlockCommand.hpp
+        backend/eq3Thermostat/command/SetHardwareButtonsUnlockCommand.cpp
+        backend/eq3Thermostat/command/SetTemperatureCommand.hpp
+        backend/eq3Thermostat/command/SetTemperatureCommand.cpp
+        backend/eq3Thermostat/command/SetTemperatureOffsetCommand.hpp
+        backend/eq3Thermostat/command/SetTemperatureOffsetCommand.cpp
+        backend/eq3Thermostat/command/SetThermostatOffCommand.hpp
+        backend/eq3Thermostat/command/SetThermostatOffCommand.cpp
+        backend/eq3Thermostat/command/SetThermostatOnCommand.hpp
+        backend/eq3Thermostat/command/SetThermostatOnCommand.cpp
+        backend/eq3Thermostat/notification/DayTimerNotification.hpp
+        backend/eq3Thermostat/notification/DayTimerNotification.cpp
+        backend/eq3Thermostat/notification/SerialNumberNotification.hpp
+        backend/eq3Thermostat/notification/SerialNumberNotification.cpp
+        backend/eq3Thermostat/notification/StatusNotification.hpp
+        backend/eq3Thermostat/notification/StatusNotification.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp
         backend/eq3Thermostat/types/AsciiSign.cpp
-        backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.hpp
-        backend/eq3Thermostat/types/ConfigureComfortAndEcoTemperatureCommand.cpp
-        backend/eq3Thermostat/types/ConfigureOpenWindowModeCommand.hpp
-        backend/eq3Thermostat/types/ConfigureOpenWindowModeCommand.cpp
         backend/eq3Thermostat/types/Date.hpp
         backend/eq3Thermostat/types/Date.cpp
         backend/eq3Thermostat/types/DateTime.hpp
         backend/eq3Thermostat/types/DateTime.cpp
         backend/eq3Thermostat/types/DayOfWeek.hpp
         backend/eq3Thermostat/types/DayOfWeek.cpp
-        backend/eq3Thermostat/types/DayTimer.hpp
-        backend/eq3Thermostat/types/DayTimer.cpp
         backend/eq3Thermostat/types/DayTimerEntry.hpp
         backend/eq3Thermostat/types/DayTimerEntry.cpp     
-        backend/eq3Thermostat/types/GetDayTimerCommand.hpp
-        backend/eq3Thermostat/types/GetDayTimerCommand.cpp
         backend/eq3Thermostat/types/OpenWindowInterval.hpp
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
-        backend/eq3Thermostat/types/RequestSerialNumberCommand.hpp
-        backend/eq3Thermostat/types/RequestSerialNumberCommand.cpp
         backend/eq3Thermostat/types/SerialNumber.hpp
         backend/eq3Thermostat/types/SerialNumber.cpp
-        backend/eq3Thermostat/types/SerialNumberNotificationData.hpp
-        backend/eq3Thermostat/types/SerialNumberNotificationData.cpp
-        backend/eq3Thermostat/types/SetBoostOffCommand.hpp
-        backend/eq3Thermostat/types/SetBoostOffCommand.cpp
-        backend/eq3Thermostat/types/SetBoostOnCommand.hpp
-        backend/eq3Thermostat/types/SetBoostOnCommand.cpp
-        backend/eq3Thermostat/types/SetComfortTemperatureCommand.hpp
-        backend/eq3Thermostat/types/SetComfortTemperatureCommand.cpp
-        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.hpp
-        backend/eq3Thermostat/types/SetCurrentDateTimeCommand.cpp
-        backend/eq3Thermostat/types/SetEcoTemperatureCommand.hpp
-        backend/eq3Thermostat/types/SetEcoTemperatureCommand.cpp
-        backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.hpp
-        backend/eq3Thermostat/types/SetHardwareButtonsLockCommand.cpp
-        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.hpp
-        backend/eq3Thermostat/types/SetHardwareButtonsUnlockCommand.cpp        
-        backend/eq3Thermostat/types/SetTemperatureCommand.hpp
-        backend/eq3Thermostat/types/SetTemperatureCommand.cpp
-        backend/eq3Thermostat/types/SetTemperatureOffsetCommand.hpp
-        backend/eq3Thermostat/types/SetTemperatureOffsetCommand.cpp
-        backend/eq3Thermostat/types/SetThermostatOffCommand.hpp
-        backend/eq3Thermostat/types/SetThermostatOffCommand.cpp
-        backend/eq3Thermostat/types/SetThermostatOnCommand.hpp
-        backend/eq3Thermostat/types/SetThermostatOnCommand.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
-        backend/eq3Thermostat/types/StatusFlags.cpp
-        backend/eq3Thermostat/types/StatusNotificationData.hpp
-        backend/eq3Thermostat/types/StatusNotificationData.cpp        
+        backend/eq3Thermostat/types/StatusFlags.cpp      
         backend/eq3Thermostat/types/Temperature.hpp
         backend/eq3Thermostat/types/Temperature.cpp
         backend/eq3Thermostat/types/TemperatureOffset.hpp

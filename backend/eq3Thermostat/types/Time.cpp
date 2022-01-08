@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QTime>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 Time::Time(int hour, int minute) : mHour{hour}, mMinute{minute}
 {
@@ -53,4 +53,4 @@ QDebug operator<<(QDebug debug, const Time &time)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

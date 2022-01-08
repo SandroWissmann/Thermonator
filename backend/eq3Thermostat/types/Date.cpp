@@ -1,6 +1,6 @@
 #include "Date.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 Date::Date(unsigned char yearByte, unsigned char monthByte,
            unsigned char dayByte)
@@ -60,4 +60,4 @@ QDebug operator<<(QDebug debug, const Date &date)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

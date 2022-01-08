@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_TIME_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_TIME_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_TIME_HPP
+#define THERMONATOR_EQ3THERMOSTAT_TIME_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class Time {
 public:
@@ -41,6 +41,6 @@ inline bool operator!=(const Time &lhs, const Time &rhs)
 
 QDebug operator<<(QDebug debug, const Time &time);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

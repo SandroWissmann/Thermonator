@@ -1,6 +1,6 @@
 #include "TemperatureOffset.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 TemperatureOffset::TemperatureOffset(unsigned char byte)
     : mValue(decodeByte(byte))
@@ -66,4 +66,4 @@ QDebug operator<<(QDebug debug, const TemperatureOffset &temperatureOffset)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

@@ -2,7 +2,7 @@
 
 #include <algorithm> // std::clamp
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 Temperature::Temperature(unsigned char byte) : mValue(decodeByte(byte))
 {
@@ -83,4 +83,4 @@ QDebug operator<<(QDebug debug, const Temperature &temperature)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

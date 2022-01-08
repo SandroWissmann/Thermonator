@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 AsciiSign::AsciiSign(unsigned char byte) : mSign{toAscii(byte)}
 {
@@ -27,4 +27,4 @@ QDebug operator<<(QDebug debug, const AsciiSign &asciiSign)
     return debug;
 }
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat

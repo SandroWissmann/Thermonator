@@ -1,12 +1,12 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_SERIALNUMBER_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_SERIALNUMBER_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_SERIALNUMBER_HPP
+#define THERMONATOR_EQ3THERMOSTAT_SERIALNUMBER_HPP
 
 #include <QDebug>
 #include <QString>
 
 #include <array>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class SerialNumber {
 public:
@@ -40,6 +40,6 @@ inline bool operator!=(const SerialNumber &lhs, const SerialNumber &rhs)
 
 QDebug operator<<(QDebug debug, const SerialNumber &serialNumber);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

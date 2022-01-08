@@ -1,9 +1,9 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_TEMPERATUREOFFSET_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_TEMPERATUREOFFSET_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_TEMPERATUREOFFSET_HPP
+#define THERMONATOR_EQ3THERMOSTAT_TEMPERATUREOFFSET_HPP
 
 #include <QDebug>
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class TemperatureOffset {
 public:
@@ -47,6 +47,6 @@ inline bool operator!=(const TemperatureOffset &lhs,
 
 QDebug operator<<(QDebug debug, const TemperatureOffset &temperatureOffset);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif

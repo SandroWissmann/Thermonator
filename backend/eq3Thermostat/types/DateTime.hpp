@@ -1,10 +1,10 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_TYPES_DATETIME_HPP
-#define THERMONATOR_EQ3THERMOSTAT_TYPES_DATETIME_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_DATETIME_HPP
+#define THERMONATOR_EQ3THERMOSTAT_DATETIME_HPP
 
 #include "Date.hpp"
 #include "Time.hpp"
 
-namespace thermonator::eq3thermostat::types {
+namespace thermonator::eq3thermostat {
 
 class DateTime {
 public:
@@ -46,6 +46,6 @@ inline bool operator!=(const DateTime &lhs, const DateTime &rhs)
 
 QDebug operator<<(QDebug debug, const DateTime &dateTime);
 
-} // namespace thermonator::eq3thermostat::types
+} // namespace thermonator::eq3thermostat
 
 #endif
