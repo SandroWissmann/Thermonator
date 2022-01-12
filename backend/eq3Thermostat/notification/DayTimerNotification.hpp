@@ -57,10 +57,7 @@ Important is that the last  DayTimer Entry always ends on 24:00
 */
 
 #include "../types/DayOfWeek.hpp"
-#include "../types/DayTimerEntry.hpp"
-
-#include <optional>
-#include <vector>
+#include "../types/DayTimerEntries.hpp"
 
 namespace thermonator::eq3thermostat {
 
@@ -71,11 +68,11 @@ public:
     DayTimerNotification() = default;
 
     DayTimerNotification(DayOfWeek dayOfWeek,
-                         std::vector<DayTimerEntry> dayTimerEntries);
+                         const DayTimerEntries &dayTimerEntries);
 
     static DayTimerNotification fromEncodedData(const QByteArray &data);
 
-    std::vector<DayTimerEntry> dayTimerEntries() const;
+    DayTimerEntries dayTimerEntries() const;
 
     DayOfWeek dayOfWeek() const;
 
@@ -85,17 +82,9 @@ public:
 
 private:
     static bool dataIsValid(const QByteArray &data);
-    static DayOfWeek optDecodeDayOfWeek(unsigned char byte);
-    static std::optional<std::vector<DayTimerEntry>>
-    optDecodeDayTimerEntries(const std::vector<unsigned char> &bytes);
-    static double decodeTemperature(unsigned char byte);
-    static Time decodeTime(unsigned char byte);
-
-    static bool
-    timeIsAscendingInEntries(const std::vector<DayTimerEntry> &dayTimerEntries);
 
     DayOfWeek mDayOfWeek{DayOfWeek::invalid};
-    std::vector<DayTimerEntry> mDayTimerEntries;
+    DayTimerEntries mDayTimerEntries;
 };
 
 inline bool operator==(const DayTimerNotification &lhs,

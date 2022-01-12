@@ -62,6 +62,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/DateTime.cpp
         backend/eq3Thermostat/types/DayOfWeek.hpp
         backend/eq3Thermostat/types/DayOfWeek.cpp
+        backend/eq3Thermostat/types/DayTimerEntries.hpp
+        backend/eq3Thermostat/types/DayTimerEntries.cpp
         backend/eq3Thermostat/types/DayTimerEntry.hpp
         backend/eq3Thermostat/types/DayTimerEntry.cpp     
         backend/eq3Thermostat/types/OpenWindowInterval.hpp

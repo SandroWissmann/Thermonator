@@ -11,9 +11,10 @@ Time::Time(int hour, int minute) : mHour{hour}, mMinute{minute}
 
 Time Time::fromEncodedByte(unsigned char byte)
 {
-    auto hour = static_cast<int>(byte) / 2;
-    auto minute = (static_cast<int>(byte) % 2) * 30;
-    Time time{hour, minute};
+    auto minutesFromMidnight = static_cast<int>(byte) * 10;
+    auto hour = minutesFromMidnight / 60;
+    auto minutes = minutesFromMidnight - (hour * 60);
+    Time time{hour, minutes};
     return time;
 }
 

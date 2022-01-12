@@ -8,7 +8,8 @@ namespace thermonator::utility {
 
 template <typename QEnum> QString enumToString(const QEnum value)
 {
-    return QVariant::fromValue(value).toString();
+    auto variant = QVariant::fromValue(value);
+    return variant.toString();
 }
 
 } // namespace thermonator::utility

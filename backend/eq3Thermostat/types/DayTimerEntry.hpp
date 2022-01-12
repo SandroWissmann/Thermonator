@@ -1,6 +1,7 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_DAYTIMERENTRY_HPP
 #define THERMONATOR_EQ3THERMOSTAT_DAYTIMERENTRY_HPP
 
+#include "Temperature.hpp"
 #include "Time.hpp"
 
 #include <QDebug>
@@ -9,16 +10,22 @@ namespace thermonator::eq3thermostat {
 
 class DayTimerEntry {
 public:
-    DayTimerEntry(const Time &time, double temperature);
+    // constructs object which is !isValid
+    DayTimerEntry() = default;
+
+    DayTimerEntry(const Time &time, const Temperature &temperature);
+
+    static DayTimerEntry
+    fromEncodedBytes(const std::vector<unsigned char> &bytes);
 
     Time time() const;
-    double temperature() const;
+    Temperature temperature() const;
 
     bool isValid() const;
 
 private:
     Time mTime{};
-    double mTemperature{0.0};
+    Temperature mTemperature;
 };
 
 inline bool operator==(const DayTimerEntry &lhs, const DayTimerEntry &rhs)

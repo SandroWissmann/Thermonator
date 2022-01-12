@@ -26,6 +26,8 @@ private:
 
 typedef DayOfWeekQEnum::Value DayOfWeek;
 
+DayOfWeek fromEncodedByte(unsigned char byte);
+
 // if value is invalid we return 0 == saturday and log a warning
 unsigned char encoded(DayOfWeek dayOfWeek);
 
