@@ -16,9 +16,10 @@
 #include "command/SetTemperatureOffsetCommand.hpp"
 #include "command/SetThermostatOffCommand.hpp"
 #include "command/SetThermostatOnCommand.hpp"
-#include "notification/DayTimerNotification.hpp"
+#include "notification/GetDayTimerNotification.hpp"
 #include "notification/SerialNumberNotification.hpp"
 #include "notification/StatusNotification.hpp"
+#include "types/DayTimer.hpp"
 #include "types/OpenWindowInterval.hpp"
 #include "types/TemperatureOffset.hpp"
 
@@ -314,9 +315,10 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         decodeAsStatusNotification(answer);
         break;
     case CommandType::GetDayTimer:
-        [[fallthrough]];
+        decodeAsGetDayTimerNotification(answer);
+        break;
     case CommandType::SetDayTimer:
-        decodeAsDayTimerNotification(answer);
+        // not yet supported add SetDayTimerNotification here
         break;
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
@@ -349,16 +351,18 @@ void Controller::decodeAsStatusNotification(const QByteArray &answer)
     emit statusNotificationReceived(statusNotification);
 }
 
-void Controller::decodeAsDayTimerNotification(const QByteArray &answer)
+void Controller::decodeAsGetDayTimerNotification(const QByteArray &answer)
 {
     qDebug() << Q_FUNC_INFO;
-    auto dayTimerNotification = DayTimerNotification::fromEncodedData(answer);
+    auto getDayTimerNotification =
+        GetDayTimerNotification::fromEncodedData(answer);
 
-    if (!dayTimerNotification.isValid()) {
+    if (!getDayTimerNotification.isValid()) {
         qDebug() << Q_FUNC_INFO << "DayTimerNotification is invalid";
         return;
     }
-    emit dayTimerNotificationReceived(dayTimerNotification);
+    auto dayTimer = getDayTimerNotification.dayTimer();
+    emit dayTimerReceived(dayTimer);
 }
 
 } // namespace thermonator::eq3thermostat

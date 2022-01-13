@@ -297,17 +297,15 @@ void Eq3Thermostat::notifyChangesInHolidayEndDateTime(
     }
 }
 
-void Eq3Thermostat::onSetDayTimerNotification(
-    const DayTimerNotification &dayTimerNotification)
+void Eq3Thermostat::onSetDayTimer(const DayTimer &dayTimer)
 {
-    auto dayOfWeek = dayTimerNotification.dayOfWeek();
-    qDebug() << Q_FUNC_INFO << "dayOfWeek:" << utility::enumToString(dayOfWeek);
-    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimerNotification;
+    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimer;
 
-    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimerNotification) {
+    auto dayOfWeek = dayTimer.dayOfWeek();
+    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimer) {
         return;
     }
-    mWeekTimer.setDayTimer(dayTimerNotification);
+    mWeekTimer.setDayTimer(dayTimer);
     emit weekTimerChanged();
 }
 

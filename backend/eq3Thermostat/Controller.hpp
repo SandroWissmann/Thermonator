@@ -11,7 +11,7 @@ namespace thermonator::eq3thermostat {
 
 class SerialNumberNotification;
 class StatusNotification;
-class DayTimerNotification;
+class DayTimer;
 class DayTimerEntries;
 
 class Controller : public QObject {
@@ -115,14 +115,12 @@ signals:
         const thermonator::eq3thermostat::StatusNotification
             &statusNotification);
 
-    void dayTimerNotificationReceived(
-        const thermonator::eq3thermostat::DayTimerNotification
-            &dayTimerNotification);
+    void dayTimerReceived(const thermonator::eq3thermostat::DayTimer &dayTimer);
 
 private:
     void decodeAsSerialNumberNotification(const QByteArray &answer);
     void decodeAsStatusNotification(const QByteArray &answer);
-    void decodeAsDayTimerNotification(const QByteArray &answer);
+    void decodeAsGetDayTimerNotification(const QByteArray &answer);
 
     enum class CommandType {
         Unknown,

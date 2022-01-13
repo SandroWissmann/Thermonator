@@ -119,9 +119,7 @@ public slots:
         const thermonator::eq3thermostat::DateTime &oldHolidayEndDateTime,
         const thermonator::eq3thermostat::DateTime &newHolidayEndDateTime);
 
-    void onSetDayTimerNotification(
-        const thermonator::eq3thermostat::DayTimerNotification
-            &dayTimerNotification);
+    void onSetDayTimer(const thermonator::eq3thermostat::DayTimer &dayTimer);
 
 signals:
     void serialNumberChanged();

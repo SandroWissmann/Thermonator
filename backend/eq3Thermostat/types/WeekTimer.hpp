@@ -1,8 +1,8 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_WEEKTIMER_HPP
 #define THERMONATOR_EQ3THERMOSTAT_WEEKTIMER_HPP
 
-#include "../notification/DayTimerNotification.hpp"
 #include "DayOfWeek.hpp"
+#include "DayTimer.hpp"
 
 #include <array>
 
@@ -18,14 +18,14 @@ public:
 
     bool dayTimerIsValid(DayOfWeek dayOfWeek) const;
 
-    void setDayTimer(const DayTimerNotification &dayTimerNotification);
+    void setDayTimer(const DayTimer &dayTimer);
 
-    DayTimerNotification dayTimer(DayOfWeek dayOfWeek) const;
+    DayTimer dayTimer(DayOfWeek dayOfWeek) const;
 
 private:
     int toIndex(DayOfWeek dayOfWeek) const;
 
-    std::array<DayTimerNotification, 7> mWeekTimer;
+    std::array<DayTimer, 7> mWeekTimer;
 };
 
 } // namespace thermonator::eq3thermostat

@@ -141,9 +141,8 @@ void DeviceManager::onIOServiceReady()
     // DayTimerNotifications connections
 
     connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::dayTimerNotificationReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetDayTimerNotification);
+            &eq3thermostat::Controller::dayTimerReceived, mEq3Thermostat.get(),
+            &eq3thermostat::Eq3Thermostat::onSetDayTimer);
 
     // mEq3ThermostatController->requestSerialNumber();
 
@@ -178,35 +177,8 @@ void DeviceManager::onIOServiceReady()
     // friday  (("05":"50")/18 °C(("21":"00")/24 °C(("24":"00")/18 °C
     // saturday (("08":"50")/18 °C(("21":"00")/24 °C(("24":"00")/18 °C
 
-    eq3thermostat::DayTimerEntries fridayEntries(
-        std::vector<eq3thermostat::DayTimerEntry>{
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{5, 50},
-                                         eq3thermostat::Temperature{18.0}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{21},
-                                         eq3thermostat::Temperature{24.0}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{24},
-                                         eq3thermostat::Temperature{18.0}}});
-
-    eq3thermostat::DayTimerEntries saturdayEntries(
-        std::vector<eq3thermostat::DayTimerEntry>{
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{8, 50},
-                                         eq3thermostat::Temperature{18.0}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{21},
-                                         eq3thermostat::Temperature{24.0}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{24},
-                                         eq3thermostat::Temperature{18.0}}});
-
-    eq3thermostat::DayTimerEntries newfridayEntries(
-        std::vector<eq3thermostat::DayTimerEntry>{
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{4, 50},
-                                         eq3thermostat::Temperature{15.0}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{13},
-                                         eq3thermostat::Temperature{21.5}},
-            eq3thermostat::DayTimerEntry{eq3thermostat::Time{24},
-                                         eq3thermostat::Temperature{18.0}}});
-
-    mEq3ThermostatController->setDayTimer(eq3thermostat::DayOfWeek::saturday,
-                                          newfridayEntries);
+    // mEq3ThermostatController->setDayTimer(eq3thermostat::DayOfWeek::saturday,
+    //                                        newfridayEntries);
 }
 
 } // namespace thermonator

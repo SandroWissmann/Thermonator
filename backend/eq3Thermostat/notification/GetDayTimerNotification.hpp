@@ -1,5 +1,5 @@
-#ifndef THERMONATOR_EQ3THERMOSTAT_DAYTIMERNOTIFICATION_HPP
-#define THERMONATOR_EQ3THERMOSTAT_DAYTIMERNOTIFICATION_HPP
+#ifndef THERMONATOR_EQ3THERMOSTAT_GETDAYTIMERNOTIFICATION_HPP
+#define THERMONATOR_EQ3THERMOSTAT_GETDAYTIMERNOTIFICATION_HPP
 
 /*
 Answer:
@@ -56,25 +56,21 @@ There could be in total 7 DayTimer entries.
 Important is that the last DayTimer Entry always ends on 24:00
 */
 
-#include "../types/DayOfWeek.hpp"
-#include "../types/DayTimerEntries.hpp"
+#include "../types/DayTimer.hpp"
 
 namespace thermonator::eq3thermostat {
 
-class DayTimerNotification {
+class GetDayTimerNotification {
 public:
     // case for we have not read yet any day times so return empty placeholder
     // Constructs object with isValid() == false
-    DayTimerNotification() = default;
+    GetDayTimerNotification() = default;
 
-    DayTimerNotification(DayOfWeek dayOfWeek,
-                         const DayTimerEntries &dayTimerEntries);
+    GetDayTimerNotification(const DayTimer &dayTimer);
 
-    static DayTimerNotification fromEncodedData(const QByteArray &data);
+    static GetDayTimerNotification fromEncodedData(const QByteArray &data);
 
-    DayTimerEntries dayTimerEntries() const;
-
-    DayOfWeek dayOfWeek() const;
+    DayTimer dayTimer() const;
 
     // vector size must be between 1 and 7
     // time in last entry must be 24:00
@@ -83,30 +79,8 @@ public:
 private:
     static bool dataIsValid(const QByteArray &data);
 
-    DayOfWeek mDayOfWeek{DayOfWeek::invalid};
-    DayTimerEntries mDayTimerEntries;
+    DayTimer mDayTimer;
 };
-
-inline bool operator==(const DayTimerNotification &lhs,
-                       const DayTimerNotification &rhs)
-{
-    if (lhs.dayTimerEntries() != rhs.dayTimerEntries()) {
-        return false;
-    }
-    if (lhs.dayOfWeek() != rhs.dayOfWeek()) {
-        return false;
-    }
-    return true;
-}
-
-inline bool operator!=(const DayTimerNotification &lhs,
-                       const DayTimerNotification &rhs)
-{
-    return !(lhs == rhs);
-}
-
-QDebug operator<<(QDebug debug,
-                  const DayTimerNotification &dayTimerNotification);
 
 } // namespace thermonator::eq3thermostat
 #endif

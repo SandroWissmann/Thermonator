@@ -18,18 +18,18 @@ bool WeekTimer::dayTimerIsValid(DayOfWeek dayOfWeek) const
     return mWeekTimer[index].isValid();
 }
 
-void WeekTimer::setDayTimer(const DayTimerNotification &dayTimerNotification)
+void WeekTimer::setDayTimer(const DayTimer &dayTimer)
 {
-    auto dayOfWeek = dayTimerNotification.dayOfWeek();
+    auto dayOfWeek = dayTimer.dayOfWeek();
     auto index = toIndex(dayOfWeek);
 
-    if (mWeekTimer[index] == dayTimerNotification) {
+    if (mWeekTimer[index] == dayTimer) {
         return;
     }
-    mWeekTimer[index] = dayTimerNotification;
+    mWeekTimer[index] = dayTimer;
 }
 
-DayTimerNotification WeekTimer::dayTimer(DayOfWeek dayOfWeek) const
+DayTimer WeekTimer::dayTimer(DayOfWeek dayOfWeek) const
 {
     auto index = toIndex(dayOfWeek);
     return mWeekTimer[index];

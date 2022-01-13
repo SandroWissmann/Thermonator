@@ -50,8 +50,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/SetThermostatOffCommand.cpp
         backend/eq3Thermostat/command/SetThermostatOnCommand.hpp
         backend/eq3Thermostat/command/SetThermostatOnCommand.cpp
-        backend/eq3Thermostat/notification/DayTimerNotification.hpp
-        backend/eq3Thermostat/notification/DayTimerNotification.cpp
+        backend/eq3Thermostat/notification/GetDayTimerNotification.hpp
+        backend/eq3Thermostat/notification/GetDayTimerNotification.cpp
         backend/eq3Thermostat/notification/SerialNumberNotification.hpp
         backend/eq3Thermostat/notification/SerialNumberNotification.cpp
         backend/eq3Thermostat/notification/StatusNotification.hpp
@@ -63,7 +63,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/DateTime.hpp
         backend/eq3Thermostat/types/DateTime.cpp
         backend/eq3Thermostat/types/DayOfWeek.hpp
-        backend/eq3Thermostat/types/DayOfWeek.cpp
+        backend/eq3Thermostat/types/DayOfWeek.cpp  
+        backend/eq3Thermostat/types/DayTimer.hpp
+        backend/eq3Thermostat/types/DayTimer.cpp
         backend/eq3Thermostat/types/DayTimerEntries.hpp
         backend/eq3Thermostat/types/DayTimerEntries.cpp
         backend/eq3Thermostat/types/DayTimerEntry.hpp
