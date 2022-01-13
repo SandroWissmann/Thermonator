@@ -6,6 +6,8 @@
 
 #include <QDebug>
 
+#include <array>
+
 namespace thermonator::eq3thermostat {
 
 class DayTimerEntry {
@@ -17,6 +19,8 @@ public:
 
     static DayTimerEntry
     fromEncodedBytes(const std::vector<unsigned char> &bytes);
+
+    std::array<unsigned char, 2> encoded() const;
 
     Time time() const;
     Temperature temperature() const;

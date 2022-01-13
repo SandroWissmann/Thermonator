@@ -17,7 +17,7 @@ public:
     double value() const;
 
     // returns temperature as encoded byte
-    // returns 0 if isInvalid() is true
+    // returns 0 if isValid() is false
     unsigned char encoded() const;
 
     // valid range 5.0 °C to 29.5 °C

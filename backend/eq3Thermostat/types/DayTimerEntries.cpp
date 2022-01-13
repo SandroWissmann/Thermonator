@@ -47,6 +47,29 @@ DayTimerEntries::fromEncodedBytes(const std::vector<unsigned char> &bytes)
     return DayTimerEntries{dayTimerEntries};
 }
 
+std::vector<unsigned char> DayTimerEntries::encoded() const
+{
+    constexpr auto expectedByteSize = 14;
+    std::vector<unsigned char> bytes;
+    bytes.reserve(expectedByteSize);
+
+    for (const auto &entry : mEntries) {
+        auto entryBytes = entry.encoded();
+
+        for (const auto &entryByte : entryBytes) {
+            bytes.emplace_back(entryByte);
+        }
+    }
+
+    // commands needs to fill up the not used space with 0x00
+    auto fillSize = expectedByteSize - static_cast<int>(bytes.size());
+
+    for (auto i = 0; i < fillSize; ++i) {
+        bytes.emplace_back(0x00);
+    }
+    return bytes;
+}
+
 std::vector<DayTimerEntry> DayTimerEntries::DayTimerEntries::entries() const
 {
     return mEntries;

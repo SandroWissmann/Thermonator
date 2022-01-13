@@ -32,6 +32,15 @@ DayTimerEntry::fromEncodedBytes(const std::vector<unsigned char> &bytes)
     return DayTimerEntry{time, temperature};
 }
 
+std::array<unsigned char, 2> DayTimerEntry::encoded() const
+{
+    auto temperatureByte = mTemperature.encoded();
+    auto timeByte = mTime.encoded();
+
+    std::array<unsigned char, 2> bytes{temperatureByte, timeByte};
+    return bytes;
+}
+
 Time DayTimerEntry::time() const
 {
     return mTime;

@@ -18,6 +18,8 @@ public:
     static DayTimerEntries
     fromEncodedBytes(const std::vector<unsigned char> &bytes);
 
+    std::vector<unsigned char> encoded() const;
+
     std::vector<DayTimerEntry> entries() const;
 
     // valid size 0 to 7

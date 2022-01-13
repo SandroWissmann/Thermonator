@@ -28,6 +28,16 @@ int Time::minute() const
     return mMinute;
 }
 
+unsigned char Time::encoded() const
+{
+    if (!isValid()) {
+        return 0;
+    }
+    auto minutesFromMidnight = mHour * 60 + mMinute;
+    auto byte = static_cast<unsigned char>(minutesFromMidnight / 10);
+    return byte;
+}
+
 bool Time::isValid() const
 {
     if (QTime::isValid(mHour, mMinute, 0)) {

@@ -12,6 +12,7 @@ namespace thermonator::eq3thermostat {
 class SerialNumberNotification;
 class StatusNotification;
 class DayTimerNotification;
+class DayTimerEntries;
 
 class Controller : public QObject {
     Q_OBJECT
@@ -92,8 +93,14 @@ public:
     Q_INVOKABLE
     void setTemperatureOffset(double temperatureOffset);
 
+    // Should later be better handle via AbstractItemModel
     Q_INVOKABLE
     void getDayTimer(DayOfWeek dayOfWeek);
+
+    // Should later be better handle via AbstractItemModel
+    Q_INVOKABLE
+    void setDayTimer(DayOfWeek dayOfWeek,
+                     const DayTimerEntries &dayTimerEntries);
 
 public slots:
     void onAnswerReceived(const QByteArray &answer);
@@ -133,7 +140,8 @@ private:
         SetHardwareButtonsUnlock,
         ConfigureOpenWindowMode,
         SetTemperatureOffset,
-        GetDayTimer
+        GetDayTimer,
+        SetDayTimer
     };
 
     CommandType mLastCommandType{CommandType::Unknown};

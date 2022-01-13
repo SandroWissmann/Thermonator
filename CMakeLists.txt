@@ -33,7 +33,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/command/SetComfortTemperatureCommand.hpp
         backend/eq3Thermostat/command/SetComfortTemperatureCommand.cpp
         backend/eq3Thermostat/command/SetCurrentDateTimeCommand.hpp
-        backend/eq3Thermostat/command/SetCurrentDateTimeCommand.cpp
+        backend/eq3Thermostat/command/SetCurrentDateTimeCommand.cpp    
+        backend/eq3Thermostat/command/SetDayTimerCommand.hpp
+        backend/eq3Thermostat/command/SetDayTimerCommand.cpp
         backend/eq3Thermostat/command/SetEcoTemperatureCommand.hpp
         backend/eq3Thermostat/command/SetEcoTemperatureCommand.cpp
         backend/eq3Thermostat/command/SetHardwareButtonsLockCommand.hpp

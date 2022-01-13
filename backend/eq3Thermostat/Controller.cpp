@@ -8,6 +8,7 @@
 #include "command/SetBoostOnCommand.hpp"
 #include "command/SetComfortTemperatureCommand.hpp"
 #include "command/SetCurrentDateTimeCommand.hpp"
+#include "command/SetDayTimerCommand.hpp"
 #include "command/SetEcoTemperatureCommand.hpp"
 #include "command/SetHardwareButtonsLockCommand.hpp"
 #include "command/SetHardwareButtonsUnlockCommand.hpp"
@@ -257,6 +258,26 @@ void Controller::getDayTimer(DayOfWeek dayOfWeek)
     emit sendCommand(command);
 }
 
+void Controller::setDayTimer(DayOfWeek dayOfWeek,
+                             const DayTimerEntries &dayTimerEntries)
+{
+    qDebug() << Q_FUNC_INFO;
+    if (mWaitForAnswer) {
+        qDebug() << Q_FUNC_INFO << "Command already in progress";
+        return;
+    }
+    mLastCommandType = CommandType::SetDayTimer;
+
+    // assume here dayOfWeek is never invalid from caller site
+    Q_ASSERT(dayOfWeek != DayOfWeek::invalid);
+    // assume here dayTimerEntries is never invalid from caller site
+    Q_ASSERT(dayTimerEntries.isValid());
+
+    SetDayTimerCommand setDayTimerCommand(dayOfWeek, dayTimerEntries);
+    auto command = setDayTimerCommand.encoded();
+    emit sendCommand(command);
+}
+
 void Controller::onAnswerReceived(const QByteArray &answer)
 {
     mWaitForAnswer = false;
@@ -293,6 +314,8 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         decodeAsStatusNotification(answer);
         break;
     case CommandType::GetDayTimer:
+        [[fallthrough]];
+    case CommandType::SetDayTimer:
         decodeAsDayTimerNotification(answer);
         break;
     case CommandType::Unknown:
