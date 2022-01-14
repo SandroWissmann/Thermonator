@@ -336,7 +336,8 @@ void Controller::decodeAsSerialNumberNotification(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "serialNumberNotification is invalid";
         return;
     }
-    emit serialNumberNotificationReceived(serialNumberNotification);
+    auto serialNumber = serialNumberNotification.serialNumber();
+    emit serialNumberReceived(serialNumber);
 }
 
 void Controller::decodeAsStatusNotification(const QByteArray &answer)

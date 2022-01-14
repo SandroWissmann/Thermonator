@@ -74,20 +74,4 @@ unsigned char SerialNumberNotification::unknownByte14() const
     return mUnknownByte14;
 }
 
-QDebug operator<<(QDebug debug,
-                  const SerialNumberNotification &serialNumberNotification)
-{
-    QDebugStateSaver saver(debug);
-
-    debug.nospace()
-        << "unknownByte1: " << Qt::hex
-        << static_cast<unsigned int>(serialNumberNotification.unknownByte1())
-        << '\n'
-        << "serialNumber: " << serialNumberNotification.serialNumber() << '\n'
-        << "unknownByte14: " << Qt::hex
-        << static_cast<unsigned int>(serialNumberNotification.unknownByte14());
-
-    return debug;
-}
-
 } // namespace thermonator::eq3thermostat

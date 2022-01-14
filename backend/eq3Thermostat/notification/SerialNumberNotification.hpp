@@ -61,27 +61,6 @@ private:
     unsigned char mUnknownByte14;
 };
 
-inline bool operator==(const SerialNumberNotification &lhs,
-                       const SerialNumberNotification &rhs)
-{
-    if (lhs.serialNumber() != rhs.serialNumber()) {
-        return false;
-    }
-    if (lhs.unknownByte14() != rhs.unknownByte14()) {
-        return false;
-    }
-    return true;
-}
-
-inline bool operator!=(const SerialNumberNotification &lhs,
-                       const SerialNumberNotification &rhs)
-{
-    return !(lhs == rhs);
-}
-
-QDebug operator<<(QDebug debug,
-                  const SerialNumberNotification &serialNumberNotification);
-
 } // namespace thermonator::eq3thermostat
 
 #endif

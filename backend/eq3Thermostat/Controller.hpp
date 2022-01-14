@@ -9,7 +9,7 @@
 
 namespace thermonator::eq3thermostat {
 
-class SerialNumberNotification;
+class SerialNumber;
 class StatusNotification;
 class DayTimer;
 class DayTimerEntries;
@@ -107,9 +107,8 @@ public slots:
 signals:
     void sendCommand(const QByteArray &command);
 
-    void serialNumberNotificationReceived(
-        const thermonator::eq3thermostat::SerialNumberNotification
-            &serialNumberNotification);
+    void serialNumberReceived(
+        const thermonator::eq3thermostat::SerialNumber &serialNumber);
 
     void statusNotificationReceived(
         const thermonator::eq3thermostat::StatusNotification

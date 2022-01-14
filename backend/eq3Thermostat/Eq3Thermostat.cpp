@@ -12,8 +12,7 @@ Eq3Thermostat::Eq3Thermostat(QObject *parent)
 
 QString Eq3Thermostat::serialNumber() const
 {
-    auto serialNumber = mSerialNumberNotification.serialNumber();
-    return serialNumber.value();
+    return mSerialNumber.value();
 }
 
 bool Eq3Thermostat::autoModeEnabled() const
@@ -153,19 +152,16 @@ WeekTimer Eq3Thermostat::weekTimer() const
     return mWeekTimer;
 }
 
-void Eq3Thermostat::onSetSerialNumberNotification(
-    const SerialNumberNotification &serialNumberNotification)
+void Eq3Thermostat::onSetSerialNumber(const SerialNumber &serialNumber)
 {
-    qDebug() << Q_FUNC_INFO
-             << "serialNumberNotification:" << serialNumberNotification;
-    if (mSerialNumberNotification == serialNumberNotification) {
+    qDebug() << Q_FUNC_INFO << "serialNumber:" << serialNumber;
+    if (mSerialNumber == serialNumber) {
         return;
     }
-    auto backupSerialNumberNotification = mSerialNumberNotification;
-    mSerialNumberNotification = serialNumberNotification;
+    auto backupSerialNumber = mSerialNumber;
+    mSerialNumber = serialNumber;
 
-    if (backupSerialNumberNotification.serialNumber() !=
-        mSerialNumberNotification.serialNumber()) {
+    if (backupSerialNumber != mSerialNumber) {
         emit serialNumberChanged();
     }
 }
