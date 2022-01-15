@@ -35,7 +35,8 @@ SerialNumberNotification::fromEncodedData(const QByteArray &data)
     auto unknownByte1 = static_cast<unsigned char>(data.at(1));
 
     std::array<unsigned char, 10> serialNumberBytes;
-    std::copy_n(bytes.begin() + 4, 10, serialNumberBytes.begin());
+    std::copy_n(bytes.begin() + 4, serialNumberBytes.size(),
+                serialNumberBytes.begin());
 
     SerialNumber serialNumber{serialNumberBytes};
     if (!serialNumber.isValid()) {

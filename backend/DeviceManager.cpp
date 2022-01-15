@@ -134,9 +134,8 @@ void DeviceManager::onIOServiceReady()
     // StatusNotifications connections
 
     connect(mEq3ThermostatController.get(),
-            &eq3thermostat::Controller::statusNotificationReceived,
-            mEq3Thermostat.get(),
-            &eq3thermostat::Eq3Thermostat::onSetStatusNotification);
+            &eq3thermostat::Controller::statusReceived, mEq3Thermostat.get(),
+            &eq3thermostat::Eq3Thermostat::onSetStatus);
 
     // DayTimerNotifications connections
 
@@ -144,9 +143,9 @@ void DeviceManager::onIOServiceReady()
             &eq3thermostat::Controller::dayTimerReceived, mEq3Thermostat.get(),
             &eq3thermostat::Eq3Thermostat::onSetDayTimer);
 
-    mEq3ThermostatController->getSerialNumber();
+    // mEq3ThermostatController->getSerialNumber();
 
-    // mEq3ThermostatController->setCurrentDateTime();
+    mEq3ThermostatController->setCurrentDateTime();
 
     // mEq3ThermostatController->setTemperature(21.2);
 

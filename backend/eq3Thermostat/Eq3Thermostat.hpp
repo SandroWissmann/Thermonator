@@ -1,8 +1,8 @@
 #ifndef THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 #define THERMONATOR_EQ3THERMOSTAT_EQ3THERMOSTAT_HPP
 
-#include "notification/StatusNotification.hpp"
 #include "types/SerialNumber.hpp"
+#include "types/Status.hpp"
 #include "types/WeekTimer.hpp"
 
 #include <QObject>
@@ -100,15 +100,11 @@ public slots:
     void onSetSerialNumber(
         const thermonator::eq3thermostat::SerialNumber &serialNumber);
 
-    void
-    onSetStatusNotification(const thermonator::eq3thermostat::StatusNotification
-                                &statusNotification);
+    void onSetStatus(const thermonator::eq3thermostat::Status &status);
 
-    void notifyChangesBaseStatusNotification(
-        const thermonator::eq3thermostat::StatusNotification
-            &oldStatusNotification,
-        const thermonator::eq3thermostat::StatusNotification
-            &newStatusNotification);
+    void notifyChangesInBaseStatus(
+        const thermonator::eq3thermostat::Status &oldStatus,
+        const thermonator::eq3thermostat::Status &newStatus);
 
     void notifyChangesInStatusFlags(
         const thermonator::eq3thermostat::StatusFlags &oldStatusFlags,
@@ -150,7 +146,7 @@ signals:
 
 private:
     SerialNumber mSerialNumber;
-    StatusNotification mStatusNotification;
+    Status mStatus;
     WeekTimer mWeekTimer;
 };
 

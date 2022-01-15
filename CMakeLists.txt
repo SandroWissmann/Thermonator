@@ -73,7 +73,9 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/types/OpenWindowInterval.hpp
         backend/eq3Thermostat/types/OpenWindowInterval.cpp
         backend/eq3Thermostat/types/SerialNumber.hpp
-        backend/eq3Thermostat/types/SerialNumber.cpp
+        backend/eq3Thermostat/types/SerialNumber.cpp    
+        backend/eq3Thermostat/types/Status.hpp
+        backend/eq3Thermostat/types/Status.cpp
         backend/eq3Thermostat/types/StatusFlags.hpp
         backend/eq3Thermostat/types/StatusFlags.cpp      
         backend/eq3Thermostat/types/Temperature.hpp

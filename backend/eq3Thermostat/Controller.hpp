@@ -10,7 +10,7 @@
 namespace thermonator::eq3thermostat {
 
 class SerialNumber;
-class StatusNotification;
+class Status;
 class DayTimer;
 class DayTimerEntries;
 
@@ -110,9 +110,7 @@ signals:
     void serialNumberReceived(
         const thermonator::eq3thermostat::SerialNumber &serialNumber);
 
-    void statusNotificationReceived(
-        const thermonator::eq3thermostat::StatusNotification
-            &statusNotification);
+    void statusReceived(const thermonator::eq3thermostat::Status &status);
 
     void dayTimerReceived(const thermonator::eq3thermostat::DayTimer &dayTimer);
 

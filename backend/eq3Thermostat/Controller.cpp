@@ -349,7 +349,8 @@ void Controller::decodeAsStatusNotification(const QByteArray &answer)
         qDebug() << Q_FUNC_INFO << "statusNotification is invalid";
         return;
     }
-    emit statusNotificationReceived(statusNotification);
+    auto status = statusNotification.status();
+    emit statusReceived(status);
 }
 
 void Controller::decodeAsGetDayTimerNotification(const QByteArray &answer)
