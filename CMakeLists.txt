@@ -54,6 +54,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/notification/GetDayTimerNotification.cpp
         backend/eq3Thermostat/notification/SerialNumberNotification.hpp
         backend/eq3Thermostat/notification/SerialNumberNotification.cpp
+        backend/eq3Thermostat/notification/SetDayTimerNotification.hpp
+        backend/eq3Thermostat/notification/SetDayTimerNotification.cpp
         backend/eq3Thermostat/notification/StatusNotification.hpp
         backend/eq3Thermostat/notification/StatusNotification.cpp
         backend/eq3Thermostat/types/AsciiSign.hpp

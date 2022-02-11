@@ -1,5 +1,6 @@
 #include "Controller.hpp"
 
+#include "../utility/EnumToString.hpp"
 #include "command/ConfigureComfortAndEcoTemperatureCommand.hpp"
 #include "command/ConfigureOpenWindowModeCommand.hpp"
 #include "command/GetDayTimerCommand.hpp"
@@ -18,6 +19,7 @@
 #include "command/SetThermostatOnCommand.hpp"
 #include "notification/GetDayTimerNotification.hpp"
 #include "notification/SerialNumberNotification.hpp"
+#include "notification/SetDayTimerNotification.hpp"
 #include "notification/StatusNotification.hpp"
 #include "types/DayTimer.hpp"
 #include "types/OpenWindowInterval.hpp"
@@ -318,7 +320,7 @@ void Controller::onAnswerReceived(const QByteArray &answer)
         decodeAsGetDayTimerNotification(answer);
         break;
     case CommandType::SetDayTimer:
-        // not yet supported add SetDayTimerNotification here
+        decodeAsSetDayTimerNotification(answer);
         break;
     case CommandType::Unknown:
         qDebug() << Q_FUNC_INFO << "Unknown CommandType cannot decode";
@@ -360,11 +362,29 @@ void Controller::decodeAsGetDayTimerNotification(const QByteArray &answer)
         GetDayTimerNotification::fromEncodedData(answer);
 
     if (!getDayTimerNotification.isValid()) {
-        qDebug() << Q_FUNC_INFO << "DayTimerNotification is invalid";
+        qDebug() << Q_FUNC_INFO << "GetDayTimerNotification is invalid";
         return;
     }
     auto dayTimer = getDayTimerNotification.dayTimer();
     emit dayTimerReceived(dayTimer);
+}
+
+void Controller::decodeAsSetDayTimerNotification(const QByteArray &answer)
+{
+    qDebug() << Q_FUNC_INFO;
+    auto setDayTimerNotification =
+        SetDayTimerNotification::fromEncodedData(answer);
+
+    if (!setDayTimerNotification.isValid()) {
+        qDebug() << Q_FUNC_INFO << "SetDayTimerNotification is invalid";
+        return;
+    }
+    auto dayOfWeek = setDayTimerNotification.dayOfWeek();
+    qDebug() << Q_FUNC_INFO
+             << "Day timer of day of week " + utility::enumToString(dayOfWeek) +
+                    "change";
+    // Currently this function does not forward via signaling.
+    // add emit here if it is really necessary to get this answer.
 }
 
 } // namespace thermonator::eq3thermostat
