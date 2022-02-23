@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
 
     thermonator::ConnectionHandler connectionHandler;
 
-    thermonator::DeviceManager deviceManager;
-    // currently also connects to service and sends one command
-    // these actions should be later triggered depending on gui events
-    deviceManager.startScan();
+    // thermonator::DeviceManager deviceManager;
+    //  currently also connects to service and sends one command
+    //  these actions should be later triggered depending on gui events
+    // deviceManager.startScan();
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

@@ -1,7 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
+
+import "components"
 
 Window {
     id: main_window_root_window
@@ -70,7 +71,7 @@ Window {
             Layout.fillWidth: true
             Layout.preferredHeight: main_window_root_window.height * 0.2
 
-            Button {
+            ButtonWithText {
                 id: main_window_scan_button
                 text: "Scan"
                 Layout.preferredWidth: main_window_root_window.width * 0.5
@@ -81,8 +82,9 @@ Window {
                 }
             }
             // make only visible if item in table is clicked
-            Button {
+            ButtonWithText {
                 id: main_window_connect_button
+                isEnabled: false
                 text: "Connect"
                 Layout.preferredWidth: main_window_root_window.width * 0.5
                 Layout.fillHeight: true
