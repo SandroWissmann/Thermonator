@@ -145,9 +145,9 @@ void DeviceManager::onIOServiceReady()
 
     // mEq3ThermostatController->getSerialNumber();
 
-    mEq3ThermostatController->setCurrentDateTime();
+    // mEq3ThermostatController->setCurrentDateTime();
 
-    // mEq3ThermostatController->setTemperature(21.2);
+    mEq3ThermostatController->setTemperature(21.2);
 
     // mEq3ThermostatController->configureComfortAndEcoTemperature(21.3, 17.8);
 

@@ -118,6 +118,7 @@ private:
     void decodeAsSerialNumberNotification(const QByteArray &answer);
     void decodeAsStatusNotification(const QByteArray &answer);
     void decodeAsGetDayTimerNotification(const QByteArray &answer);
+    void decodeAsSetDayTimerNotification(const QByteArray &answer);
 
     enum class CommandType {
         Unknown,

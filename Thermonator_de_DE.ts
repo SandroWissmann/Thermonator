@@ -4,8 +4,8 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="qml/main.qml" line="8"/>
-        <source>Hello World</source>
+        <location filename="qml/main.qml" line="11"/>
+        <source>Thermonator</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
