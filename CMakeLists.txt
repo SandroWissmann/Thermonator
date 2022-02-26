@@ -98,6 +98,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/Eq3Thermostat.cpp
         backend/eq3Thermostat/IOService.hpp
         backend/eq3Thermostat/IOService.cpp
+        backend/guiController/ScanConnectWindowController.hpp
+        backend/guiController/ScanConnectWindowController.cpp
         backend/utility/EnumToString.hpp
         backend/utility/Utility.hpp
         backend/utility/Utility.cpp     

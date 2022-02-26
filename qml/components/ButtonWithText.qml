@@ -10,27 +10,13 @@ Button {
         anchors.centerIn: parent
     }
 
-    states: [
-        State {
-            name: "disabled"
-            PropertyChanges {
-                target: component_text
-                color: "grey"
-            }
-        },
-        State {
-            name: "enabled"
-            PropertyChanges {
-                target: component_text
-                color: "black"
-            }
-        },
-        State {
-            name: "pressed"
-            PropertyChanges {
-                target: component_text
-                color: "black"
-            }
+    onStateChanged: {
+        if (state === "disabled") {
+            component_text.color = "grey"
+        } else if (state === "enabled") {
+            component_text.color = "black"
+        } else if (state === "pressed") {
+            component_text.color = "black"
         }
-    ]
+    }
 }

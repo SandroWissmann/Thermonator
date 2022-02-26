@@ -11,6 +11,9 @@ Window {
     visible: true
     title: qsTr("Thermonator")
 
+    property QtObject controller: scanConnectWindowController
+    property bool connectButtonIsActive: controller.connectButtonIsActive
+
     ColumnLayout {
         id: main_window_rowLayout
         anchors.fill: parent
@@ -78,19 +81,19 @@ Window {
                 Layout.fillHeight: true
 
                 onClicked: {
-                    console.warn("Scan")
+                    controller.startScanning()
                 }
             }
             // make only visible if item in table is clicked
             ButtonWithText {
                 id: main_window_connect_button
-                isEnabled: false
+                isEnabled: main_window_root_window.connectButtonIsActive
                 text: "Connect"
                 Layout.preferredWidth: main_window_root_window.width * 0.5
                 Layout.fillHeight: true
 
                 onClicked: {
-                    console.warn("Connect")
+                    controller.connectToBluetoothDevice()
                 }
             }
         }

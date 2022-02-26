@@ -27,17 +27,13 @@ Rectangle {
                 return
             }
             component_rectangle_root.state = "pressed"
-
-            console.warn("pressed")
         }
-
         onReleased: {
             if (!component_rectangle_root.isEnabled) {
                 return
             }
 
             component_rectangle_root.state = "enabled"
-            console.warn("enabled")
         }
     }
 
@@ -67,10 +63,6 @@ Rectangle {
             }
         }
     ]
-
-    onStateChanged: {
-        console.warn("sandroo: state changen: " + state)
-    }
 
     Component.onCompleted: {
         if (!isEnabled) {

@@ -1,9 +1,11 @@
 
 #include "backend/ConnectionHandler.hpp"
 #include "backend/DeviceManager.hpp"
+#include "backend/guiController/ScanConnectWindowController.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include <QLocale>
 #include <QTranslator>
@@ -24,6 +26,9 @@ int main(int argc, char *argv[])
     //  these actions should be later triggered depending on gui events
     // deviceManager.startScan();
 
+    thermonator::guiController::ScanConnectWindowController
+        scanConnectWindowController;
+
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {
@@ -35,6 +40,11 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+
+    auto qmlContext = engine.rootContext();
+    qmlContext->setContextProperty("scanConnectWindowController",
+                                   &scanConnectWindowController);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
