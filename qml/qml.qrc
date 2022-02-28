@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>components/Button.qml</file>
         <file>components/ButtonWithText.qml</file>
+        <file>windows/ScanConnectWindow.qml</file>
     </qresource>
 </RCC>
