@@ -42,7 +42,7 @@ Rectangle {
             name: "disabled"
             PropertyChanges {
                 target: component_rectangle_root
-                color: "white"
+                color: "blue"
                 border.color: "black"
             }
         },
