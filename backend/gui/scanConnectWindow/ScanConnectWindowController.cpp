@@ -2,13 +2,12 @@
 
 #include <QDebug>
 
-namespace thermonator::guiController {
+namespace thermonator::gui {
 
 ScanConnectWindowController::ScanConnectWindowController(QObject *parent)
     : QObject{parent}
 {
-    qRegisterMetaType<
-        thermonator::guiController::ScanConnectWindowController *>();
+    qRegisterMetaType<thermonator::gui::ScanConnectWindowController *>();
 }
 
 bool ScanConnectWindowController::connectButtonIsActive()
@@ -34,4 +33,4 @@ void ScanConnectWindowController::connectToBluetoothDevice()
     emit requestConnectToBluetooothDevice(m_selectedBluetoothDeviceMacAddress);
 }
 
-} // namespace thermonator::guiController
+} // namespace thermonator::gui

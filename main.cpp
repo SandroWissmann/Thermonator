@@ -2,7 +2,7 @@
 #include "backend/ConnectionHandler.hpp"
 //#include "backend/DeviceManager.hpp"
 #include "backend/DeviceScanner.hpp"
-#include "backend/guiController/ScanConnectWindowController.hpp"
+#include "backend/gui/scanConnectWindow/ScanConnectWindowController.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -29,14 +29,13 @@ int main(int argc, char *argv[])
     //   these actions should be later triggered depending on gui events
     // deviceManager.startScan();
 
-    guiController::ScanConnectWindowController scanConnectWindowController;
+    gui::ScanConnectWindowController scanConnectWindowController;
 
     DeviceScanner deviceScanner;
 
-    QObject::connect(
-        &scanConnectWindowController,
-        &guiController::ScanConnectWindowController::requestStartScanning,
-        &deviceScanner, &DeviceScanner::onStartScanning);
+    QObject::connect(&scanConnectWindowController,
+                     &gui::ScanConnectWindowController::requestStartScanning,
+                     &deviceScanner, &DeviceScanner::onStartScanning);
 
     // catch scanning results and show them in a model
 

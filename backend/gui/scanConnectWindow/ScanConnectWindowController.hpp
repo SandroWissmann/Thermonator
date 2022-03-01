@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-namespace thermonator::guiController {
+namespace thermonator::gui {
 
 class ScanConnectWindowController : public QObject {
     Q_OBJECT
@@ -39,8 +39,8 @@ private:
     QString m_selectedBluetoothDeviceMacAddress;
 };
 
-} // namespace thermonator::guiController
+} // namespace thermonator::gui
 
-Q_DECLARE_METATYPE(thermonator::guiController::ScanConnectWindowController *)
+Q_DECLARE_METATYPE(thermonator::gui::ScanConnectWindowController *)
 
 #endif
