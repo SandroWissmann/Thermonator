@@ -21,9 +21,6 @@ public:
 
     ~DeviceScanner() = default;
 
-    // start scanning to find available deviceinfos
-    void startScan();
-
     // get deviceInfo by mac address or nullptr if it was not found
     std::shared_ptr<QBluetoothDeviceInfo>
     deviceInfoPtr(const QString &macAddress);
@@ -31,6 +28,10 @@ public:
 signals:
     // this signal is emitted when scanning is completed
     void scanCompleted();
+
+public slots:
+    // start scanning to find available deviceinfos
+    void onStartScanning();
 
 private slots:
     void onAddDeviceInfo(const QBluetoothDeviceInfo &deviceInfo);

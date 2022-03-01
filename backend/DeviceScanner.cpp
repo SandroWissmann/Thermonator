@@ -27,17 +27,6 @@ DeviceScanner::DeviceScanner(QObject *parent) : QObject{parent}
             this, &DeviceScanner::onScanCompleted);
 }
 
-void DeviceScanner::startScan()
-{
-    qDebug() << Q_FUNC_INFO;
-
-    mDevicesInfosPtr.clear();
-    mDeviceDiscoveryAgentPtr->start(
-        QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
-
-    qDebug() << Q_FUNC_INFO << "Scanning for devices...";
-}
-
 std::shared_ptr<QBluetoothDeviceInfo>
 DeviceScanner::deviceInfoPtr(const QString &macAddress)
 {
@@ -51,6 +40,17 @@ DeviceScanner::deviceInfoPtr(const QString &macAddress)
         return *deviceInfoPtrIt;
     }
     return nullptr;
+}
+
+void DeviceScanner::onStartScanning()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    mDevicesInfosPtr.clear();
+    mDeviceDiscoveryAgentPtr->start(
+        QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+
+    qDebug() << Q_FUNC_INFO << "Scanning for devices...";
 }
 
 void DeviceScanner::onAddDeviceInfo(const QBluetoothDeviceInfo &deviceInfo)

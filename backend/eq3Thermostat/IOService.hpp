@@ -6,6 +6,15 @@
 
 #include <memory>
 
+/*
+Available Service UUID on eq3thermostat:
+
+"{00001801-0000-1000-8000-00805f9b34fb}"
+"{0000180a-0000-1000-8000-00805f9b34fb}"
+"{3e135142-654f-9090-134a-a6ff5bb77046}" -> For read / write commands
+"{9e5d1e47-5c13-43a0-8635-82ad38a1386f}"
+*/
+
 namespace thermonator::eq3thermostat {
 
 class IOService : public QObject {

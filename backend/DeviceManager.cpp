@@ -25,7 +25,7 @@ void DeviceManager::startScan()
 
     connect(mDeviceScanner.get(), &DeviceScanner::scanCompleted, this,
             &DeviceManager::onDeviceScanCompleted);
-    mDeviceScanner->startScan();
+    mDeviceScanner->onStartScanning();
 }
 
 void DeviceManager::connectToIOService(const QString &macAddress)
