@@ -64,6 +64,9 @@ void DeviceScanner::onAddDeviceInfo(const QBluetoothDeviceInfo &deviceInfo)
 
     qDebug() << Q_FUNC_INFO
              << "Found device with address:" << deviceInfo.address();
+
+    emit deviceDiscovered(deviceInfo);
+
     auto deviceInfoPtr = std::make_shared<QBluetoothDeviceInfo>(deviceInfo);
     mDevicesInfosPtr.emplace_back(deviceInfoPtr);
 }

@@ -3,6 +3,7 @@
 //#include "backend/DeviceManager.hpp"
 #include "backend/DeviceScanner.hpp"
 #include "backend/gui/scanConnectWindow/ScanConnectWindowController.hpp"
+#include "backend/gui/scanConnectWindow/ScannedDevicesModel.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -30,14 +31,22 @@ int main(int argc, char *argv[])
     // deviceManager.startScan();
 
     gui::ScanConnectWindowController scanConnectWindowController;
+    gui::ScannedDevicesModel scannedDevicesModel;
 
     DeviceScanner deviceScanner;
 
     QObject::connect(&scanConnectWindowController,
                      &gui::ScanConnectWindowController::requestStartScanning,
+                     &scannedDevicesModel,
+                     &gui::ScannedDevicesModel::onResetDevices);
+
+    QObject::connect(&scanConnectWindowController,
+                     &gui::ScanConnectWindowController::requestStartScanning,
                      &deviceScanner, &DeviceScanner::onStartScanning);
 
-    // catch scanning results and show them in a model
+    QObject::connect(&deviceScanner, &DeviceScanner::deviceDiscovered,
+                     &scannedDevicesModel,
+                     &gui::ScannedDevicesModel::onAddDevice);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

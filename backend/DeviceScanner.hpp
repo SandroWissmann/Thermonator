@@ -26,6 +26,9 @@ public:
     deviceInfoPtr(const QString &macAddress);
 
 signals:
+    // this signal is emitted when a new device was discovered
+    void deviceDiscovered(const QBluetoothDeviceInfo &deviceInfo);
+
     // this signal is emitted when scanning is completed
     void scanCompleted();
 
