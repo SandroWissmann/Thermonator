@@ -29,9 +29,8 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-public slots:
-    void onAddDevice(const QBluetoothDeviceInfo &deviceInfo);
-    void onResetDevices();
+    void addDevice(const QBluetoothDeviceInfo &deviceInfo);
+    void resetDevices();
 
 private:
     bool indexInRange(const QModelIndex &index) const;

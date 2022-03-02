@@ -31,22 +31,16 @@ int main(int argc, char *argv[])
     // deviceManager.startScan();
 
     gui::ScanConnectWindowController scanConnectWindowController;
-    gui::ScannedDevicesModel scannedDevicesModel;
 
     DeviceScanner deviceScanner;
-
-    QObject::connect(&scanConnectWindowController,
-                     &gui::ScanConnectWindowController::requestStartScanning,
-                     &scannedDevicesModel,
-                     &gui::ScannedDevicesModel::onResetDevices);
 
     QObject::connect(&scanConnectWindowController,
                      &gui::ScanConnectWindowController::requestStartScanning,
                      &deviceScanner, &DeviceScanner::onStartScanning);
 
     QObject::connect(&deviceScanner, &DeviceScanner::deviceDiscovered,
-                     &scannedDevicesModel,
-                     &gui::ScannedDevicesModel::onAddDevice);
+                     &scanConnectWindowController,
+                     &gui::ScanConnectWindowController::onReceiveNewDevice);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

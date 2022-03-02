@@ -4,12 +4,18 @@
 #include <QObject>
 #include <QString>
 
+class QBluetoothDeviceInfo;
+
 namespace thermonator::gui {
+
+class ScannedDevicesModel;
 
 class ScanConnectWindowController : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool connectButtonIsActive READ connectButtonIsActive NOTIFY
                    connectButtonIsActiveChanged)
+    Q_PROPERTY(ScannedDevicesModel *scannedDevicesModel READ scannedDevicesModel
+                   CONSTANT)
 public:
     ScanConnectWindowController(QObject *parent = nullptr);
 
@@ -23,6 +29,8 @@ public:
 
     bool connectButtonIsActive();
 
+    ScannedDevicesModel *scannedDevicesModel();
+
     Q_INVOKABLE
     void startScanning();
 
@@ -35,8 +43,13 @@ signals:
     void requestStartScanning();
     void requestConnectToBluetooothDevice(const QString &macAddress);
 
+public slots:
+    void onReceiveNewDevice(const QBluetoothDeviceInfo &deviceInfo);
+
 private:
     QString m_selectedBluetoothDeviceMacAddress;
+
+    ScannedDevicesModel *m_scannedDevicesModelPtr;
 };
 
 } // namespace thermonator::gui

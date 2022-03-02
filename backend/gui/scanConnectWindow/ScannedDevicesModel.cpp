@@ -39,7 +39,7 @@ QHash<int, QByteArray> ScannedDevicesModel::roleNames() const
         {static_cast<int>(DisplayRole::macAddress), "macAddress"}};
 }
 
-void ScannedDevicesModel::onAddDevice(const QBluetoothDeviceInfo &deviceInfo)
+void ScannedDevicesModel::addDevice(const QBluetoothDeviceInfo &deviceInfo)
 {
     auto deviceInfoIt =
         std::find(mDeviceInfos.begin(), mDeviceInfos.end(), deviceInfo);
@@ -58,7 +58,7 @@ void ScannedDevicesModel::onAddDevice(const QBluetoothDeviceInfo &deviceInfo)
     emit dataChanged(index, index, {static_cast<int>(DisplayRole::macAddress)});
 }
 
-void ScannedDevicesModel::onResetDevices()
+void ScannedDevicesModel::resetDevices()
 {
     beginResetModel();
     mDeviceInfos.clear();
