@@ -4,5 +4,6 @@
         <file>components/Button.qml</file>
         <file>components/ButtonWithText.qml</file>
         <file>windows/ScanConnectWindow.qml</file>
+        <file>windows/ScanConnectWindowDelegate.qml</file>
     </qresource>
 </RCC>

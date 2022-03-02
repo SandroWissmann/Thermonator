@@ -14,8 +14,8 @@ class ScanConnectWindowController : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool connectButtonIsActive READ connectButtonIsActive NOTIFY
                    connectButtonIsActiveChanged)
-    Q_PROPERTY(ScannedDevicesModel *scannedDevicesModel READ scannedDevicesModel
-                   CONSTANT)
+    Q_PROPERTY(thermonator::gui::ScannedDevicesModel *scannedDevicesModel READ
+                   scannedDevicesModel CONSTANT)
 public:
     ScanConnectWindowController(QObject *parent = nullptr);
 
@@ -29,7 +29,7 @@ public:
 
     bool connectButtonIsActive();
 
-    ScannedDevicesModel *scannedDevicesModel();
+    thermonator::gui::ScannedDevicesModel *scannedDevicesModel();
 
     Q_INVOKABLE
     void startScanning();
