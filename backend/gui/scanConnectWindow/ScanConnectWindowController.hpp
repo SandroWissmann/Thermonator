@@ -35,7 +35,10 @@ public:
     void startScanning();
 
     Q_INVOKABLE
-    void connectToBluetoothDevice();
+    void selectScannedDevice(const QString &macAddress);
+
+    Q_INVOKABLE
+    void connectToSelectedBluetoothDevice();
 
 signals:
     void connectButtonIsActiveChanged();

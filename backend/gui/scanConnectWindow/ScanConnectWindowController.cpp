@@ -26,19 +26,38 @@ ScannedDevicesModel *ScanConnectWindowController::scannedDevicesModel()
 void ScanConnectWindowController::startScanning()
 {
     qDebug() << Q_FUNC_INFO;
-
+    m_selectedBluetoothDeviceMacAddress.clear();
+    emit connectButtonIsActiveChanged();
     m_scannedDevicesModelPtr->resetDevices();
 
     emit requestStartScanning();
 }
 
-void ScanConnectWindowController::connectToBluetoothDevice()
+void ScanConnectWindowController::selectScannedDevice(const QString &macAddress)
 {
-    qDebug() << Q_FUNC_INFO;
+    if (m_selectedBluetoothDeviceMacAddress == macAddress) {
+        return;
+    }
 
+    auto selectedDevice = m_scannedDevicesModelPtr->selectDevice(macAddress);
+
+    if (!selectedDevice) {
+        return;
+    }
+
+    m_selectedBluetoothDeviceMacAddress = macAddress;
+    emit connectButtonIsActiveChanged();
+}
+
+void ScanConnectWindowController::connectToSelectedBluetoothDevice()
+{
     if (m_selectedBluetoothDeviceMacAddress.isEmpty()) {
         return;
     }
+
+    qDebug() << Q_FUNC_INFO
+             << "mac address: " << m_selectedBluetoothDeviceMacAddress;
+
     emit requestConnectToBluetooothDevice(m_selectedBluetoothDeviceMacAddress);
 }
 

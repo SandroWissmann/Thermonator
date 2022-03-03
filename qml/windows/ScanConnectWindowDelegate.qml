@@ -4,6 +4,9 @@ Rectangle {
     id: delegate_rectangle_root
 
     property string macAddress: model.macAddress
+    color: model.delegateBackgroundColor
+
+    property QtObject controller
 
     border.color: "black"
     border.width: 1
@@ -13,7 +16,11 @@ Rectangle {
         text: delegate_rectangle_root.macAddress
     }
 
-    Component.onCompleted: {
-        console.warn("create delegate")
+    MouseArea {
+        id: delegate_mouseArea
+
+        anchors.fill: parent
+        onClicked: controller.selectScannedDevice(
+                       delegate_rectangle_root.macAddress)
     }
 }

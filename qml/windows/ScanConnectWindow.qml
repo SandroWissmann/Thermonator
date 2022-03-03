@@ -25,12 +25,10 @@ Item {
             delegate: ScanConnectWindowDelegate {
                 property variant modelData: model
 
+                controller: window_item_root.controller
+
                 width: window_listView.width
                 height: window_listView.height / 10
-            }
-
-            onCountChanged: {
-                console.warn("Count change to:" + count)
             }
         }
 
@@ -58,7 +56,7 @@ Item {
                 Layout.fillHeight: true
 
                 onClicked: {
-                    controller.connectToBluetoothDevice()
+                    controller.connectToSelectedBluetoothDevice()
                 }
             }
         }
