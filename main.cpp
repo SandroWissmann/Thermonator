@@ -2,6 +2,7 @@
 #include "backend/ConnectionHandler.hpp"
 //#include "backend/DeviceManager.hpp"
 #include "backend/DeviceScanner.hpp"
+#include "backend/gui/WindowManager.hpp"
 #include "backend/gui/pages/scanConnectPage/ScanConnectPageController.hpp"
 
 #include <QGuiApplication>
@@ -41,6 +42,11 @@ int main(int argc, char *argv[])
                      &scanConnectPageController,
                      &gui::ScanConnectPageController::onReceiveNewDevice);
 
+    gui::WindowManager windowManager;
+    // keep in mind later that we also want to return to this page
+    // then add additional signal / slot connection
+    windowManager.onLoadScanConnectPage();
+
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {
@@ -56,6 +62,8 @@ int main(int argc, char *argv[])
     auto qmlContext = engine.rootContext();
     qmlContext->setContextProperty("scanConnectPageController",
                                    &scanConnectPageController);
+
+    qmlContext->setContextProperty("windowManager", &windowManager);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(

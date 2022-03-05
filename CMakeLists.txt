@@ -98,6 +98,8 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/Eq3Thermostat.cpp
         backend/eq3Thermostat/IOService.hpp
         backend/eq3Thermostat/IOService.cpp
+        backend/gui/WindowManager.hpp
+        backend/gui/WindowManager.cpp
         backend/gui/pages/scanConnectPage/ScanConnectPageController.hpp
         backend/gui/pages/scanConnectPage/ScanConnectPageController.cpp
         backend/gui/pages/scanConnectPage/ScannedDevice.hpp
