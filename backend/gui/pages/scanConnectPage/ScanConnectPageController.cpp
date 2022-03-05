@@ -1,4 +1,4 @@
-#include "ScanConnectWindowController.hpp"
+#include "ScanConnectPageController.hpp"
 
 #include "ScannedDevicesModel.hpp"
 
@@ -6,24 +6,24 @@
 
 namespace thermonator::gui {
 
-ScanConnectWindowController::ScanConnectWindowController(QObject *parent)
+ScanConnectPageController::ScanConnectPageController(QObject *parent)
     : QObject{parent}, m_scannedDevicesModelPtr{new ScannedDevicesModel{this}}
 {
-    qRegisterMetaType<thermonator::gui::ScanConnectWindowController *>();
+    qRegisterMetaType<thermonator::gui::ScanConnectPageController *>();
 }
 
-bool ScanConnectWindowController::connectButtonIsActive()
+bool ScanConnectPageController::connectButtonIsActive()
 {
     auto connectButtonIsActiv = !m_selectedBluetoothDeviceMacAddress.isEmpty();
     return connectButtonIsActiv;
 }
 
-ScannedDevicesModel *ScanConnectWindowController::scannedDevicesModel()
+ScannedDevicesModel *ScanConnectPageController::scannedDevicesModel()
 {
     return m_scannedDevicesModelPtr;
 }
 
-void ScanConnectWindowController::startScanning()
+void ScanConnectPageController::startScanning()
 {
     qDebug() << Q_FUNC_INFO;
     m_selectedBluetoothDeviceMacAddress.clear();
@@ -33,7 +33,7 @@ void ScanConnectWindowController::startScanning()
     emit requestStartScanning();
 }
 
-void ScanConnectWindowController::selectScannedDevice(const QString &macAddress)
+void ScanConnectPageController::selectScannedDevice(const QString &macAddress)
 {
     if (m_selectedBluetoothDeviceMacAddress == macAddress) {
         return;
@@ -49,7 +49,7 @@ void ScanConnectWindowController::selectScannedDevice(const QString &macAddress)
     emit connectButtonIsActiveChanged();
 }
 
-void ScanConnectWindowController::connectToSelectedBluetoothDevice()
+void ScanConnectPageController::connectToSelectedBluetoothDevice()
 {
     if (m_selectedBluetoothDeviceMacAddress.isEmpty()) {
         return;
@@ -61,7 +61,7 @@ void ScanConnectWindowController::connectToSelectedBluetoothDevice()
     emit requestConnectToBluetooothDevice(m_selectedBluetoothDeviceMacAddress);
 }
 
-void ScanConnectWindowController::onReceiveNewDevice(
+void ScanConnectPageController::onReceiveNewDevice(
     const QBluetoothDeviceInfo &deviceInfo)
 {
     m_scannedDevicesModelPtr->addDevice(deviceInfo);

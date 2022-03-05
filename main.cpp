@@ -2,8 +2,7 @@
 #include "backend/ConnectionHandler.hpp"
 //#include "backend/DeviceManager.hpp"
 #include "backend/DeviceScanner.hpp"
-#include "backend/gui/scanConnectWindow/ScanConnectWindowController.hpp"
-#include "backend/gui/scanConnectWindow/ScannedDevicesModel.hpp"
+#include "backend/gui/pages/scanConnectPage/ScanConnectPageController.hpp"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -30,17 +29,17 @@ int main(int argc, char *argv[])
     //   these actions should be later triggered depending on gui events
     // deviceManager.startScan();
 
-    gui::ScanConnectWindowController scanConnectWindowController;
+    gui::ScanConnectPageController scanConnectPageController;
 
     DeviceScanner deviceScanner;
 
-    QObject::connect(&scanConnectWindowController,
-                     &gui::ScanConnectWindowController::requestStartScanning,
+    QObject::connect(&scanConnectPageController,
+                     &gui::ScanConnectPageController::requestStartScanning,
                      &deviceScanner, &DeviceScanner::onStartScanning);
 
     QObject::connect(&deviceScanner, &DeviceScanner::deviceDiscovered,
-                     &scanConnectWindowController,
-                     &gui::ScanConnectWindowController::onReceiveNewDevice);
+                     &scanConnectPageController,
+                     &gui::ScanConnectPageController::onReceiveNewDevice);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -55,8 +54,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     auto qmlContext = engine.rootContext();
-    qmlContext->setContextProperty("scanConnectWindowController",
-                                   &scanConnectWindowController);
+    qmlContext->setContextProperty("scanConnectPageController",
+                                   &scanConnectPageController);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(

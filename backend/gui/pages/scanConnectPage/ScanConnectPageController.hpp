@@ -1,5 +1,5 @@
-#ifndef THERMONATOR_GUI_SCANCONNECTWINDOWCONTROLLER_HPP
-#define THERMONATOR_GUI_SCANCONNECTWINDOWCONTROLLER_HPP
+#ifndef THERMONATOR_GUI_SCANCONNECTPAGECONTROLLER_HPP
+#define THERMONATOR_GUI_SCANCONNECTPAGECONTROLLER_HPP
 
 #include <QObject>
 #include <QString>
@@ -10,22 +10,21 @@ namespace thermonator::gui {
 
 class ScannedDevicesModel;
 
-class ScanConnectWindowController : public QObject {
+class ScanConnectPageController : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool connectButtonIsActive READ connectButtonIsActive NOTIFY
                    connectButtonIsActiveChanged)
     Q_PROPERTY(thermonator::gui::ScannedDevicesModel *scannedDevicesModel READ
                    scannedDevicesModel CONSTANT)
 public:
-    ScanConnectWindowController(QObject *parent = nullptr);
+    ScanConnectPageController(QObject *parent = nullptr);
 
-    ScanConnectWindowController(const ScanConnectWindowController &) = delete;
-    ScanConnectWindowController &
-    operator=(const ScanConnectWindowController &) = delete;
-    ScanConnectWindowController(ScanConnectWindowController &&) = delete;
-    ScanConnectWindowController &
-    operator=(ScanConnectWindowController &&) = delete;
-    ~ScanConnectWindowController() = default;
+    ScanConnectPageController(const ScanConnectPageController &) = delete;
+    ScanConnectPageController &
+    operator=(const ScanConnectPageController &) = delete;
+    ScanConnectPageController(ScanConnectPageController &&) = delete;
+    ScanConnectPageController &operator=(ScanConnectPageController &&) = delete;
+    ~ScanConnectPageController() = default;
 
     bool connectButtonIsActive();
 
@@ -57,6 +56,6 @@ private:
 
 } // namespace thermonator::gui
 
-Q_DECLARE_METATYPE(thermonator::gui::ScanConnectWindowController *)
+Q_DECLARE_METATYPE(thermonator::gui::ScanConnectPageController *)
 
 #endif

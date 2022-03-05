@@ -98,12 +98,12 @@ set(PROJECT_SOURCES
         backend/eq3Thermostat/Eq3Thermostat.cpp
         backend/eq3Thermostat/IOService.hpp
         backend/eq3Thermostat/IOService.cpp
-        backend/gui/scanConnectWindow/ScanConnectWindowController.hpp
-        backend/gui/scanConnectWindow/ScanConnectWindowController.cpp
-        backend/gui/scanConnectWindow/ScannedDevice.hpp
-        backend/gui/scanConnectWindow/ScannedDevice.cpp
-        backend/gui/scanConnectWindow/ScannedDevicesModel.hpp
-        backend/gui/scanConnectWindow/ScannedDevicesModel.cpp
+        backend/gui/pages/scanConnectPage/ScanConnectPageController.hpp
+        backend/gui/pages/scanConnectPage/ScanConnectPageController.cpp
+        backend/gui/pages/scanConnectPage/ScannedDevice.hpp
+        backend/gui/pages/scanConnectPage/ScannedDevice.cpp
+        backend/gui/pages/scanConnectPage/ScannedDevicesModel.hpp
+        backend/gui/pages/scanConnectPage/ScannedDevicesModel.cpp
         backend/utility/EnumToString.hpp
         backend/utility/Utility.hpp
         backend/utility/Utility.cpp     

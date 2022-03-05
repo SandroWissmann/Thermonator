@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 
-import "windows"
+import "pages"
 
 Window {
     id: main_window_root_window
@@ -11,9 +11,12 @@ Window {
     visible: true
     title: qsTr("Thermonator")
 
-    ScanConnectWindow {
-        id: main_window_scanConnectWindpw
-
+    Loader {
+        id: main_window_page_loader
         anchors.fill: parent
+    }
+
+    Component.onCompleted: {
+        main_window_page_loader.source = "pages/ScanConnectPage.qml"
     }
 }

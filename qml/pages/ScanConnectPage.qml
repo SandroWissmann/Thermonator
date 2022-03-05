@@ -2,10 +2,11 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 import "../components"
+import "ScanConnectPage"
 
 Item {
     id: window_item_root
-    property QtObject controller: scanConnectWindowController
+    property QtObject controller: scanConnectPageController
     property bool connectButtonIsActive: controller.connectButtonIsActive
     property var model: controller.scannedDevicesModel
 
@@ -22,7 +23,7 @@ Item {
 
             model: window_item_root.model
 
-            delegate: ScanConnectWindowDelegate {
+            delegate: ScanConnectPageDelegate {
                 property variant modelData: model
 
                 controller: window_item_root.controller

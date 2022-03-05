@@ -3,7 +3,7 @@
         <file>main.qml</file>
         <file>components/Button.qml</file>
         <file>components/ButtonWithText.qml</file>
-        <file>windows/ScanConnectWindow.qml</file>
-        <file>windows/ScanConnectWindowDelegate.qml</file>
+        <file>pages/ScanConnectPage.qml</file>
+        <file>pages/ScanConnectPage/ScanConnectPageDelegate.qml</file>
     </qresource>
 </RCC>
