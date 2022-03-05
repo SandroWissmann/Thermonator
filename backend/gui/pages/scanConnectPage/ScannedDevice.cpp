@@ -1,15 +1,22 @@
 #include "ScannedDevice.hpp"
 
+#include <QBluetoothAddress>
+
 namespace thermonator::gui {
 
-ScannedDevice::ScannedDevice(const QString &macAddress)
-    : mMacAddress{macAddress}
+ScannedDevice::ScannedDevice(const QBluetoothDeviceInfo &deviceInfo)
+    : mDeviceInfo{deviceInfo}
 {
+}
+
+QBluetoothDeviceInfo ScannedDevice::deviceInfo() const
+{
+    return mDeviceInfo;
 }
 
 QString ScannedDevice::macAddress() const
 {
-    return mMacAddress;
+    return mDeviceInfo.address().toString();
 }
 
 bool ScannedDevice::isSelected() const

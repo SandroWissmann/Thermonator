@@ -102,18 +102,6 @@ public slots:
 
     void onSetStatus(const thermonator::eq3thermostat::Status &status);
 
-    void notifyChangesInBaseStatus(
-        const thermonator::eq3thermostat::Status &oldStatus,
-        const thermonator::eq3thermostat::Status &newStatus);
-
-    void notifyChangesInStatusFlags(
-        const thermonator::eq3thermostat::StatusFlags &oldStatusFlags,
-        const thermonator::eq3thermostat::StatusFlags &newStatusFlags);
-
-    void notifyChangesInHolidayEndDateTime(
-        const thermonator::eq3thermostat::DateTime &oldHolidayEndDateTime,
-        const thermonator::eq3thermostat::DateTime &newHolidayEndDateTime);
-
     void onSetDayTimer(const thermonator::eq3thermostat::DayTimer &dayTimer);
 
 signals:
@@ -145,6 +133,18 @@ signals:
     void weekTimerChanged();
 
 private:
+    void notifyChangesInBaseStatus(
+        const thermonator::eq3thermostat::Status &oldStatus,
+        const thermonator::eq3thermostat::Status &newStatus);
+
+    void notifyChangesInStatusFlags(
+        const thermonator::eq3thermostat::StatusFlags &oldStatusFlags,
+        const thermonator::eq3thermostat::StatusFlags &newStatusFlags);
+
+    void notifyChangesInHolidayEndDateTime(
+        const thermonator::eq3thermostat::DateTime &oldHolidayEndDateTime,
+        const thermonator::eq3thermostat::DateTime &newHolidayEndDateTime);
+
     SerialNumber mSerialNumber;
     Status mStatus;
     WeekTimer mWeekTimer;

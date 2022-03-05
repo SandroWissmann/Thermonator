@@ -190,6 +190,18 @@ void Eq3Thermostat::onSetStatus(const Status &status)
                                       holidayEndDateTime);
 }
 
+void Eq3Thermostat::onSetDayTimer(const DayTimer &dayTimer)
+{
+    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimer;
+
+    auto dayOfWeek = dayTimer.dayOfWeek();
+    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimer) {
+        return;
+    }
+    mWeekTimer.setDayTimer(dayTimer);
+    emit weekTimerChanged();
+}
+
 void Eq3Thermostat::notifyChangesInBaseStatus(const Status &oldStatus,
                                               const Status &newStatus)
 {
@@ -280,18 +292,6 @@ void Eq3Thermostat::notifyChangesInHolidayEndDateTime(
     if (oldHolidayEndDateTime.minute() != newHolidayEndDateTime.minute()) {
         emit holidayEndMinuteChanged();
     }
-}
-
-void Eq3Thermostat::onSetDayTimer(const DayTimer &dayTimer)
-{
-    qDebug() << Q_FUNC_INFO << "dayTimer:" << dayTimer;
-
-    auto dayOfWeek = dayTimer.dayOfWeek();
-    if (mWeekTimer.dayTimer(dayOfWeek) == dayTimer) {
-        return;
-    }
-    mWeekTimer.setDayTimer(dayTimer);
-    emit weekTimerChanged();
 }
 
 } // namespace thermonator::eq3thermostat

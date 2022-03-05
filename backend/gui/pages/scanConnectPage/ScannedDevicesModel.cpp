@@ -60,7 +60,7 @@ void ScannedDevicesModel::addDevice(const QBluetoothDeviceInfo &deviceInfo)
     qDebug() << Q_FUNC_INFO << "New device with mac address: " << macAddress;
 
     auto pos = mScannedDevices.size();
-    ScannedDevice scannedDevice{macAddress};
+    ScannedDevice scannedDevice{deviceInfo};
     beginInsertRows(QModelIndex{}, pos, pos);
     mScannedDevices.emplace_back(scannedDevice);
     endInsertRows();

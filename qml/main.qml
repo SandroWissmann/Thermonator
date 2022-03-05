@@ -13,10 +13,6 @@ Window {
 
     property QtObject winManager: windowManager
 
-    Component.onCompleted: {
-        console.warn("windowManager obj: " + main_window_root_window.winManager.objectName)
-    }
-
     Loader {
         id: main_window_page_loader
         anchors.fill: parent
