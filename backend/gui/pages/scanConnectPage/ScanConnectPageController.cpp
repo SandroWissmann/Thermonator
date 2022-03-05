@@ -58,7 +58,11 @@ void ScanConnectPageController::connectToSelectedBluetoothDevice()
     qDebug() << Q_FUNC_INFO
              << "mac address: " << m_selectedBluetoothDeviceMacAddress;
 
+    // maybe we dont really connect yet we just open the configuration page
+    // signal could be obsolete
     emit requestConnectToBluetooothDevice(m_selectedBluetoothDeviceMacAddress);
+    // TODO: send device info to thermostat configuration page
+    emit loadThermostatConfigurationPage();
 }
 
 void ScanConnectPageController::onReceiveNewDevice(

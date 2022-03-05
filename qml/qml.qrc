@@ -5,5 +5,6 @@
         <file>components/ButtonWithText.qml</file>
         <file>pages/ScanConnectPage.qml</file>
         <file>pages/ScanConnectPage/ScanConnectPageDelegate.qml</file>
+        <file>pages/ThermostatConfigurationPage.qml</file>
     </qresource>
 </RCC>

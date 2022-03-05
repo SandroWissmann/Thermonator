@@ -27,4 +27,10 @@ void WindowManager::onLoadScanConnectPage()
     setCurrentPage(ScanConnectPageUrl);
 }
 
+void WindowManager::onLoadThermostatConfigurationPage()
+{
+    QUrl ScanConnectPageUrl{"pages/ThermostatConfigurationPage.qml"};
+    setCurrentPage(ScanConnectPageUrl);
+}
+
 } // namespace thermonator::gui

@@ -26,6 +26,8 @@ public:
 public slots:
     void onLoadScanConnectPage();
 
+    void onLoadThermostatConfigurationPage();
+
 signals:
     void currentPageChanged();
 

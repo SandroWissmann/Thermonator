@@ -47,6 +47,11 @@ int main(int argc, char *argv[])
     // then add additional signal / slot connection
     windowManager.onLoadScanConnectPage();
 
+    QObject::connect(
+        &scanConnectPageController,
+        &gui::ScanConnectPageController::loadThermostatConfigurationPage,
+        &windowManager, &gui::WindowManager::onLoadThermostatConfigurationPage);
+
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {

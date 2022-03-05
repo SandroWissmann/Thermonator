@@ -45,6 +45,8 @@ signals:
     void requestStartScanning();
     void requestConnectToBluetooothDevice(const QString &macAddress);
 
+    void loadThermostatConfigurationPage();
+
 public slots:
     void onReceiveNewDevice(const QBluetoothDeviceInfo &deviceInfo);
 
