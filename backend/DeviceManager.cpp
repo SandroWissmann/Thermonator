@@ -43,12 +43,12 @@ void DeviceManager::connectToIOService(const QString &macAddress)
         return;
     }
 
-    mServiceScanner = std::make_unique<ServiceScanner>(deviceInfoPtr, this);
+    mServiceScanner = std::make_unique<ServiceScanner>(this);
 
     connect(mServiceScanner.get(), &ServiceScanner::serviceScanCompleted, this,
             &DeviceManager::onServiceScanCompleted);
 
-    mServiceScanner->startScan();
+    mServiceScanner->connectAndStartScan(*deviceInfoPtr);
 }
 
 bool DeviceManager::deviceScanComplete() const

@@ -16,12 +16,13 @@ namespace thermonator {
 class ServiceScanner : public QObject {
     Q_OBJECT
 public:
-    explicit ServiceScanner(std::shared_ptr<QBluetoothDeviceInfo> deviceInfoPtr,
-                            QObject *parent = nullptr);
+    explicit ServiceScanner(QObject *parent = nullptr);
 
     ~ServiceScanner() = default;
 
-    void startScan();
+    void connectAndStartScan(const QBluetoothDeviceInfo &deviceInfo);
+
+    void disconnect();
 
     bool scanComplete() const;
 
@@ -41,10 +42,13 @@ private slots:
     void onServiceScanDone();
 
 private:
-    std::unique_ptr<QLowEnergyController> mLowEnergyControllerPtr;
+    void makeConnections();
+
+    std::unique_ptr<QLowEnergyController> mLowEnergyControllerPtr{nullptr};
 
     std::vector<QBluetoothUuid> mDiscoveredServicesUuids;
     bool mScanComplete{false};
+    std::vector<QMetaObject::Connection> mConnections;
 };
 
 } // namespace thermonator
